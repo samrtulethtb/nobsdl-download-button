@@ -1,0 +1,29 @@
+{
+  "name": "nobsdl-download-button",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MP4 and MP3 userscript shortcuts for supported public media pages on NoBsDL",
+  "scripts": {
+    "test": "node --check nobsdl-download-button.user.js && node --test test/userscript.test.mjs",
+    "test:browser": "node test/browser.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samrtulethtb/nobsdl-download-button.git"
+  },
+  "keywords": [
+    "userscript",
+    "tampermonkey",
+    "violentmonkey",
+    "nobsdl"
+  ],
+  "author": "NoBsDL",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/samrtulethtb/nobsdl-download-button/issues"
+  },
+  "homepage": "https://nobsdl.com/",
+  "devDependencies": {
+    "playwright": "^1.61.0"
+  }
+}
