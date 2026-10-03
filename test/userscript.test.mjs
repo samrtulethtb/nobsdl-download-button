@@ -118,7 +118,7 @@ test("metadata grants exactly the in-page transport and talks only to nobsdl.com
   assert.deepEqual(grants, ["GM.xmlHttpRequest", "GM_getValue", "GM_setValue", "GM_xmlhttpRequest"]);
   assert.deepEqual([...header.matchAll(/^\/\/ @connect\s+(\S+)$/gm)].map((m) => m[1]), ["nobsdl.com"]);
   assert.match(header, /^\/\/ @noframes$/m);
-  assert.match(header, /^\/\/ @version\s+2\.0\.0$/m);
+  assert.match(header, /^\/\/ @version\s+2\.0\.\d+$/m);
   // Paid Supporter formats are disclosed as Greasy Fork requires.
   assert.match(header, /^\/\/ @antifeature\s+payment\s+\S/m);
   // Page-side network APIs are never used directly; only the GM transport.
@@ -128,6 +128,20 @@ test("metadata grants exactly the in-page transport and talks only to nobsdl.com
   assert.match(source, /referrerPolicy = "no-referrer"/);
   // DOM is built with textContent/attributes only (Trusted Types safe).
   assert.doesNotMatch(source, /innerHTML|outerHTML|insertAdjacentHTML|document\.write/);
+});
+
+test("metadata fits Greasy Fork's field limits in every locale", () => {
+  // Greasy Fork rejects a sync when @name > 100 or @description > 500 chars
+  // (seen live on 2.0.0). Count code points and stay under in UTF-8 bytes too.
+  const source = readFileSync(SCRIPT, "utf8");
+  const header = source.slice(0, source.indexOf("// ==/UserScript=="));
+  const fields = [...header.matchAll(/^\/\/ @(name|description)(:\S+)?\s+(.*)$/gm)];
+  assert.ok(fields.length >= 34, "expected localized names and descriptions");
+  for (const [, key, locale = "", value] of fields) {
+    const limit = key === "name" ? 100 : 500;
+    assert.ok([...value].length <= limit, `@${key}${locale} is ${[...value].length} chars`);
+    if (key === "name" && !locale) assert.ok(Buffer.byteLength(value) <= limit, "main @name must also fit in bytes");
+  }
 });
 
 test("listing copy makes no unverified or forbidden claims", () => {
