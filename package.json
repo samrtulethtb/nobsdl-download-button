@@ -1,8 +1,8 @@
 {
   "name": "nobsdl-download-button",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
-  "description": "MP4 and MP3 userscript shortcuts for supported public media pages on NoBsDL",
+  "description": "NoBsDL Video Downloader userscript: in-page MP4/MP3 downloads with real formats and live progress",
   "scripts": {
     "test": "node --check nobsdl-download-button.user.js && node --test test/userscript.test.mjs",
     "test:browser": "node test/browser.test.js"

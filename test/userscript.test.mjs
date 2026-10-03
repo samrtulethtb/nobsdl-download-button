@@ -111,12 +111,89 @@ test("all outgoing actions carry the source URL without inventing claims or trac
   assert.equal(parsed.searchParams.has("utm_source"), false);
 });
 
-test("metadata and implementation keep the userscript least-privileged", () => {
+test("metadata grants exactly the in-page transport and talks only to nobsdl.com", () => {
   const source = readFileSync(SCRIPT, "utf8");
-  assert.match(source, /^\/\/ @grant\s+none$/m);
-  assert.match(source, /^\/\/ @noframes$/m);
-  assert.doesNotMatch(source, /\bGM_[A-Za-z]+\b|GM\.[A-Za-z]+|XMLHttpRequest|\bfetch\s*\(/);
-  assert.match(source, /rel = "noopener noreferrer"/);
+  const header = source.slice(0, source.indexOf("// ==/UserScript=="));
+  const grants = [...header.matchAll(/^\/\/ @grant\s+(\S+)$/gm)].map((m) => m[1]).sort();
+  assert.deepEqual(grants, ["GM.xmlHttpRequest", "GM_getValue", "GM_setValue", "GM_xmlhttpRequest"]);
+  assert.deepEqual([...header.matchAll(/^\/\/ @connect\s+(\S+)$/gm)].map((m) => m[1]), ["nobsdl.com"]);
+  assert.match(header, /^\/\/ @noframes$/m);
+  assert.match(header, /^\/\/ @version\s+2\.0\.0$/m);
+  // Paid Supporter formats are disclosed as Greasy Fork requires.
+  assert.match(header, /^\/\/ @antifeature\s+payment\s+\S/m);
+  // Page-side network APIs are never used directly; only the GM transport.
+  assert.doesNotMatch(source, /new XMLHttpRequest|\bfetch\s*\(|navigator\.sendBeacon/);
+  assert.match(source, /url: NOBSDL_ORIGIN \+ path/);
+  assert.match(source, /rel: "noopener noreferrer"/);
   assert.match(source, /referrerPolicy = "no-referrer"/);
-  assert.doesNotMatch(source, /\bno ads\b|ad-free/i);
+  // DOM is built with textContent/attributes only (Trusted Types safe).
+  assert.doesNotMatch(source, /innerHTML|outerHTML|insertAdjacentHTML|document\.write/);
+});
+
+test("listing copy makes no unverified or forbidden claims", () => {
+  const source = readFileSync(SCRIPT, "utf8");
+  assert.doesNotMatch(source, /\bno ads\b|ad-free|without ads/i);
+  assert.doesNotMatch(source, /no watermark|watermark-free|without watermark/i);
+  assert.doesNotMatch(source, /free 4K|4K free|unlimited/i);
+  for (const locale of ["ro", "es", "pt-BR", "fr", "de", "ru", "tr", "id", "ja", "zh-CN"]) {
+    assert.match(source, new RegExp(`^// @name:${locale}\\s+\\S`, "m"), locale);
+    assert.match(source, new RegExp(`^// @description:${locale}\\s+\\S`, "m"), locale);
+  }
+});
+
+const {normalizeChoices, downloadParams, progressView, safeFileUrl, safeStatusPath} = require(SCRIPT.pathname);
+
+test("YouTube choices keep product tier and unlock only for an active Supporter", () => {
+  const data = {
+    youtube_video_choices: {
+      free: [{choice_id: "yt:135:140", height: 480, size_mb: 26.9, tier: "free"}, {choice_id: "yt:299:140", height: 1080, size_mb: 214.5, tier: "free", fps: 60}],
+      supporter: [{choice_id: "yt:401:251", height: 2160, size_mb: 900, tier: "supporter"}],
+    },
+    youtube_mp3_choices: [{choice_id: "yt3:128", bitrate_kbps: 128, size_mb: 7, tier: "free"}, {choice_id: "yt3:320", bitrate_kbps: 320, size_mb: 120, tier: "supporter"}],
+  };
+  const free = normalizeChoices(Object.assign({is_supporter: false}, data));
+  assert.deepEqual(free.map((c) => [c.title, c.family, c.locked]), [
+    ["480p", "video", false], ["1080p", "video", false], ["2160p", "video", true],
+    ["128 kbps", "audio", false], ["320 kbps", "audio", true],
+  ]);
+  assert.equal(free[1].fps, 60);
+  const paid = normalizeChoices(Object.assign({is_supporter: true}, data));
+  assert.equal(paid.some((c) => c.locked), false);
+  assert.equal(downloadParams(free[1], "https://www.youtube.com/watch?v=x"),
+    "/download?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3Dx&format=mp4&async=1&yt_choice=yt%3A299%3A140");
+  assert.match(downloadParams(free[3], "u"), /format=mp3&async=1&yt_choice=yt3%3A128$/);
+});
+
+test("other platforms map free/Supporter dictionaries and real MP3 bitrates", () => {
+  const choices = normalizeChoices({
+    is_supporter: false,
+    video_formats: {"720p MP4": {format_id: "hd", quality_edge: 720, size_mb: 30}},
+    supporter_video_formats: {"1080p MP4": {format_id: "fhd", height: 1080, size_mb: 600}},
+    audio_formats: {a: {bitrate: 128, size_mb: 3, tier: "free"}, b: {bitrate: 192, size_mb: 4}, c: {bitrate: 320, size_mb: 120, tier: "supporter"}},
+  });
+  assert.deepEqual(choices.map((c) => [c.key, c.locked]), [["v:hd", false], ["v:fhd", true], ["a:128", false], ["a:320", true]]);
+  assert.match(downloadParams(choices[0], "u"), /format=mp4&async=1&format_id=hd$/);
+  assert.match(downloadParams(choices[2], "u"), /format=mp3&async=1&audio_bitrate=128$/);
+});
+
+test("progress text shows measured numbers only", () => {
+  const MB = 1024 * 1024;
+  assert.deepEqual(progressView("downloading", {downloaded_bytes: 50 * MB, total_bytes: 200 * MB, fraction: 0.25, speed_bps: 5 * MB, eta_seconds: 30}, 9, "YouTube", "mp4"),
+    {mode: "measured", fraction: 0.25, text: "25% · 50.0 MB of 200 MB · 5.0 MB/s · ~30s left", step: 1});
+  assert.equal(progressView("connecting", null, 1, "YouTube", "mp4").text, "Connecting to YouTube…");
+  assert.equal(progressView("connecting", null, 4, "TikTok", "mp4").text, "Connecting to TikTok… 4s");
+  assert.equal(progressView("queued", null, 0, "X", "mp4").mode, "waiting");
+  const conv = progressView("converting", {fraction: 1, encode_fraction: 0.64}, 3, "YouTube", "mp3");
+  assert.deepEqual([conv.mode, conv.fraction, conv.text, conv.step], ["measured", 0.64, "Converting to MP3… 64%", 2]);
+  assert.equal(progressView("merging", {fraction: 1}, 1, "YouTube", "mp4").mode, "working");
+  assert.equal(progressView("ready", null, 0, "YouTube", "mp4").step, 3);
+});
+
+test("only same-service file and status paths are ever followed", () => {
+  assert.equal(safeFileUrl("/api/free-download/file/abcdef123456"), "https://nobsdl.com/api/free-download/file/abcdef123456");
+  for (const bad of ["https://evil.example/x", "//evil.example/api/free-download/file/abcdef123456", "/api/free-download/file/../admin", "/d/token", ""]) {
+    assert.equal(safeFileUrl(bad), null, bad);
+  }
+  assert.equal(safeStatusPath("/api/free-download/status/abcdef123456"), "/api/free-download/status/abcdef123456");
+  assert.equal(safeStatusPath("https://evil.example/api/free-download/status/abcdef123456"), null);
 });
