@@ -73,6 +73,62 @@ test("YouTube Mix and Radio remain single-video workflows", () => {
   ]) assert.equal(page(href)?.workflow, "single", href);
 });
 
+test("2.1 universal sites: individual media pages only, routed to the universal tool", () => {
+  const positives = [
+    ["https://www.pinterest.com/pin/664281013778109217/", "pinterest", "mp4"],
+    ["https://streamable.com/dnd1", "streamable", "mp4"],
+    ["https://clips.twitch.tv/FaintLightGullWholeWheat", "twitch", "mp4"],
+    ["https://www.twitch.tv/xqc/clip/CulturedAmazingKuduDatSheffy-TiZ_-ixAGYR3y2Uy", "twitch", "mp4"],
+    ["https://www.twitch.tv/videos/2000000000", "twitch", "mp4"],
+    ["https://bsky.app/profile/bsky.app/post/3l3vgf77uco2g", "bluesky", "mp4"],
+    ["https://9gag.com/gag/ae5Ag7B", "9gag", "mp4"],
+    ["https://imgur.com/A61SaA1", "imgur", "mp4"],
+    ["https://odysee.com/@gardeningincanada:b/plants-i-will-never-grow-again.-the:e", "odysee", "mp4"],
+    ["https://ok.ru/video/1484130554189", "okru", "mp4"],
+    ["https://rutube.ru/video/3eac3b4561676c17df9132a9a1e62e3e/", "rutube", "mp4"],
+    ["https://www.dailymotion.com/video/x5kesuj", "dailymotion", "mp4"],
+    ["https://benprunty.bandcamp.com/track/lanius-battle", "bandcamp", "mp3"],
+    ["https://www.mixcloud.com/dholbach/cryptkeeper/", "mixcloud", "mp3"],
+  ];
+  for (const [href, platform, first] of positives) {
+    const matched = page(href);
+    assert.equal(matched?.platform, platform, href);
+    assert.equal(matched.outputs[0], first, href);
+    const parsed = new URL(targetUrl(matched, href, first));
+    assert.equal(parsed.pathname, "/universal-downloader", href);
+    assert.equal(parsed.searchParams.get("prefer"), first, href);
+    assert.equal(parsed.searchParams.get("url"), href, href);
+  }
+  assert.equal(page("https://benprunty.bandcamp.com/track/lanius-battle").outputs.includes("mp4"), false);
+  for (const href of [
+    "https://www.twitch.tv/xqc", "https://www.twitch.tv/directory", "https://www.pinterest.com/", "https://www.pinterest.com/user/boards/",
+    "https://streamable.com/login", "https://imgur.com/upload", "https://imgur.com/search", "https://bsky.app/profile/bsky.app",
+    "https://www.mixcloud.com/discover/jazz/", "https://www.mixcloud.com/dholbach/favorites/", "https://bandcamp.com/track/x",
+    "https://adrianvonziegler.bandcamp.com/", "https://www.dailymotion.com/us", "https://ok.ru/", "https://rutube.ru/", "https://9gag.com/hot",
+  ]) assert.equal(page(href), null, href);
+});
+
+test("every @match domain has functionality (Greasy Fork rule)", () => {
+  const source = readFileSync(SCRIPT, "utf8");
+  const header = source.slice(0, source.indexOf("// ==/UserScript=="));
+  const domains = [...header.matchAll(/^\/\/ @match\s+\*:\/\/(?:\*\.)?([^/]+)\/\*$/gm)].map((m) => m[1]);
+  const sample = {
+    "youtube.com": "https://www.youtube.com/watch?v=dQw4w9WgXcQ", "youtu.be": "https://youtu.be/dQw4w9WgXcQ",
+    "youtube-nocookie.com": "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ", "tiktok.com": "https://www.tiktok.com/@u/video/1",
+    "instagram.com": "https://www.instagram.com/reel/ABC_123/", "facebook.com": "https://www.facebook.com/reel/123456",
+    "reddit.com": "https://www.reddit.com/r/v/comments/abc123/t/", "redd.it": "https://redd.it/abc123",
+    "x.com": "https://x.com/u/status/1", "twitter.com": "https://twitter.com/u/status/1", "vimeo.com": "https://vimeo.com/123456789",
+    "soundcloud.com": "https://soundcloud.com/artist/track", "twitch.tv": "https://clips.twitch.tv/FaintLightGullWholeWheat",
+    "dailymotion.com": "https://www.dailymotion.com/video/x5kesuj", "pinterest.com": "https://www.pinterest.com/pin/664281013778109217/",
+    "bsky.app": "https://bsky.app/profile/bsky.app/post/3l3vgf77uco2g", "streamable.com": "https://streamable.com/dnd1",
+    "imgur.com": "https://imgur.com/A61SaA1", "9gag.com": "https://9gag.com/gag/ae5Ag7B", "odysee.com": "https://odysee.com/@a:b/c:e",
+    "rutube.ru": "https://rutube.ru/video/3eac3b4561676c17df9132a9a1e62e3e/", "ok.ru": "https://ok.ru/video/1484130554189",
+    "bandcamp.com": "https://benprunty.bandcamp.com/track/lanius-battle", "mixcloud.com": "https://www.mixcloud.com/dholbach/cryptkeeper/",
+  };
+  assert.deepEqual([...domains].sort(), Object.keys(sample).sort());
+  for (const domain of domains) assert.ok(page(sample[domain]), domain);
+});
+
 test("routes each output to the current NoBsDL destination contract", () => {
   const youtube = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
   assert.equal(new URL(target(youtube, "mp4")).pathname, "/youtube-downloader");
@@ -118,7 +174,7 @@ test("metadata grants exactly the in-page transport and talks only to nobsdl.com
   assert.deepEqual(grants, ["GM.xmlHttpRequest", "GM_getValue", "GM_setValue", "GM_xmlhttpRequest"]);
   assert.deepEqual([...header.matchAll(/^\/\/ @connect\s+(\S+)$/gm)].map((m) => m[1]), ["nobsdl.com"]);
   assert.match(header, /^\/\/ @noframes$/m);
-  assert.match(header, /^\/\/ @version\s+2\.0\.\d+$/m);
+  assert.match(header, /^\/\/ @version\s+2\.\d+\.\d+$/m);
   // Paid Supporter formats are disclosed as Greasy Fork requires.
   assert.match(header, /^\/\/ @antifeature\s+payment\s+\S/m);
   // Page-side network APIs are never used directly; only the GM transport.

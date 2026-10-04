@@ -1,6 +1,6 @@
 {
   "name": "nobsdl-download-button",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "private": true,
   "description": "NoBsDL Video Downloader userscript: in-page MP4/MP3 downloads with real formats and live progress",
   "scripts": {

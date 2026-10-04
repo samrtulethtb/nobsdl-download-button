@@ -1,5 +1,7 @@
 # NoBsDL Video Downloader (userscript)
 
+![Download right on the page](media/demo.gif)
+
 Download videos as **MP4** and audio as **MP3** without leaving the page.
 Open the panel, pick a real quality with its file size, watch the live server
 progress, and the file goes straight to your browser's downloads. Powered by
@@ -41,7 +43,13 @@ redirects. No fake download buttons. Just download.**
 - Reddit video posts and direct `redd.it` media links.
 - X/Twitter status pages containing media.
 - Public Vimeo video pages.
-- Public SoundCloud tracks (MP3 only).
+- Twitch clips and past videos, Dailymotion videos, Pinterest pins, Bluesky
+  posts, Streamable, Imgur, 9GAG, Odysee, Rutube and OK.ru video pages (via
+  NoBsDL's universal downloader; each verified with a real download).
+- SoundCloud tracks, Bandcamp tracks and Mixcloud shows (MP3 only).
+
+Only individual media pages show the button — never feeds, profiles or
+search pages.
 
 ## Free and Supporter
 
@@ -81,7 +89,9 @@ CHROME_BIN=/path/to/chrome npm run test:browser   # mocked browser checks
 ```
 
 The browser suite fulfils every page and NoBsDL API answer in-process; it does
-not contact media sites or NoBsDL.
+not contact media sites or NoBsDL. Screenshots in `media/` were taken on a
+real YouTube page (Big Buck Bunny, CC-BY Blender Foundation) with the real
+NoBsDL service; recommendations are blurred.
 
 ## License
 

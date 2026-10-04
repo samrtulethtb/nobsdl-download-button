@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         NoBsDL Video Downloader – MP4 & MP3 from YouTube, TikTok, Instagram, X, Facebook, Reddit, Vimeo
+// @name         All-in-One Video Downloader – YouTube, TikTok, Instagram, X, Facebook & 15 more (MP4/MP3)
 // @name:ro      NoBsDL Video Downloader – descarcă MP4 și MP3 de pe YouTube, TikTok, Instagram, X, Facebook
 // @name:es      NoBsDL Video Downloader – descarga MP4 y MP3 de YouTube, TikTok, Instagram, X, Facebook
 // @name:pt-BR   NoBsDL Video Downloader – baixe MP4 e MP3 do YouTube, TikTok, Instagram, X, Facebook
@@ -17,8 +17,8 @@
 // @name:ko      NoBsDL Video Downloader – YouTube, TikTok, Instagram, X, Facebook에서 MP4·MP3 다운로드
 // @name:zh-CN   NoBsDL 视频下载器 – 从 YouTube、TikTok、Instagram、X、Facebook 下载 MP4 和 MP3
 // @namespace    https://nobsdl.com/
-// @version      2.0.1
-// @description  Download videos as MP4 and audio as MP3 without leaving the page. Pick a real quality with its file size, watch live server progress, and the file goes straight to your browser's downloads. Works on YouTube (incl. Shorts), TikTok, Instagram Reels, X/Twitter, Facebook, Reddit, Vimeo and SoundCloud.
+// @version      2.1.0
+// @description  Download videos as MP4 and audio as MP3 without leaving the page: pick a real quality with its file size, watch live progress, and the file goes straight to your downloads. YouTube (incl. Shorts), TikTok, Instagram, X/Twitter, Facebook, Reddit, Vimeo, Twitch clips, Dailymotion, Pinterest, Bluesky, Streamable, Imgur, 9GAG, Odysee, Rutube, OK.ru, SoundCloud, Bandcamp and Mixcloud. By NoBsDL.
 // @description:ro  Descarcă video MP4 și audio MP3 fără să părăsești pagina. Alegi o calitate reală cu mărimea fișierului, vezi progresul live de pe server, iar fișierul ajunge direct în descărcările browserului. YouTube (inclusiv Shorts), TikTok, Instagram, X, Facebook, Reddit, Vimeo, SoundCloud.
 // @description:es  Descarga vídeos en MP4 y audio en MP3 sin salir de la página. Elige una calidad real con su tamaño, mira el progreso en vivo y el archivo llega directo a tus descargas. YouTube (incl. Shorts), TikTok, Instagram, X, Facebook, Reddit, Vimeo, SoundCloud.
 // @description:pt-BR  Baixe vídeos em MP4 e áudio em MP3 sem sair da página. Escolha uma qualidade real com o tamanho do arquivo, acompanhe o progresso ao vivo e o arquivo vai direto para seus downloads. YouTube (incl. Shorts), TikTok, Instagram, X, Facebook, Reddit, Vimeo, SoundCloud.
@@ -52,6 +52,18 @@
 // @match        *://*.twitter.com/*
 // @match        *://*.vimeo.com/*
 // @match        *://*.soundcloud.com/*
+// @match        *://*.twitch.tv/*
+// @match        *://*.dailymotion.com/*
+// @match        *://*.pinterest.com/*
+// @match        *://bsky.app/*
+// @match        *://*.streamable.com/*
+// @match        *://*.imgur.com/*
+// @match        *://*.9gag.com/*
+// @match        *://*.odysee.com/*
+// @match        *://*.rutube.ru/*
+// @match        *://*.ok.ru/*
+// @match        *://*.bandcamp.com/*
+// @match        *://*.mixcloud.com/*
 // @grant        GM_xmlhttpRequest
 // @grant        GM.xmlHttpRequest
 // @grant        GM_getValue
@@ -215,6 +227,65 @@
     }
 
     if (hostIs(host, "soundcloud.com")) return soundcloudPage(url, host);
+    return universalPage(url, host, parts);
+  }
+
+  // NOBSDL_USERSCRIPT_UNIVERSAL_V1 (2.1.0): further sites NoBsDL's universal
+  // downloader handles. Each one was verified 2026-10-04 with a real
+  // end-to-end download through the production API (metadata, job, file).
+  // Only individual media pages match - never feeds, profiles or searches.
+  function universalPage(url, host, parts) {
+    const path = url.pathname;
+    const universal = (platform, name, outputs) => page(platform, name, "single", "/universal-downloader", outputs || VIDEO_AUDIO);
+    if (hostIs(host, "pinterest.com")) {
+      return /^\/pin\/[A-Za-z0-9_-]+\/?$/.test(path) ? universal("pinterest", "Pinterest") : null;
+    }
+    if (hostIs(host, "streamable.com")) {
+      return /^\/(?:[eo]\/)?[a-z0-9]{3,12}\/?$/i.test(path) && !/^\/(?:login|signup|pricing|about|terms|privacy|careers|upload|blog|community|support|jobs)\/?$/i.test(path)
+        ? universal("streamable", "Streamable") : null;
+    }
+    if (hostIs(host, "twitch.tv")) {
+      const clip = host === "clips.twitch.tv" ? Boolean(parts[0]) && parts[0] !== "embed" : /^\/[^/]+\/clip\/[A-Za-z0-9_-]+/.test(path);
+      const vod = /^\/videos\/\d+\/?$/.test(path);
+      return clip || vod ? universal("twitch", "Twitch") : null;
+    }
+    if (host === "bsky.app") {
+      return /^\/profile\/[^/]+\/post\/[A-Za-z0-9]+\/?$/.test(path) ? universal("bluesky", "Bluesky") : null;
+    }
+    if (hostIs(host, "9gag.com")) {
+      return /^\/gag\/[A-Za-z0-9]+\/?$/.test(path) ? universal("9gag", "9GAG") : null;
+    }
+    if (hostIs(host, "imgur.com")) {
+      // Media ids always mix in digits or capitals; site pages (/upload,
+      // /search, /signin...) are lowercase words.
+      const id = (path.match(/^\/(?:gallery\/|t\/[^/]+\/)?([A-Za-z0-9]{5,8})(?:\.(?:mp4|gifv))?\/?$/) || [])[1] || "";
+      return /[A-Z0-9]/.test(id) ? universal("imgur", "Imgur") : null;
+    }
+    if (hostIs(host, "odysee.com")) {
+      return /^\/@[^/]+\/[^/]+\/?$/.test(path) ? universal("odysee", "Odysee") : null;
+    }
+    if (hostIs(host, "ok.ru")) {
+      return /^\/video\/\d+/.test(path) ? universal("okru", "OK.ru") : null;
+    }
+    if (hostIs(host, "rutube.ru")) {
+      return /^\/video\/[a-f0-9]{32}\/?$/.test(path) ? universal("rutube", "Rutube") : null;
+    }
+    if (hostIs(host, "dailymotion.com")) {
+      return /^\/video\/[A-Za-z0-9]+\/?$/.test(path) ? universal("dailymotion", "Dailymotion") : null;
+    }
+    if (hostIs(host, "dai.ly")) {
+      return parts[0] ? universal("dailymotion", "Dailymotion") : null;
+    }
+    if (hostIs(host, "bandcamp.com")) {
+      return /^\/track\/[^/]+\/?$/.test(path) && host !== "bandcamp.com" ? universal("bandcamp", "Bandcamp", AUDIO_ONLY) : null;
+    }
+    if (hostIs(host, "mixcloud.com")) {
+      const reserved = new Set(["discover", "upload", "select", "pro", "search", "live", "categories", "about", "help", "jobs", "settings", "notifications", "dashboard"]);
+      const reservedSecond = new Set(["favorites", "listens", "stream", "uploads", "playlists", "followers", "following", "reposts", "likes", "history", "tracks"]);
+      return parts.length === 2 && !reserved.has(parts[0].toLowerCase()) && !reservedSecond.has(parts[1].toLowerCase())
+        ? universal("mixcloud", "Mixcloud", AUDIO_ONLY) : null;
+    }
+    return null;
     return null;
   }
 
@@ -237,6 +308,8 @@
     target.searchParams.set("url", sourceUrlFor(currentUrl, matchedPage));
     if (matchedPage.outputs === VIDEO_AUDIO && !(matchedPage.platform === "youtube" && matchedPage.workflow === "single")) {
       target.searchParams.set("prefer", output);
+    } else if (matchedPage.route === "/universal-downloader" && output === "mp3") {
+      target.searchParams.set("prefer", "mp3");
     }
     return target.href;
   }
@@ -506,7 +579,8 @@
     .card:hover { border-color: #7771ff; background: rgba(99,102,241,.16); transform: translateY(-1px); }
     .card .q { font-size: 15px; font-weight: 850; }
     .card .s { font-size: 11px; font-weight: 600; color: #94a3b8; }
-    .card .badge { position: absolute; top: 7px; right: 7px; padding: 1px 5px; border-radius: 6px; background: rgba(61,214,245,.16); color: #67e8f9; font-size: 9px; font-weight: 800; }
+    .card .top { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 6px; }
+    .card .badge { padding: 1px 5px; border-radius: 6px; background: rgba(61,214,245,.16); color: #67e8f9; font-size: 9px; font-weight: 800; white-space: nowrap; }
     .card.locked { border-style: dashed; background: rgba(245,158,11,.06); }
     .card.locked .q { color: #e2e8f0; }
     .card.locked .s { color: #fbbf24; }
@@ -698,7 +772,7 @@
         onclick: () => (choice.locked
           ? window.open(NOBSDL_ORIGIN + "/supporter", "_blank", "noopener,noreferrer")
           : startJob(choice)),
-      }, [badge ? el("span", {class: "badge", text: badge}) : null, el("span", {class: "q", text: choice.title}), el("span", {class: "s", text: sub})]);
+      }, [el("span", {class: "top"}, [el("span", {class: "q", text: choice.title}), badge ? el("span", {class: "badge", text: badge}) : null]), el("span", {class: "s", text: sub})]);
     }
 
     function showChoices() {
