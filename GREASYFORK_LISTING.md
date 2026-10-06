@@ -1,12 +1,3 @@
-# Greasy Fork listing – "Additional info" (paste as Markdown)
-
-Name, short description, localized names/descriptions and the
-`@antifeature payment` disclosure come from the script header itself.
-Images are served from the public mirror repository (`media/`).
-Paste everything below the line into the script's **Additional info** field.
-
----
-
 ## ⬇️ Download videos and audio right on the page
 
 <img src="https://raw.githubusercontent.com/samrtulethtb/nobsdl-download-button/main/media/demo.gif" alt="Click Download, pick a real quality, watch live progress, the file is saved" width="430">
