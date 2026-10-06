@@ -19,6 +19,11 @@ progress, and the file goes straight to your browser's downloads. Powered by
 
 - **In-page downloads**: a small NoBsDL button sits in the corner of supported
   media pages. Choose a format and the file is saved without opening a new tab.
+- **Feeds too**: on TikTok's For You feed, X timelines and Bluesky the URL
+  doesn't change while you scroll, so the button takes the clip on screen when
+  you click it (it is briefly outlined). Nothing is looked up while you scroll.
+- **Phone-friendly**: on small screens it is a round button you can drag to
+  either side, and the formats open as a bottom sheet.
 - **Real formats only**: every quality comes from the actual source, with
   NoBsDL's size estimate. Nothing is invented.
 - **Live progress**: Queue → Download → Process → Ready, with a real
@@ -26,7 +31,8 @@ progress, and the file goes straight to your browser's downloads. Powered by
 - **Close it any time**: the job keeps running, the button shows the
   percentage and the file is still saved when ready.
 - **MP3 128 / 256 / 320 kbps** next to the MP4 qualities.
-- **Minimize** to a small round button; the choice is remembered.
+- **Minimize** to a small round button, or drag the button elsewhere; both
+  are remembered.
 - Falls back to opening the matching NoBsDL page when your userscript manager
   does not provide `GM_xmlhttpRequest`.
 
@@ -42,14 +48,19 @@ redirects. No fake download buttons. Just download.**
 - Public Facebook video and Reel pages.
 - Reddit video posts and direct `redd.it` media links.
 - X/Twitter status pages containing media.
-- Public Vimeo video pages.
 - Twitch clips and past videos, Dailymotion videos, Pinterest pins, Bluesky
   posts, Streamable, Imgur, 9GAG, Odysee, Rutube and OK.ru video pages (via
   NoBsDL's universal downloader; each verified with a real download).
 - SoundCloud tracks, Bandcamp tracks and Mixcloud shows (MP3 only).
 
-Only individual media pages show the button — never feeds, profiles or
-search pages.
+Feeds: TikTok For You/Following, X/Twitter timelines and Bluesky were checked
+on the live sites (2026-10-06). The same on-screen-clip detection is enabled
+for Reddit, Instagram, Facebook, 9GAG and SoundCloud (now-playing track) but
+was not yet checked live there (login walls or bot checks in the test
+browser). On TikTok's mobile website some userscript managers can't read
+which clip is playing; the panel then asks you to paste the clip's link
+(Share → Copy link). YouTube, profiles and search pages show no feed button:
+opening a video there changes the URL, and that page gets the button.
 
 ## Free and Supporter
 

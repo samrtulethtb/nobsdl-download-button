@@ -34,8 +34,6 @@ test("recognizes representative public media pages on every supported platform",
     ["https://v.redd.it/abc123", "reddit", "single"],
     ["https://x.com/user/status/123456789", "twitter", "single"],
     ["https://mobile.twitter.com/user/status/123456789", "twitter", "single"],
-    ["https://vimeo.com/123456789", "vimeo", "single"],
-    ["https://player.vimeo.com/video/123456789", "vimeo", "single"],
     ["https://soundcloud.com/artist/track", "soundcloud", "single"],
     ["https://on.soundcloud.com/AbCdE", "soundcloud", "single"],
   ];
@@ -57,6 +55,9 @@ test("does not appear on listings, profiles, unsupported content, or lookalike h
     "https://x.com/home",
     "https://x.com/user",
     "https://vimeo.com/watch",
+    // Vimeo was removed from NoBsDL on 2026-10-05 (AGENTS.md §11).
+    "https://vimeo.com/123456789",
+    "https://player.vimeo.com/video/123456789",
     "https://soundcloud.com/artist",
     "https://soundcloud.com/artist/sets/album",
     "https://evil-youtube.com/watch?v=abc123",
@@ -117,7 +118,7 @@ test("every @match domain has functionality (Greasy Fork rule)", () => {
     "youtube-nocookie.com": "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ", "tiktok.com": "https://www.tiktok.com/@u/video/1",
     "instagram.com": "https://www.instagram.com/reel/ABC_123/", "facebook.com": "https://www.facebook.com/reel/123456",
     "reddit.com": "https://www.reddit.com/r/v/comments/abc123/t/", "redd.it": "https://redd.it/abc123",
-    "x.com": "https://x.com/u/status/1", "twitter.com": "https://twitter.com/u/status/1", "vimeo.com": "https://vimeo.com/123456789",
+    "x.com": "https://x.com/u/status/1", "twitter.com": "https://twitter.com/u/status/1",
     "soundcloud.com": "https://soundcloud.com/artist/track", "twitch.tv": "https://clips.twitch.tv/FaintLightGullWholeWheat",
     "dailymotion.com": "https://www.dailymotion.com/video/x5kesuj", "pinterest.com": "https://www.pinterest.com/pin/664281013778109217/",
     "bsky.app": "https://bsky.app/profile/bsky.app/post/3l3vgf77uco2g", "streamable.com": "https://streamable.com/dnd1",
@@ -266,4 +267,41 @@ test("only same-service file and status paths are ever followed", () => {
   }
   assert.equal(safeStatusPath("/api/free-download/status/abcdef123456"), "/api/free-download/status/abcdef123456");
   assert.equal(safeStatusPath("https://evil.example/api/free-download/status/abcdef123456"), null);
+});
+
+const {feedPageFor, readDock} = require(SCRIPT.pathname);
+
+test("2.2 feeds: the button may appear only on feed pages of feed-style platforms", () => {
+  const feeds = [
+    ["https://www.tiktok.com/foryou", "tiktok"], ["https://www.tiktok.com/", "tiktok"], ["https://www.tiktok.com/following", "tiktok"],
+    ["https://x.com/home", "twitter"], ["https://x.com/NASA", "twitter"], ["https://www.reddit.com/r/videos/", "reddit"],
+    ["https://bsky.app/", "bluesky"], ["https://9gag.com/hot", "9gag"], ["https://www.instagram.com/", "instagram"],
+    ["https://www.facebook.com/", "facebook"], ["https://soundcloud.com/discover", "soundcloud"],
+  ];
+  for (const [href, platform] of feeds) {
+    const feed = feedPageFor(href);
+    assert.equal(feed?.platform, platform, href);
+    assert.equal(feed.workflow, "feed", href);
+    assert.equal(feed.feed, true, href);
+  }
+  assert.deepEqual(feedPageFor("https://soundcloud.com/discover").outputs, ["mp3"]);
+  // A single media page keeps the URL-based flow; YouTube and grid-style sites
+  // (opening a video changes the URL there) never use feed detection.
+  for (const href of [
+    "https://www.tiktok.com/@user/video/123456789", "https://x.com/u/status/1", "https://www.youtube.com/", "https://www.youtube.com/feed/subscriptions",
+    "https://www.dailymotion.com/us", "https://www.twitch.tv/directory", "https://imgur.com/", "https://odysee.com/", "https://rutube.ru/",
+    "https://ok.ru/video", "https://www.pinterest.com/", "https://vimeo.com/", "https://nottiktok.com/foryou", "https://example.com/",
+  ]) assert.equal(feedPageFor(href), null, href);
+});
+
+test("button position: defaults clear mobile bottom bars and bad stored values are ignored", () => {
+  assert.deepEqual(readDock("compact"), {side: "right", bottom: 96});
+  assert.deepEqual(readDock("wide"), {side: "right", bottom: 16});
+  try {
+    globalThis.GM_getValue = () => ({compact: {side: "left", bottom: 240.6}, wide: {side: "top", bottom: 5}});
+    assert.deepEqual(readDock("compact"), {side: "left", bottom: 241});
+    assert.deepEqual(readDock("wide"), {side: "right", bottom: 16});
+  } finally {
+    delete globalThis.GM_getValue;
+  }
 });

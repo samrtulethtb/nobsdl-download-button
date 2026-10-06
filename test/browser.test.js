@@ -44,8 +44,8 @@ function shadow(page, selector) {
   return page.locator('#nobsdl-download-widget').locator(selector);
 }
 
-async function setup(browser, {viewport, gm = true, api}) {
-  const context = await browser.newContext({viewport: viewport || {width: 1280, height: 800}, acceptDownloads: true});
+async function setup(browser, {viewport, gm = true, api, html, contextOptions}) {
+  const context = await browser.newContext(Object.assign({viewport: viewport || {width: 1280, height: 800}, acceptDownloads: true}, contextOptions || {}));
   const calls = [];
   await context.route('**/*', async (route) => {
     const request = route.request();
@@ -54,7 +54,7 @@ async function setup(browser, {viewport, gm = true, api}) {
       calls.push(url.pathname + url.search);
       return api(route, url, calls);
     }
-    if (request.isNavigationRequest()) return route.fulfill({contentType: 'text/html', body: MOCK_PAGE});
+    if (request.isNavigationRequest()) return route.fulfill({contentType: 'text/html', body: html || MOCK_PAGE});
     return route.abort();
   });
   const page = await context.newPage();
@@ -192,25 +192,142 @@ async function main() {
     await context.close();
   }
 
-  // 5. Mobile: dock and panel stay inside the viewport; minimize is remembered.
+  // 5. Phone: round button, bottom sheet inside the viewport, Escape closes.
   {
-    const {context, page} = await setup(browser, {viewport: {width: 360, height: 740}, api: happyApi()});
+    const {context, page} = await setup(browser, {viewport: {width: 360, height: 740}, api: happyApi(), contextOptions: {hasTouch: true, isMobile: true}});
     await page.goto('https://www.instagram.com/reel/ABC_123/');
     await inject(page, true);
-    await shadow(page, '.dock .btn-primary').click();
+    check('phone layout shows one round button', (await shadow(page, '.dock .fab').count()) === 1 && (await shadow(page, '.brand').count()) === 0);
+    const fab = await shadow(page, '.fab').boundingBox();
+    check('round button is a comfortable touch target above the bottom bars', fab.width >= 48 && fab.height >= 48 && 740 - (fab.y + fab.height) >= 90, fab);
+    await shadow(page, '.fab').click();
     await shadow(page, '.card').first().waitFor();
-    const fits = await page.evaluate(() => {
+    const sheet = await page.evaluate(() => {
       const root = document.getElementById('nobsdl-download-widget').shadowRoot;
-      return [root.querySelector('.dock'), root.querySelector('.panel')].every((node) => {
-        const r = node.getBoundingClientRect();
-        return r.left >= 0 && r.right <= innerWidth && r.top >= 0 && r.bottom <= innerHeight;
-      }) && document.documentElement.scrollWidth <= innerWidth + 1;
+      const r = root.querySelector('.panel').getBoundingClientRect();
+      return {left: r.left, right: r.right, top: r.top, bottom: r.bottom, scrim: !root.querySelector('.scrim').hidden,
+        fabHidden: getComputedStyle(root.querySelector('.dock')).display === 'none', overflow: document.documentElement.scrollWidth > innerWidth + 1};
     });
-    check('dock and panel fit a 360px phone without horizontal scroll', fits);
+    check('panel is a full-width bottom sheet inside the viewport', sheet.left === 0 && sheet.right === 360 && Math.round(sheet.bottom) === 740 && sheet.top >= 0 && !sheet.overflow, sheet);
+    check('sheet has a backdrop and the round button does not cover it', sheet.scrim && sheet.fabHidden, sheet);
     await page.keyboard.press('Escape');
-    check('Escape closes the panel', await shadow(page, '.panel').evaluate((n) => n.hidden));
+    check('Escape closes the sheet', await shadow(page, '.panel').evaluate((n) => n.hidden));
+    // Drag the button up and to the left: it moves, is remembered, and does not open the panel.
+    const box = await shadow(page, '.fab').boundingBox();
+    await page.mouse.move(box.x + 28, box.y + 28);
+    await page.mouse.down();
+    for (let i = 1; i <= 10; i++) await page.mouse.move(box.x + 28 - i * 25, box.y + 28 - i * 20);
+    await page.mouse.up();
+    const moved = await shadow(page, '.fab').boundingBox();
+    const stored = await page.evaluate(() => window.__gmStore.dock && window.__gmStore.dock.compact);
+    check('dragging moves the button to the other side and remembers it', moved.x < 60 && moved.y < box.y - 150 && stored && stored.side === 'left' && stored.bottom > 250, {moved, stored});
+    check('a drag is not a tap: the panel stays closed', await shadow(page, '.panel').evaluate((n) => n.hidden));
+    await context.close();
+  }
+
+  // 6. Desktop: minimize is remembered.
+  {
+    const {context, page} = await setup(browser, {api: happyApi()});
+    await page.goto('https://www.instagram.com/reel/ABC_123/');
+    await inject(page, true);
     await shadow(page, '.dock button[aria-label="Minimize the NoBsDL button"]').click();
     check('minimize collapses to a small round button and is stored', (await shadow(page, '.collapsed-pill').count()) === 1 && await page.evaluate(() => window.__gmStore.collapsed === true));
+    await context.close();
+  }
+
+  // 7. TikTok For You feed (desktop): the URL never changes while scrolling.
+  // The fixture copies the live structure seen on 2026-10-06: each clip is an
+  // article with div#xgwrapper-<n>-<videoId> around the <video> and an
+  // a[data-e2e=video-author-avatar] link, and no per-clip link at all.
+  {
+    const clip = (n, id, author) => `<article data-e2e="recommend-list-item-container" style="height:820px"><section data-e2e="feed-video"><div><div id="xgwrapper-0-${id}"><div><video style="display:block;width:460px;height:800px"></video></div></div></div></section>
+      <a data-e2e="video-author-avatar" href="/@${author}">avatar</a></article>`;
+    const html = `<!doctype html><html><body style="margin:0"><main>${clip(0, '7000000000000000001', 'alice')}${clip(1, '7000000000000000002', 'bob.b')}</main></body></html>`;
+    const {context, page, calls} = await setup(browser, {api: happyApi(), html});
+    await page.goto('https://www.tiktok.com/foryou');
+    await inject(page, true);
+    await page.waitForTimeout(900);
+    check('feed with a clip on screen shows the button', await page.evaluate(() => document.getElementById('nobsdl-download-widget')?.dataset.workflow === 'feed'));
+    check('scrolling a feed sends nothing', calls.length === 0, calls);
+    await shadow(page, '.dock .btn-primary').click();
+    await shadow(page, '.card').first().waitFor();
+    check('click lists the clip on screen, built from its id and author', calls[0] === '/api/video-info?url=' + encodeURIComponent('https://www.tiktok.com/@alice/video/7000000000000000001') + '&intent=mp4', calls);
+    check('the chosen clip is briefly outlined', await shadow(page, '.hl').evaluate((n) => n.classList.contains('on')));
+    await shadow(page, '.head .btn-icon').click();
+    await page.evaluate(() => window.scrollTo(0, 820));
+    await shadow(page, '.dock .btn-primary').click();
+    await page.waitForTimeout(400);
+    check('after scrolling, the next clip is used', calls[calls.length - 1] === '/api/video-info?url=' + encodeURIComponent('https://www.tiktok.com/@bob.b/video/7000000000000000002') + '&intent=mp4', calls);
+    await context.close();
+  }
+
+  // 8. TikTok mobile web hides the clip id from isolated userscripts: ask for the link.
+  {
+    const html = '<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="margin:0"><div data-e2e="video-slide-active"><video style="display:block;width:360px;height:700px"></video><a href="/@carol">carol</a></div></body></html>';
+    const {context, page, calls} = await setup(browser, {viewport: {width: 360, height: 740}, api: happyApi(), html, contextOptions: {hasTouch: true, isMobile: true}});
+    await page.goto('https://www.tiktok.com/foryou');
+    await inject(page, true);
+    await page.waitForTimeout(900);
+    await shadow(page, '.fab').click();
+    check('unreadable clip asks for its link instead of guessing', (await shadow(page, '.paste input').count()) === 1 && calls.length === 0, calls);
+    await shadow(page, '.paste input').fill('https://example.com/not-a-video');
+    await shadow(page, '.paste .btn-primary').click();
+    check('an unsupported link is refused with a message', (await shadow(page, '.hint[role=status]').textContent()).includes('isn’t a supported') && calls.length === 0);
+    await shadow(page, '.paste input').fill('https://vm.tiktok.com/ZM6abc123/');
+    await shadow(page, '.paste .btn-primary').click();
+    await shadow(page, '.card').first().waitFor();
+    check('a pasted link is listed like any other', calls[0] === '/api/video-info?url=' + encodeURIComponent('https://vm.tiktok.com/ZM6abc123/') + '&intent=mp4', calls);
+    await context.close();
+  }
+
+  // 9. X timeline: permalink of the post around the video; ambiguous containers are never guessed.
+  {
+    const post = (id, extra) => `<article style="display:block;height:600px"><a href="/user${id}/status/${id}"><time>now</time></a><a href="/user${id}/status/${id}/analytics">stats</a>${extra || ''}<div><div><video style="display:block;width:500px;height:300px"></video></div></div></article>`;
+    const html = `<!doctype html><html><body style="margin:0">${post('111')}<section><a href="/a/status/1">a</a><a href="/b/status/2">b</a><div><video style="display:block;width:500px;height:300px"></video></div></section><div style="height:900px"></div></body></html>`;
+    const {context, page, calls} = await setup(browser, {api: happyApi(), html});
+    await page.goto('https://x.com/home');
+    await inject(page, true);
+    await page.waitForTimeout(900);
+    await shadow(page, '.dock .btn-primary').click();
+    await page.waitForTimeout(400);
+    check('X: the video\'s own post is used (duplicate links to it count once)', calls[0] === '/api/video-info?url=' + encodeURIComponent('https://x.com/user111/status/111') + '&intent=mp4', calls);
+    await shadow(page, '.head .btn-icon').click();
+    await page.evaluate(() => window.scrollTo(0, 600));
+    await page.waitForTimeout(3300);
+    check('a video whose container links to two posts gets no button', await page.evaluate(() => !document.getElementById('nobsdl-download-widget')));
+    await context.close();
+  }
+
+  // 10. Reddit: the player is a web component; the post's permalink attribute is used.
+  {
+    const html = '<!doctype html><html><body style="margin:0"><shreddit-post permalink="/r/videos/comments/abc123/a_title/"><shreddit-player style="display:block;width:640px;height:360px"></shreddit-player></shreddit-post></body></html>';
+    const {context, page, calls} = await setup(browser, {api: happyApi(), html});
+    await page.goto('https://www.reddit.com/r/videos/');
+    await inject(page, true);
+    await page.waitForTimeout(900);
+    await shadow(page, '.dock .btn-primary').click();
+    await page.waitForTimeout(400);
+    check('Reddit: shreddit-post permalink is used', calls[0] === '/api/video-info?url=' + encodeURIComponent('https://www.reddit.com/r/videos/comments/abc123/a_title') + '&intent=mp4', calls);
+    await context.close();
+  }
+
+  // 11. Phone: a running download shows real progress on the round button; keyboard works too.
+  {
+    const {context, page} = await setup(browser, {viewport: {width: 390, height: 664}, api: happyApi(), contextOptions: {hasTouch: true, isMobile: true}});
+    await page.goto('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+    await inject(page, true);
+    await shadow(page, '.fab').focus();
+    await page.keyboard.press('Enter');
+    await shadow(page, '.card').first().waitFor();
+    check('the round button also opens from the keyboard', !(await shadow(page, '.panel').evaluate((n) => n.hidden)));
+    const downloadPromise = page.waitForEvent('download');
+    await shadow(page, '.card:not(.locked)').nth(1).click();
+    await shadow(page, '.head .btn-icon').click();
+    await page.waitForFunction(() => document.getElementById('nobsdl-download-widget').shadowRoot.querySelector('.fab').textContent === '25%');
+    check('closed sheet: the round button shows the measured percentage as a ring', await shadow(page, '.fab').evaluate((n) => n.classList.contains('ring') && n.style.getPropertyValue('--p') === '0.25'));
+    await downloadPromise;
+    await page.waitForFunction(() => document.getElementById('nobsdl-download-widget').shadowRoot.querySelector('.fab').textContent === '✓');
+    check('finished download shows a check on the round button', true);
     await context.close();
   }
 

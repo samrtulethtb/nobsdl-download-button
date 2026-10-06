@@ -15,8 +15,8 @@ Click **Download** on a supported page, pick a quality, and the file goes
 straight to your browser's downloads — no new tab, no copy-pasting links, no
 captcha pages.
 
-**20 sites:** YouTube (incl. Shorts) · TikTok · Instagram Reels · X / Twitter ·
-Facebook · Reddit · Vimeo · Twitch clips & videos · Dailymotion · Pinterest ·
+**19 sites:** YouTube (incl. Shorts) · TikTok · Instagram Reels · X / Twitter ·
+Facebook · Reddit · Twitch clips & videos · Dailymotion · Pinterest ·
 Bluesky · Streamable · Imgur · 9GAG · Odysee · Rutube · OK.ru ·
 SoundCloud, Bandcamp & Mixcloud (MP3)
 
@@ -28,9 +28,14 @@ SoundCloud, Bandcamp & Mixcloud (MP3)
   a real percentage, speed and time left measured on the server — not a fake
   timer bar. MP3 encoding shows its own real percentage too.
 - 🎵 **MP3 128 / 256 / 320 kbps** next to the MP4 qualities.
+- 📜 **Works while you scroll.** On TikTok's For You feed, X timelines and
+  Bluesky the button takes the clip on screen (briefly outlined) — no need to
+  open each video first.
+- 📱 **Made for phones too.** A round button you can drag anywhere and a bottom
+  sheet with big touch targets.
 - 🧭 **Stays out of your way.** One small button in the corner. Close the panel
   mid-download and it keeps going; the button shows the percentage. Minimize
-  it to a dot if you like.
+  it to a dot or drag it elsewhere if you like.
 - 🏠 **No third-party download sites.** The script talks only to NoBsDL's own
   service — **No popups. No forced redirects. No fake download buttons.**
 
@@ -67,11 +72,12 @@ panel, where your Supporter access works as usual.
 ### Privacy
 
 - Talks **only to nobsdl.com** (`@connect nobsdl.com`).
-- **Nothing is sent until you click Download.** Then only the current page's
-  public media link goes to nobsdl.com to list formats and run the job. Pages
-  you merely scroll past are never looked up.
+- **Nothing is sent until you click Download.** Then only the public link of
+  that one video (the page's own, or on a feed the clip on screen) goes to
+  nobsdl.com to list formats and run the job. Clips you merely scroll past are
+  never looked up.
 - No analytics, ads or tracking code in the script. It stores only whether you
-  minimized the button.
+  minimized the button and where you dragged it.
 - Readable, unminified source (MIT).
 
 ### Good to know

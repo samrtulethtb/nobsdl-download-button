@@ -17,24 +17,24 @@
 // @name:ko      NoBsDL Video Downloader – YouTube, TikTok, Instagram, X, Facebook에서 MP4·MP3 다운로드
 // @name:zh-CN   NoBsDL 视频下载器 – 从 YouTube、TikTok、Instagram、X、Facebook 下载 MP4 和 MP3
 // @namespace    https://nobsdl.com/
-// @version      2.1.0
-// @description  Download videos as MP4 and audio as MP3 without leaving the page: pick a real quality with its file size, watch live progress, and the file goes straight to your downloads. YouTube (incl. Shorts), TikTok, Instagram, X/Twitter, Facebook, Reddit, Vimeo, Twitch clips, Dailymotion, Pinterest, Bluesky, Streamable, Imgur, 9GAG, Odysee, Rutube, OK.ru, SoundCloud, Bandcamp and Mixcloud. By NoBsDL.
-// @description:ro  Descarcă video MP4 și audio MP3 fără să părăsești pagina. Alegi o calitate reală cu mărimea fișierului, vezi progresul live de pe server, iar fișierul ajunge direct în descărcările browserului. YouTube (inclusiv Shorts), TikTok, Instagram, X, Facebook, Reddit, Vimeo, SoundCloud.
-// @description:es  Descarga vídeos en MP4 y audio en MP3 sin salir de la página. Elige una calidad real con su tamaño, mira el progreso en vivo y el archivo llega directo a tus descargas. YouTube (incl. Shorts), TikTok, Instagram, X, Facebook, Reddit, Vimeo, SoundCloud.
-// @description:pt-BR  Baixe vídeos em MP4 e áudio em MP3 sem sair da página. Escolha uma qualidade real com o tamanho do arquivo, acompanhe o progresso ao vivo e o arquivo vai direto para seus downloads. YouTube (incl. Shorts), TikTok, Instagram, X, Facebook, Reddit, Vimeo, SoundCloud.
-// @description:fr  Téléchargez des vidéos en MP4 et l'audio en MP3 sans quitter la page. Choisissez une vraie qualité avec sa taille, suivez la progression en direct, le fichier arrive dans vos téléchargements. YouTube (Shorts inclus), TikTok, Instagram, X, Facebook, Reddit, Vimeo, SoundCloud.
-// @description:de  Videos als MP4 und Audio als MP3 herunterladen, ohne die Seite zu verlassen. Echte Qualität mit Dateigröße wählen, Live-Fortschritt sehen, die Datei landet direkt in den Downloads. YouTube (inkl. Shorts), TikTok, Instagram, X, Facebook, Reddit, Vimeo, SoundCloud.
-// @description:it  Scarica video in MP4 e audio in MP3 senza lasciare la pagina. Scegli una qualità reale con la dimensione del file, segui l'avanzamento dal vivo e il file finisce nei tuoi download. YouTube (Shorts inclusi), TikTok, Instagram, X, Facebook, Reddit, Vimeo, SoundCloud.
-// @description:ru  Скачивайте видео в MP4 и аудио в MP3, не уходя со страницы. Выберите реальное качество с размером файла, следите за прогрессом, файл сохранится в загрузки браузера. YouTube (вкл. Shorts), TikTok, Instagram, X, Facebook, Reddit, Vimeo, SoundCloud.
-// @description:uk  Завантажуйте відео в MP4 і аудіо в MP3, не залишаючи сторінку. Обирайте реальну якість із розміром файлу, стежте за прогресом, файл збережеться в завантаження. YouTube (з Shorts), TikTok, Instagram, X, Facebook, Reddit, Vimeo, SoundCloud.
-// @description:pl  Pobieraj wideo w MP4 i dźwięk w MP3 bez opuszczania strony. Wybierz prawdziwą jakość z rozmiarem pliku, obserwuj postęp na żywo, plik trafi prosto do pobranych. YouTube (z Shorts), TikTok, Instagram, X, Facebook, Reddit, Vimeo, SoundCloud.
-// @description:tr  Sayfadan ayrılmadan videoları MP4, sesi MP3 olarak indirin. Dosya boyutuyla gerçek bir kalite seçin, canlı ilerlemeyi izleyin; dosya doğrudan indirilenlere gelir. YouTube (Shorts dahil), TikTok, Instagram, X, Facebook, Reddit, Vimeo, SoundCloud.
-// @description:id  Unduh video MP4 dan audio MP3 tanpa meninggalkan halaman. Pilih kualitas asli lengkap dengan ukuran file, lihat progres langsung, dan file masuk ke unduhan browser. YouTube (termasuk Shorts), TikTok, Instagram, X, Facebook, Reddit, Vimeo, SoundCloud.
-// @description:vi  Tải video MP4 và âm thanh MP3 ngay trên trang. Chọn chất lượng thật kèm dung lượng tệp, xem tiến trình trực tiếp, tệp được lưu thẳng vào mục tải xuống. YouTube (gồm Shorts), TikTok, Instagram, X, Facebook, Reddit, Vimeo, SoundCloud.
-// @description:ar  نزّل الفيديو بصيغة MP4 والصوت بصيغة MP3 دون مغادرة الصفحة. اختر جودة حقيقية مع حجم الملف وتابع التقدم مباشرة، ويُحفظ الملف في تنزيلات المتصفح. YouTube وShorts وTikTok وInstagram وX وFacebook وReddit وVimeo وSoundCloud.
-// @description:ja  ページを離れずに動画を MP4、音声を MP3 で保存。実際の画質とファイルサイズを選び、サーバーの進行状況をリアルタイムで確認。ファイルはブラウザのダウンロードへ。YouTube(ショート含む)・TikTok・Instagram・X・Facebook・Reddit・Vimeo・SoundCloud。
-// @description:ko  페이지를 떠나지 않고 동영상은 MP4, 오디오는 MP3로 저장하세요. 실제 화질과 파일 크기를 고르고 실시간 진행률을 확인하면 파일이 브라우저 다운로드로 저장됩니다. YouTube(쇼츠 포함), TikTok, Instagram, X, Facebook, Reddit, Vimeo, SoundCloud.
-// @description:zh-CN  无需离开页面即可下载 MP4 视频和 MP3 音频。选择真实画质并查看文件大小，实时查看服务器进度，文件直接保存到浏览器下载。支持 YouTube(含 Shorts)、TikTok、Instagram、X、Facebook、Reddit、Vimeo、SoundCloud。
+// @version      2.2.0
+// @description  Download videos as MP4 and audio as MP3 without leaving the page: pick a real quality with its file size, watch live progress, and the file goes straight to your downloads. YouTube (incl. Shorts), TikTok, Instagram, X/Twitter, Facebook, Reddit, Twitch clips, Dailymotion, Pinterest, Bluesky, Streamable, Imgur, 9GAG, Odysee, Rutube, OK.ru, SoundCloud, Bandcamp and Mixcloud. In TikTok For You, X and Bluesky feeds it takes the clip on screen. By NoBsDL.
+// @description:ro  Descarcă video MP4 și audio MP3 fără să părăsești pagina. Alegi o calitate reală cu mărimea fișierului, vezi progresul live de pe server, iar fișierul ajunge direct în descărcările browserului. YouTube (inclusiv Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
+// @description:es  Descarga vídeos en MP4 y audio en MP3 sin salir de la página. Elige una calidad real con su tamaño, mira el progreso en vivo y el archivo llega directo a tus descargas. YouTube (incl. Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
+// @description:pt-BR  Baixe vídeos em MP4 e áudio em MP3 sem sair da página. Escolha uma qualidade real com o tamanho do arquivo, acompanhe o progresso ao vivo e o arquivo vai direto para seus downloads. YouTube (incl. Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
+// @description:fr  Téléchargez des vidéos en MP4 et l'audio en MP3 sans quitter la page. Choisissez une vraie qualité avec sa taille, suivez la progression en direct, le fichier arrive dans vos téléchargements. YouTube (Shorts inclus), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
+// @description:de  Videos als MP4 und Audio als MP3 herunterladen, ohne die Seite zu verlassen. Echte Qualität mit Dateigröße wählen, Live-Fortschritt sehen, die Datei landet direkt in den Downloads. YouTube (inkl. Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
+// @description:it  Scarica video in MP4 e audio in MP3 senza lasciare la pagina. Scegli una qualità reale con la dimensione del file, segui l'avanzamento dal vivo e il file finisce nei tuoi download. YouTube (Shorts inclusi), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
+// @description:ru  Скачивайте видео в MP4 и аудио в MP3, не уходя со страницы. Выберите реальное качество с размером файла, следите за прогрессом, файл сохранится в загрузки браузера. YouTube (вкл. Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
+// @description:uk  Завантажуйте відео в MP4 і аудіо в MP3, не залишаючи сторінку. Обирайте реальну якість із розміром файлу, стежте за прогресом, файл збережеться в завантаження. YouTube (з Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
+// @description:pl  Pobieraj wideo w MP4 i dźwięk w MP3 bez opuszczania strony. Wybierz prawdziwą jakość z rozmiarem pliku, obserwuj postęp na żywo, plik trafi prosto do pobranych. YouTube (z Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
+// @description:tr  Sayfadan ayrılmadan videoları MP4, sesi MP3 olarak indirin. Dosya boyutuyla gerçek bir kalite seçin, canlı ilerlemeyi izleyin; dosya doğrudan indirilenlere gelir. YouTube (Shorts dahil), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
+// @description:id  Unduh video MP4 dan audio MP3 tanpa meninggalkan halaman. Pilih kualitas asli lengkap dengan ukuran file, lihat progres langsung, dan file masuk ke unduhan browser. YouTube (termasuk Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
+// @description:vi  Tải video MP4 và âm thanh MP3 ngay trên trang. Chọn chất lượng thật kèm dung lượng tệp, xem tiến trình trực tiếp, tệp được lưu thẳng vào mục tải xuống. YouTube (gồm Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
+// @description:ar  نزّل الفيديو بصيغة MP4 والصوت بصيغة MP3 دون مغادرة الصفحة. اختر جودة حقيقية مع حجم الملف وتابع التقدم مباشرة، ويُحفظ الملف في تنزيلات المتصفح. YouTube وShorts وTikTok وInstagram وX وFacebook وReddit وSoundCloud.
+// @description:ja  ページを離れずに動画を MP4、音声を MP3 で保存。実際の画質とファイルサイズを選び、サーバーの進行状況をリアルタイムで確認。ファイルはブラウザのダウンロードへ。YouTube(ショート含む)・TikTok・Instagram・X・Facebook・Reddit・SoundCloud。
+// @description:ko  페이지를 떠나지 않고 동영상은 MP4, 오디오는 MP3로 저장하세요. 실제 화질과 파일 크기를 고르고 실시간 진행률을 확인하면 파일이 브라우저 다운로드로 저장됩니다. YouTube(쇼츠 포함), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
+// @description:zh-CN  无需离开页面即可下载 MP4 视频和 MP3 音频。选择真实画质并查看文件大小，实时查看服务器进度，文件直接保存到浏览器下载。支持 YouTube(含 Shorts)、TikTok、Instagram、X、Facebook、Reddit、SoundCloud。
 // @author       NoBsDL
 // @icon         https://nobsdl.com/static/images/icon-192x192.png
 // @homepageURL  https://nobsdl.com/
@@ -50,7 +50,6 @@
 // @match        *://*.redd.it/*
 // @match        *://*.x.com/*
 // @match        *://*.twitter.com/*
-// @match        *://*.vimeo.com/*
 // @match        *://*.soundcloud.com/*
 // @match        *://*.twitch.tv/*
 // @match        *://*.dailymotion.com/*
@@ -75,14 +74,18 @@
 // ==/UserScript==
 
 // How it works (and what it sends):
-// - Nothing is requested until you open the panel. Then the current public
-//   media URL is sent to https://nobsdl.com only, to list its real formats.
+// - Nothing is requested until you open the panel. Then the public media URL
+//   is sent to https://nobsdl.com only, to list its real formats: the page's
+//   own URL, or on a feed (TikTok For You, X, Reddit, Bluesky, 9GAG,
+//   Instagram, Facebook, SoundCloud) the link of the clip on screen, read
+//   from the page when you click. Scrolling sends nothing.
 //   Choosing a format starts the download job on NoBsDL; the panel polls its
 //   status and finally hands the finished file to your browser's downloads.
 // - Requests go to nobsdl.com only. When your userscript manager sends your
 //   nobsdl.com cookies with them, a Supporter session activated on nobsdl.com
 //   unlocks Supporter formats here too. The script stores no key, cookie or
-//   history; only whether you collapsed the widget (GM_setValue).
+//   history; only whether you collapsed the widget and where you dragged it
+//   (GM_setValue).
 // - No analytics, ads or tracking code in this script. If your userscript
 //   manager does not offer GM_xmlhttpRequest, the widget falls back to
 //   opening the matching NoBsDL page in a new tab.
@@ -216,16 +219,6 @@
         : null;
     }
 
-    if (hostIs(host, "vimeo.com")) {
-      const isVimeoVideo = /^\/\d+(?:\/|$)/.test(path)
-        || /^\/video\/\d+(?:\/|$)/.test(path)
-        || /\/(?:videos?|video)\/\d+(?:\/|$)/.test(path)
-        || /\/\d+(?:\/|$)/.test(path) && /^(?:channels|groups|showcase)\//i.test(parts.slice(0, -1).join("/"));
-      return isVimeoVideo
-        ? page("vimeo", "Vimeo", "single", "/vimeo-downloader", VIDEO_AUDIO)
-        : null;
-    }
-
     if (hostIs(host, "soundcloud.com")) return soundcloudPage(url, host);
     return universalPage(url, host, parts);
   }
@@ -286,6 +279,165 @@
         ? universal("mixcloud", "Mixcloud", AUDIO_ONLY) : null;
     }
     return null;
+  }
+
+  // ── Feeds (2.2.0) ──────────────────────────────────────────────────────
+  // On feeds the page URL stays the same while clips scroll by (TikTok For
+  // You, X/Reddit/Bluesky/9GAG timelines, Instagram/Facebook feeds), so the
+  // URL alone can't say what to download. There the button appears while a
+  // real video is on screen, and on click the clip is read from the page
+  // itself: the most visible (playing first) video, then the permalink of
+  // the post around it. Only the DOM is read; nothing is sent until click.
+  // YouTube and the grid-style sites are not listed: opening a video there
+  // changes the URL, which pageFor already covers.
+  const FEED_HOSTS = Object.freeze([
+    ["tiktok.com", "tiktok", "TikTok", "/tiktok-downloader", VIDEO_AUDIO],
+    ["x.com", "twitter", "X / Twitter", "/x-downloader", VIDEO_AUDIO],
+    ["twitter.com", "twitter", "X / Twitter", "/x-downloader", VIDEO_AUDIO],
+    ["reddit.com", "reddit", "Reddit", "/reddit-downloader", VIDEO_AUDIO],
+    ["instagram.com", "instagram", "Instagram", "/instagram-downloader", VIDEO_AUDIO],
+    ["facebook.com", "facebook", "Facebook", "/facebook-downloader", VIDEO_AUDIO],
+    ["bsky.app", "bluesky", "Bluesky", "/universal-downloader", VIDEO_AUDIO],
+    ["9gag.com", "9gag", "9GAG", "/universal-downloader", VIDEO_AUDIO],
+    ["soundcloud.com", "soundcloud", "SoundCloud", "/soundcloud-to-mp3", AUDIO_ONLY],
+  ]);
+  const FEED_MIN_WIDTH = 200;
+  const FEED_MIN_HEIGHT = 150;
+
+  function feedPageFor(input) {
+    let url;
+    try { url = input instanceof URL ? input : new URL(String(input || "")); } catch (_) { return null; }
+    if ((url.protocol !== "http:" && url.protocol !== "https:") || pageFor(url)) return null;
+    const host = url.hostname.toLowerCase().replace(/\.$/, "");
+    const entry = FEED_HOSTS.find(([suffix]) => hostIs(host, suffix));
+    return entry ? page(entry[1], entry[2], "feed", entry[3], entry[4], {feed: true}) : null;
+  }
+
+  // One key per media post, so two links to the same post (timestamp,
+  // "/photo/1", "/analytics"...) count once and two different posts in one
+  // container count as ambiguous.
+  function mediaLink(href, base, platform) {
+    let url;
+    try { url = new URL(href, base); } catch (_) { return null; }
+    const matched = pageFor(url);
+    if (!matched || matched.platform !== platform || matched.workflow === "playlist") return null;
+    const path = url.pathname.replace(/\/+$/, "");
+    let m;
+    if (platform === "twitter" && (m = path.match(/^(\/[^/]+\/status\/\d+)/))) return {key: "x:" + path.split("/")[3], href: "https://x.com" + m[1]};
+    if (platform === "reddit" && (m = path.match(/\/comments\/([A-Za-z0-9]+)/))) return {key: "r:" + m[1], href: url.origin + path};
+    if (platform === "instagram" && (m = path.match(/^\/(?:p|reels?|tv)\/([A-Za-z0-9_-]+)/))) return {key: "ig:" + m[1], href: url.origin + path};
+    if (platform === "facebook" && /^\/watch$/i.test(path)) return {key: "fb:" + url.searchParams.get("v"), href: url.origin + "/watch/?v=" + encodeURIComponent(url.searchParams.get("v"))};
+    return {key: url.hostname.replace(/^(?:www|m|mobile)\./, "") + path, href: url.origin + path};
+  }
+
+  function parentAcrossShadow(node) {
+    if (node.parentElement) return node.parentElement;
+    const root = node.getRootNode && node.getRootNode();
+    return root && root.host ? root.host : null;
+  }
+
+  // Walks up from the video to the first container that links to exactly one
+  // media post. A container that links to two different posts means we
+  // climbed past the post: no guess is made.
+  function permalinkAround(el, platform, base) {
+    let node = el;
+    for (let depth = 0; depth < 16 && node && node.nodeType === 1; depth++, node = parentAcrossShadow(node)) {
+      const found = new Map();
+      if (node.tagName === "SHREDDIT-POST" && node.getAttribute("permalink")) {
+        const link = mediaLink(node.getAttribute("permalink"), base, platform);
+        if (link) return link.href;
+      }
+      const anchors = node.querySelectorAll("a[href]");
+      if (anchors.length > 400) return null;   // far past a single post
+      for (const a of anchors) {
+        const link = mediaLink(a.getAttribute("href"), base, platform);
+        if (link) found.set(link.key, link.href);
+        if (found.size > 1) return null;
+      }
+      if (found.size === 1) return found.values().next().value;
+      if (node.tagName === "BODY") return null;
+    }
+    return null;
+  }
+
+  // TikTok's desktop feed carries no per-clip link, but every player sits in
+  // div#xgwrapper-<n>-<videoId> next to the author's avatar link
+  // (checked on the live For You page, 2026-10-06).
+  function tiktokFeedUrl(video) {
+    let node = video;
+    let id = "";
+    for (let i = 0; i < 6 && node && !id; i++, node = node.parentElement) {
+      const m = /^xgwrapper-\d+-(\d{15,20})$/.exec(node.id || "");
+      if (m) id = m[1];
+    }
+    if (!id) return null;
+    for (let i = 0; i < 12 && node; i++, node = node.parentElement) {
+      const a = node.querySelector('a[data-e2e="video-author-avatar"][href^="/@"]');
+      if (a) {
+        const author = a.getAttribute("href").slice(2).split(/[/?#]/)[0];
+        return /^[\w.-]{1,64}$/.test(author) ? "https://www.tiktok.com/@" + author + "/video/" + id : null;
+      }
+    }
+    return null;
+  }
+
+  // TikTok's mobile web feed keeps the clip id only in the app's React
+  // props. Userscript managers that run scripts beside the page (not in an
+  // isolated world) can read them; otherwise the panel asks for the link.
+  function tiktokMobileUrl(video) {
+    const slide = video.closest('[data-e2e="video-slide-active"]');
+    if (!slide) return null;
+    try {
+      const raw = slide.wrappedJSObject || slide;
+      const key = Object.keys(raw).find((k) => k.startsWith("__reactFiber$"));
+      let fiber = key ? raw[key] : null;
+      let id = "";
+      for (let i = 0; i < 12 && fiber && !id; i++, fiber = fiber.return) {
+        const props = fiber.memoizedProps;
+        if (props && /^\d{17,20}$/.test(String(props.id || ""))) id = String(props.id);
+      }
+      const a = slide.querySelector('a[href^="/@"]');
+      const author = a ? a.getAttribute("href").slice(2).split(/[/?#]/)[0] : "";
+      return id && /^[\w.-]{1,64}$/.test(author) ? "https://www.tiktok.com/@" + author + "/video/" + id : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function feedMedia(doc, platform) {
+    const view = doc.defaultView;
+    const vw = view.innerWidth;
+    const vh = view.innerHeight;
+    const nodes = Array.from(doc.querySelectorAll("video"));
+    // Reddit renders its player in a web component; its box is the player.
+    if (platform === "reddit") nodes.push(...doc.querySelectorAll("shreddit-player, shreddit-player-2"));
+    return nodes.map((el) => {
+      const r = el.getBoundingClientRect();
+      const area = Math.max(0, Math.min(r.right, vw) - Math.max(r.left, 0)) * Math.max(0, Math.min(r.bottom, vh) - Math.max(r.top, 0));
+      return {el, r, area, playing: el.tagName === "VIDEO" && !el.paused};
+    }).filter((m) => m.r.width >= FEED_MIN_WIDTH && m.r.height >= FEED_MIN_HEIGHT && m.area >= 0.4 * m.r.width * m.r.height)
+      .sort((a, b) => (b.playing - a.playing) || (b.area - a.area));
+  }
+
+  // → {url, el} for the clip to download, {url: null, el, askLink: true} when
+  // a clip is on screen but its link isn't readable, or null.
+  function findFeedTarget(platform, doc) {
+    const base = doc.location.href;
+    if (platform === "soundcloud") {
+      const a = doc.querySelector("a.playbackSoundBadge__titleLink[href]");
+      const link = a && mediaLink(a.getAttribute("href"), base, platform);
+      return link ? {url: link.href, el: a} : null;
+    }
+    for (const m of feedMedia(doc, platform).slice(0, 4)) {
+      if (platform === "tiktok") {
+        const url = tiktokFeedUrl(m.el) || tiktokMobileUrl(m.el);
+        if (url) return {url, el: m.el};
+        if (m.el.closest('[data-e2e="video-slide-active"]')) return {url: null, el: m.el, askLink: true};
+        continue;
+      }
+      const url = permalinkAround(m.el, platform, base);
+      if (url) return {url, el: m.el};
+    }
     return null;
   }
 
@@ -538,7 +690,7 @@
     return /^\/api\/free-download\/status\/[A-Za-z0-9_-]{8,100}$/.test(path) ? path : null;
   }
 
-  // ── Persistence (only the collapsed state) ─────────────────────────────
+  // ── Persistence (collapsed state and button position only) ─────────────
   function readCollapsed() {
     try { return typeof GM_getValue === "function" ? GM_getValue("collapsed", false) === true : false; } catch (_) { return false; }
   }
@@ -547,13 +699,35 @@
     try { if (typeof GM_setValue === "function") GM_setValue("collapsed", !!value); } catch (_) { /* optional */ }
   }
 
+  // Where the user dragged the button: a side and a distance from the
+  // bottom, kept separately for phone-sized and desktop layouts. Defaults
+  // clear the bottom navigation bars of the mobile sites.
+  const DEFAULT_DOCK = Object.freeze({compact: {side: "right", bottom: 96}, wide: {side: "right", bottom: 16}});
+
+  function readDock(mode) {
+    let saved = null;
+    try { saved = typeof GM_getValue === "function" ? GM_getValue("dock", null) : null; } catch (_) { saved = null; }
+    const entry = saved && typeof saved === "object" ? saved[mode] : null;
+    const fallback = DEFAULT_DOCK[mode];
+    if (!entry || (entry.side !== "left" && entry.side !== "right") || !Number.isFinite(entry.bottom)) return Object.assign({}, fallback);
+    return {side: entry.side, bottom: Math.max(0, Math.min(2000, Math.round(entry.bottom)))};
+  }
+
+  function writeDock(mode, value) {
+    try {
+      if (typeof GM_setValue !== "function") return;
+      const saved = (typeof GM_getValue === "function" && GM_getValue("dock", null)) || {};
+      GM_setValue("dock", Object.assign({}, typeof saved === "object" ? saved : {}, {[mode]: {side: value.side, bottom: value.bottom}}));
+    } catch (_) { /* optional */ }
+  }
+
   // ── UI ─────────────────────────────────────────────────────────────────
   const STYLE = `
     :host { all: initial; color-scheme: dark; }
     * { box-sizing: border-box; }
     .root { position: relative; font: 600 14px/1.35 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; color: #f1f5f9; }
     .dock { display: flex; align-items: stretch; gap: 6px; max-width: calc(100vw - 32px); padding: 6px; border: 1px solid rgba(148,163,184,.28); border-radius: 16px; background: rgba(9,11,17,.96); box-shadow: 0 16px 38px rgba(0,0,0,.42), 0 0 24px rgba(99,102,241,.2); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
-    .brand { display: flex; flex-direction: column; justify-content: center; min-width: 84px; padding: 4px 8px 4px 10px; white-space: nowrap; }
+    .brand { display: flex; flex-direction: column; justify-content: center; min-width: 84px; padding: 4px 8px 4px 10px; white-space: nowrap; cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; }
     .brand strong { font-size: 14px; letter-spacing: -.02em; background: linear-gradient(110deg,#f7f9ff,#7771ff 55%,#3dd6f5); -webkit-background-clip: text; background-clip: text; color: transparent; }
     .brand small { max-width: 116px; overflow: hidden; color: #94a3b8; font-size: 10px; font-weight: 600; text-overflow: ellipsis; }
     .actions { display: flex; align-items: stretch; gap: 5px; }
@@ -562,11 +736,32 @@
     .action-mp3 { background: linear-gradient(135deg,#0891b2,#06b6d4); color: #03151a; }
     .btn-ghost { background: transparent; border-color: rgba(148,163,184,.3); color: #cbd5e1; }
     .btn-icon { min-width: 34px; padding: 0 8px; background: transparent; color: #94a3b8; }
-    .btn:hover, .action:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    @media (hover: hover) { .btn:hover, .action:hover { filter: brightness(1.1); transform: translateY(-1px); } .card:hover { border-color: #7771ff; background: rgba(99,102,241,.16); transform: translateY(-1px); } }
     .btn:focus-visible, .action:focus-visible, .card:focus-visible, a:focus-visible { outline: 3px solid #f8b84e; outline-offset: 2px; }
     .collapsed-pill { width: 48px; height: 48px; border-radius: 50%; padding: 0; font-size: 20px; box-shadow: 0 10px 28px rgba(0,0,0,.45); }
     .panel { position: absolute; right: 0; bottom: calc(100% + 10px); width: min(360px, calc(100vw - 32px)); max-height: min(72vh, 620px); display: flex; flex-direction: column; border: 1px solid rgba(148,163,184,.28); border-radius: 18px; background: rgba(9,11,17,.98); box-shadow: 0 22px 48px rgba(0,0,0,.5); overflow: hidden; }
-    .panel[hidden] { display: none; }
+    .panel[hidden], .scrim[hidden] { display: none; }
+    .root.left .panel { right: auto; left: 0; }
+    .root.below .panel { bottom: auto; top: calc(100% + 10px); }
+    .scrim { position: fixed; inset: 0; background: rgba(2,6,23,.5); }
+    .hl { position: fixed; z-index: 1; border: 3px solid #8b87ff; border-radius: 14px; box-shadow: 0 0 0 4px rgba(139,135,255,.25); pointer-events: none; opacity: 0; transition: opacity .25s ease; }
+    .hl.on { opacity: 1; }
+    .paste { display: flex; gap: 8px; margin-top: 12px; }
+    .paste input { flex: 1; min-width: 0; min-height: 44px; padding: 0 12px; border: 1px solid rgba(148,163,184,.35); border-radius: 11px; background: rgba(15,23,42,.9); color: #f8fafc; font: 600 16px/1.2 system-ui,-apple-system,"Segoe UI",sans-serif; }
+    .paste input:focus { outline: 3px solid #f8b84e; outline-offset: 1px; }
+    .hint { margin: 0; font-size: 12.5px; color: #cbd5e1; }
+    .fab { position: relative; width: 56px; height: 56px; padding: 0; border-radius: 50%; font-size: 15px; font-weight: 850; touch-action: none; user-select: none; -webkit-user-select: none; box-shadow: 0 10px 28px rgba(0,0,0,.45), 0 0 0 1px rgba(255,255,255,.12) inset; }
+    .fab .ico { font-size: 24px; line-height: 1; }
+    .fab.ring::before { content: ""; position: absolute; inset: -4px; border-radius: 50%; background: conic-gradient(#3dd6f5 calc(var(--p, 0) * 1turn), rgba(148,163,184,.25) 0); -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 3px)); mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 3px)); }
+    .root.compact.open .dock { display: none; }
+    .root.compact .dock { padding: 0; border: 0; background: transparent; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
+    .root.compact .panel { position: fixed; left: 0; right: 0; top: auto; bottom: 0; width: auto; max-height: min(82vh, 640px); max-height: min(82dvh, 640px); border-radius: 20px 20px 0 0; border-bottom: 0; padding-bottom: env(safe-area-inset-bottom, 0px); }
+    .root.compact .panel::before { content: ""; display: block; flex: none; width: 40px; height: 4px; margin: 8px auto 0; border-radius: 4px; background: rgba(148,163,184,.45); }
+    .root.compact .head { padding-top: 10px; }
+    .root.compact .head .btn-icon { min-width: 44px; font-size: 18px; }
+    .root.compact .grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; }
+    .root.compact .card { min-height: 64px; }
+    .root.compact .foot { padding-bottom: 12px; }
     .head { display: flex; align-items: flex-start; gap: 10px; padding: 14px 14px 10px; border-bottom: 1px solid rgba(148,163,184,.14); }
     .head .meta { flex: 1; min-width: 0; }
     .title { margin: 0; font-size: 14px; font-weight: 800; color: #f8fafc; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
@@ -576,7 +771,6 @@
     .section h4 { margin: 0 0 8px; font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: #94a3b8; }
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 7px; }
     .card { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-height: 58px; padding: 9px 10px; border: 1px solid rgba(148,163,184,.22); border-radius: 12px; background: rgba(30,41,59,.55); color: #f8fafc; font: inherit; text-align: left; cursor: pointer; transition: border-color .15s ease, background .15s ease, transform .15s ease; }
-    .card:hover { border-color: #7771ff; background: rgba(99,102,241,.16); transform: translateY(-1px); }
     .card .q { font-size: 15px; font-weight: 850; }
     .card .s { font-size: 11px; font-weight: 600; color: #94a3b8; }
     .card .top { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 6px; }
@@ -636,18 +830,23 @@
     return a;
   }
 
-  function createAction(matchedPage, currentUrl, output) {
-    const anchor = externalLink(targetUrl(matchedPage, currentUrl, output),
+  function createAction(targetPage, sourceUrl, output) {
+    const anchor = externalLink(targetUrl(targetPage, sourceUrl, output),
       output === "playlist" ? "Open playlist" : output.toUpperCase(), "action action-" + output);
     anchor.setAttribute("aria-label", output === "playlist"
       ? "Open this YouTube playlist in NoBsDL"
-      : "Open this " + matchedPage.name + " page in NoBsDL with " + output.toUpperCase() + " first");
+      : "Open this " + targetPage.name + " page in NoBsDL with " + output.toUpperCase() + " first");
     return anchor;
   }
 
+  // Phone-sized screens get a round button and a bottom sheet.
+  function compactLayout() {
+    try { return window.matchMedia("(max-width: 640px), (pointer: coarse) and (max-width: 1024px)").matches; } catch (_) { return false; }
+  }
+
   function makeWidget(matchedPage, currentUrl) {
-    const host = el("div", {id: WIDGET_ID, "data-platform": matchedPage.platform});
-    for (const [prop, value] of [["position", "fixed"], ["right", "16px"], ["bottom", "16px"], ["display", "block"], ["z-index", "2147483647"]]) {
+    const host = el("div", {id: WIDGET_ID, "data-platform": matchedPage.platform, "data-workflow": matchedPage.workflow});
+    for (const [prop, value] of [["position", "fixed"], ["display", "block"], ["z-index", "2147483647"]]) {
       host.style.setProperty(prop, value, "important");
     }
     const shadow = host.attachShadow({mode: "open"});
@@ -655,38 +854,141 @@
     shadow.append(el("style", {text: STYLE}), root);
 
     const inPage = matchedPage.workflow !== "playlist" && !!gmRequestFunction();
-    const primaryOutput = matchedPage.outputs[0];
-    const state = {busy: false, keepView: false, open: false, collapsed: readCollapsed(), token: 0, info: null, choices: null, dockLabel: "", primaryButton: null};
+    const state = {
+      busy: false, keepView: false, open: false, collapsed: readCollapsed(), token: 0, info: null, choices: null,
+      dockLabel: "", progress: null, primaryButton: null, dragged: false, tapAt: 0, flashTimer: 0,
+      // What the panel works on: the page itself, or on a feed the clip
+      // picked when the panel opens (or a pasted link).
+      target: matchedPage.feed ? null : {url: sourceUrlFor(currentUrl, matchedPage), page: matchedPage},
+      mode: compactLayout() ? "compact" : "wide",
+    };
+    state.dock = readDock(state.mode);
 
+    const scrim = el("div", {class: "scrim", hidden: true, "aria-hidden": "true", onclick: () => closePanel()});
+    const highlight = el("div", {class: "hl", "aria-hidden": "true"});
     const panel = el("section", {class: "panel", hidden: true, role: "dialog", "aria-label": "NoBsDL download for " + matchedPage.name});
     const dock = el("div", {class: "dock", role: "group", "aria-label": "NoBsDL shortcuts for " + matchedPage.name});
-    root.append(panel, dock);
+    root.append(scrim, highlight, panel, dock);
+
+    const targetPage = () => (state.target ? state.target.page : matchedPage);
+    const primaryOutput = () => targetPage().outputs[0];
+    const defaultLabel = () => (targetPage().outputs === AUDIO_ONLY ? "Download MP3" : "Download");
+    const compactUi = () => state.mode === "compact" && inPage;
+
+    function place() {
+      const side = state.dock.side === "left" ? "left" : "right";
+      const bottom = Math.max(0, Math.min(state.dock.bottom, window.innerHeight - 72));
+      host.style.removeProperty(side === "left" ? "right" : "left");
+      host.style.setProperty(side, compactUi() ? "12px" : "16px", "important");
+      host.style.setProperty("bottom", "calc(" + bottom + "px + env(safe-area-inset-bottom, 0px))", "important");
+      root.classList.toggle("compact", compactUi());
+      root.classList.toggle("left", side === "left");
+    }
+
+    // Drag the button up or down and to either side; a tap still opens it.
+    // The tap is handled on pointerup: some mobile browsers drop the click
+    // that should follow a touch right after a drag. `click` stays for the
+    // keyboard (Enter/Space) and is ignored right after a handled tap.
+    function makeDraggable(handle, onTap) {
+      let start = null;
+      handle.addEventListener("pointerdown", (event) => {
+        if (event.button !== 0) return;
+        start = {x: event.clientX, y: event.clientY, bottom: state.dock.bottom, moved: false, id: event.pointerId};
+        // Captured from the start: a quick flick leaves the round button
+        // before the first move event arrives.
+        try { handle.setPointerCapture(event.pointerId); } catch (_) { /* optional */ }
+      });
+      handle.addEventListener("pointermove", (event) => {
+        if (!start || event.pointerId !== start.id) return;
+        const dx = event.clientX - start.x;
+        const dy = event.clientY - start.y;
+        if (!start.moved && Math.hypot(dx, dy) < 8) return;
+        start.moved = true;
+        event.preventDefault();
+        const max = Math.max(0, window.innerHeight - host.offsetHeight - 8);
+        state.dock = {side: event.clientX < window.innerWidth / 2 ? "left" : "right", bottom: Math.max(0, Math.min(max, Math.round(start.bottom - dy)))};
+        place();
+      });
+      const end = (event) => {
+        if (!start || event.pointerId !== start.id) return;
+        if (start.moved) {
+          state.dragged = true;
+          writeDock(state.mode, state.dock);
+          setTimeout(() => { state.dragged = false; }, 0);
+        } else if (onTap && event.type === "pointerup") {
+          state.tapAt = Date.now();
+          onTap();
+        }
+        start = null;
+      };
+      handle.addEventListener("pointerup", end);
+      handle.addEventListener("pointercancel", end);
+    }
+
+    function toggle() {
+      if (state.open) closePanel();
+      else openPanel();
+    }
+
+    function clickUnlessTapped(action) {
+      return () => {
+        if (state.dragged || Date.now() - state.tapAt < 600) return;
+        action();
+      };
+    }
+
+    function paintFab() {
+      const button = state.primaryButton;
+      if (!button || !button.classList.contains("fab")) return;
+      const label = state.dockLabel === "✓ Saved" ? "✓" : state.dockLabel;
+      button.replaceChildren(label ? document.createTextNode(label) : el("span", {class: "ico", "aria-hidden": "true", text: "↓"}));
+      const measured = typeof state.progress === "number";
+      button.classList.toggle("ring", measured);
+      if (measured) button.style.setProperty("--p", String(state.progress));
+      else button.style.removeProperty("--p");
+    }
 
     function renderDock() {
       dock.replaceChildren();
+      state.primaryButton = null;
+      place();
+      if (compactUi()) {
+        state.primaryButton = el("button", {
+          class: "btn btn-primary fab", type: "button", "aria-haspopup": "dialog", "aria-expanded": String(state.open),
+          "aria-label": matchedPage.feed ? "NoBsDL: download the " + matchedPage.name + " clip on screen" : "NoBsDL: download this " + matchedPage.name + " media",
+          onclick: clickUnlessTapped(toggle),
+        });
+        makeDraggable(state.primaryButton, toggle);
+        dock.append(state.primaryButton);
+        paintFab();
+        return;
+      }
       if (state.collapsed) {
         dock.style.padding = "0";
         dock.style.border = "0";
         dock.style.background = "transparent";
         dock.style.boxShadow = "none";
-        dock.append(el("button", {
+        const expand = () => { state.collapsed = false; writeCollapsed(false); renderDock(); };
+        const pill = el("button", {
           class: "btn btn-primary collapsed-pill", type: "button", "aria-label": "Show NoBsDL download button", text: "↓",
-          onclick: () => { state.collapsed = false; writeCollapsed(false); renderDock(); },
-        }));
+          onclick: clickUnlessTapped(expand),
+        });
+        makeDraggable(pill, expand);
+        dock.append(pill);
         return;
       }
       dock.removeAttribute("style");
-      const brand = el("div", {class: "brand"}, [el("strong", {text: "↓ NoBsDL"}), el("small", {text: matchedPage.name})]);
+      const brand = el("div", {class: "brand", title: "Drag to move"}, [el("strong", {text: "↓ NoBsDL"}), el("small", {text: matchedPage.feed ? matchedPage.name + " feed" : matchedPage.name})]);
+      makeDraggable(brand);
       const actions = el("div", {class: "actions"});
       if (inPage) {
         state.primaryButton = el("button", {
           class: "btn btn-primary", type: "button", "aria-expanded": String(state.open), "aria-haspopup": "dialog",
-          text: state.dockLabel || (matchedPage.outputs === AUDIO_ONLY ? "Download MP3" : "Download"),
-          onclick: () => (state.open ? closePanel() : openPanel()),
+          text: state.dockLabel || defaultLabel(), onclick: toggle,
         });
         actions.append(state.primaryButton);
       } else {
-        for (const output of matchedPage.outputs) actions.append(createAction(matchedPage, currentUrl, output));
+        for (const output of matchedPage.outputs) actions.append(createAction(matchedPage, sourceUrlFor(currentUrl, matchedPage), output));
       }
       actions.append(el("button", {
         class: "btn btn-icon", type: "button", title: "Minimize", "aria-label": "Minimize the NoBsDL button", text: "–",
@@ -703,21 +1005,64 @@
     }
 
     function footer() {
+      const href = state.target ? targetUrl(state.target.page, state.target.url, primaryOutput()) : NOBSDL_ORIGIN + matchedPage.route;
       return el("div", {class: "foot"}, [
         el("span", {text: "No popups. No forced redirects."}),
-        externalLink(targetUrl(matchedPage, currentUrl, primaryOutput), "Open on NoBsDL ↗"),
+        externalLink(href, "Open on NoBsDL ↗"),
       ]);
+    }
+
+    function positionPanel() {
+      if (compactUi()) {
+        root.classList.remove("below");
+        panel.style.removeProperty("max-height");
+        return;
+      }
+      const r = host.getBoundingClientRect();
+      const below = r.top < 300 && window.innerHeight - r.bottom > r.top;
+      root.classList.toggle("below", below);
+      const room = below ? window.innerHeight - r.bottom - 26 : r.top - 26;
+      panel.style.maxHeight = Math.max(160, Math.min(620, Math.round(window.innerHeight * 0.72), room)) + "px";
     }
 
     function show(children) {
       panel.replaceChildren(...children);
       panel.hidden = !state.open;
+      scrim.hidden = !(state.open && compactUi());
+      root.classList.toggle("open", state.open);
+      if (state.open) positionPanel();
+    }
+
+    // Briefly outlines the clip the panel is about to work on.
+    function flash(target) {
+      const r = target.getBoundingClientRect();
+      Object.assign(highlight.style, {left: (r.left - 4) + "px", top: (r.top - 4) + "px", width: (r.width + 8) + "px", height: (r.height + 8) + "px"});
+      highlight.classList.add("on");
+      clearTimeout(state.flashTimer);
+      state.flashTimer = setTimeout(() => highlight.classList.remove("on"), 1400);
     }
 
     function openPanel() {
       state.open = true;
+      if (matchedPage.feed && !state.busy) {
+        const found = findFeedTarget(matchedPage.platform, document);
+        if (found && found.el) flash(found.el);
+        if (!found || !found.url) {
+          renderDock();
+          showLinkPrompt(found ? "unreadable" : "gone");
+          return;
+        }
+        if (!state.target || state.target.url !== found.url) {
+          state.target = {url: found.url, page: pageFor(found.url)};
+          state.choices = null;
+          state.info = null;
+          state.keepView = false;
+          state.dockLabel = "";
+          state.progress = null;
+        }
+      }
       renderDock();
-      if (state.keepView) panel.hidden = false;  // progress, result or error stays put
+      if (state.keepView) show(Array.from(panel.children));   // progress, result or error stays put
       else if (state.choices) showChoices();
       else loadFormats();
     }
@@ -727,12 +1072,44 @@
     function closePanel() {
       state.open = false;
       panel.hidden = true;
+      scrim.hidden = true;
+      root.classList.remove("open");
       renderDock();
     }
 
-    function setDockLabel(label) {
+    function setDockLabel(label, fraction) {
       state.dockLabel = label;
-      if (state.primaryButton) state.primaryButton.textContent = label || (matchedPage.outputs === AUDIO_ONLY ? "Download MP3" : "Download");
+      state.progress = typeof fraction === "number" ? fraction : null;
+      if (!state.primaryButton) return;
+      if (state.primaryButton.classList.contains("fab")) paintFab();
+      else state.primaryButton.textContent = label || defaultLabel();
+    }
+
+    // A clip is on screen but the site doesn't expose its link (TikTok's
+    // mobile web feed), or the clip scrolled away: ask for the link instead.
+    function showLinkPrompt(reason) {
+      state.keepView = false;
+      const input = el("input", {type: "url", inputmode: "url", autocomplete: "off", autocapitalize: "off", spellcheck: "false", placeholder: "https://…", "aria-label": "Video link"});
+      const message = el("p", {class: "hint", role: "status"});
+      const use = () => {
+        const value = input.value.trim();
+        const pasted = pageFor(value);
+        if (!pasted || pasted.workflow === "playlist") {
+          message.textContent = "That isn’t a supported video link.";
+          return;
+        }
+        state.target = {url: sourceUrlFor(value, pasted), page: pasted};
+        state.choices = null;
+        state.info = null;
+        loadFormats();
+      };
+      input.addEventListener("keydown", (event) => { if (event.key === "Enter") use(); });
+      const text = reason === "unreadable"
+        ? matchedPage.name + " doesn’t show which clip is playing on this page. Tap Share → Copy link on the clip and paste it here:"
+        : "Scroll until the clip is on screen and try again, or paste its link:";
+      show([header(matchedPage.name, "Which clip?"),
+        el("div", {class: "body"}, [el("p", {class: "hint", text}), el("div", {class: "paste"}, [input, el("button", {class: "btn btn-primary", type: "button", text: "Go", onclick: use})]), message]),
+        footer()]);
     }
 
     function showError(error, retry) {
@@ -740,7 +1117,7 @@
       const actions = el("div", {class: "row"});
       if (retry) actions.append(el("button", {class: "btn btn-primary", type: "button", text: error && error.refreshFormats ? "Refresh formats" : "Try again", onclick: retry}));
       if (error && error.supporterCta) actions.append(externalLink(NOBSDL_ORIGIN + "/supporter", "Supporter options", "btn btn-ghost"));
-      show([header(state.info ? state.info.title || matchedPage.name : matchedPage.name),
+      show([header(state.info ? state.info.title || targetPage().name : targetPage().name),
         el("div", {class: "body"}, [el("div", {class: "error", role: "alert", text: (error && error.message) || "Something went wrong."}), actions]),
         footer()]);
     }
@@ -748,11 +1125,11 @@
     async function loadFormats() {
       const token = ++state.token;
       state.keepView = false;
-      show([header(matchedPage.name, "Finding the real formats…"),
+      show([header(targetPage().name, "Finding the real formats…"),
         el("div", {class: "body"}, [el("div", {class: "spinner", "aria-hidden": "true"}), el("p", {class: "center", text: "Checking this link on NoBsDL"})]),
         footer()]);
       try {
-        const data = await apiGet("/api/video-info?url=" + encodeURIComponent(sourceUrlFor(currentUrl, matchedPage)) + "&intent=" + primaryOutput, 60000);
+        const data = await apiGet("/api/video-info?url=" + encodeURIComponent(state.target.url) + "&intent=" + primaryOutput(), 60000);
         if (token !== state.token) return;
         state.info = data;
         state.choices = normalizeChoices(data);
@@ -780,7 +1157,7 @@
       const info = state.info || {};
       const choices = state.choices || [];
       const families = [["video", "Video · MP4"], ["audio", "Audio · MP3"]];
-      if (primaryOutput === "mp3") families.reverse();
+      if (primaryOutput() === "mp3") families.reverse();
       const sections = families
         .map(([family, heading]) => [heading, choices.filter((c) => c.family === family)])
         .filter(([, list]) => list.length)
@@ -791,8 +1168,8 @@
       } else if (info.is_supporter) {
         body.append(el("p", {class: "note", text: "✓ Supporter active on this browser."}));
       }
-      const sub = [matchedPage.name, formatDuration(info.duration)].filter(Boolean).join(" · ");
-      show([header(info.title || matchedPage.name, sub), body, footer()]);
+      const sub = [targetPage().name, formatDuration(info.duration)].filter(Boolean).join(" · ");
+      show([header(info.title || targetPage().name, sub), body, footer()]);
       const first = panel.querySelector(".card:not(.locked)");
       if (first) first.focus({preventScroll: true});
     }
@@ -801,7 +1178,9 @@
       const token = ++state.token;
       state.busy = true;
       state.keepView = true;
-      const title = (state.info && state.info.title) || matchedPage.name;
+      const jobPage = targetPage();
+      const sourceUrl = state.target.url;
+      const title = (state.info && state.info.title) || jobPage.name;
       const steps = el("ol", {class: "steps", "aria-label": "Download progress"},
         ["Queue", "Download", "Process", "Ready"].map((label) => el("li", {}, [el("i", {"aria-hidden": "true"}), label])));
       const bar = el("div", {class: "bar waiting"});
@@ -815,7 +1194,7 @@
       let progress = null;
       let renderedPhase = null;
       const render = () => {
-        const view = progressView(phase, progress, Math.floor((Date.now() - since) / 1000), matchedPage.name.replace(/ (Shorts|playlist)$/, ""), choice.format);
+        const view = progressView(phase, progress, Math.floor((Date.now() - since) / 1000), jobPage.name.replace(/ (Shorts|playlist)$/, ""), choice.format);
         Array.from(steps.children).forEach((item, index) => {
           item.dataset.state = index < view.step || phase === "ready" ? "done" : index === view.step ? "current" : "pending";
         });
@@ -826,7 +1205,9 @@
         if (view.mode === "measured" || view.mode === "done") track.setAttribute("aria-valuenow", String(view.mode === "done" ? 100 : Math.floor(view.fraction * 100)));
         else track.removeAttribute("aria-valuenow");
         line.textContent = view.text;
-        setDockLabel(phase === "ready" ? "✓ Saved" : view.mode === "measured" ? Math.floor(view.fraction * 100) + "%" : "…");
+        if (phase === "ready") setDockLabel("✓ Saved", 1);
+        else if (view.mode === "measured") setDockLabel(Math.floor(view.fraction * 100) + "%", view.fraction);
+        else setDockLabel("…", null);
       };
       const setPhase = (next, nextProgress) => {
         if (PHASE_ORDER.indexOf(next) < PHASE_ORDER.indexOf(phase)) next = phase;
@@ -842,7 +1223,6 @@
       const ticker = setInterval(() => { if (token === state.token) render(); else clearInterval(ticker); }, 1000);
 
       try {
-        const sourceUrl = sourceUrlFor(currentUrl, matchedPage);
         const job = await apiGet(downloadParams(choice, sourceUrl), 30000);
         if (token !== state.token) return;
         const statusPath = safeStatusPath(job.status_url);
@@ -877,7 +1257,7 @@
         clearInterval(ticker);
         if (token !== state.token) return;
         state.busy = false;
-        setDockLabel("");
+        setDockLabel("", null);
         if (!state.open) { state.open = true; renderDock(); }   // surface the failure
         showError(error, error && error.refreshFormats ? () => { state.choices = null; loadFormats(); } : () => startJob(choice));
       } finally {
@@ -899,32 +1279,75 @@
       container.replaceChildren(
         el("div", {class: "result-ok", role: "status", text: "✅ File ready. Your browser is saving it — check your downloads."}),
         el("div", {class: "row"}, [
-          el("button", {class: "btn btn-ghost", type: "button", text: "Download another format", onclick: () => { setDockLabel(""); showChoices(); }}),
+          el("button", {class: "btn btn-ghost", type: "button", text: "Download another format", onclick: () => { setDockLabel("", null); showChoices(); }}),
           externalLink(fileUrl, "Didn’t start? Save again", "btn btn-ghost"),
         ]),
       );
     }
 
+    // Called by boot on resize: switch between phone and desktop layouts
+    // and keep the button on screen.
+    function relayout() {
+      const mode = compactLayout() ? "compact" : "wide";
+      if (mode !== state.mode) {
+        state.mode = mode;
+        state.dock = readDock(mode);
+        renderDock();
+        if (state.open) show(Array.from(panel.children));
+      } else {
+        place();
+        if (state.open) positionPanel();
+      }
+    }
+
     shadow.addEventListener("keydown", (event) => { if (event.key === "Escape" && state.open) closePanel(); });
     renderDock();
+    host.__nobsdl = {isBusy: () => state.busy, isOpen: () => state.open, relayout};
     return host;
   }
 
   function boot() {
     let widget = null;
     let signature = "";
+    let seenAt = 0;
+    let probe = {el: null, at: 0, ok: false};
+
+    // A running download or an open panel stays on screen until it is done
+    // or closed, even when the page navigates or the clip scrolls away.
+    const pinned = () => Boolean(widget && widget.isConnected && widget.__nobsdl && (widget.__nobsdl.isBusy() || widget.__nobsdl.isOpen()));
+
+    // Cheap check for the 750 ms loop: the full lookup runs again only when
+    // the top clip changes or every 3 s.
+    function feedHasClip(platform) {
+      if (platform === "soundcloud") return Boolean(findFeedTarget(platform, document));
+      const top = feedMedia(document, platform)[0];
+      if (!top) return false;
+      if (probe.el !== top.el || Date.now() - probe.at > 3000) probe = {el: top.el, at: Date.now(), ok: Boolean(findFeedTarget(platform, document))};
+      return probe.ok;
+    }
 
     function sync() {
       const currentUrl = location.href;
-      const matchedPage = pageFor(currentUrl);
+      let matchedPage = pageFor(currentUrl);
+      if (!matchedPage && gmRequestFunction()) {
+        const feed = feedPageFor(currentUrl);
+        if (feed) {
+          if (feedHasClip(feed.platform)) seenAt = Date.now();
+          if (Date.now() - seenAt < 2500) matchedPage = feed;
+        }
+      }
       if (!matchedPage) {
-        if (widget && widget.isConnected) widget.remove();
-        signature = "";
+        if (widget && !pinned()) {
+          widget.remove();
+          widget = null;
+          signature = "";
+        }
         return;
       }
       const nextSignature = currentUrl + "|" + matchedPage.platform + "|" + matchedPage.workflow;
       if (!widget || signature !== nextSignature) {
-        if (widget && widget.isConnected) widget.remove();
+        if (pinned()) return;
+        if (widget) widget.remove();
         widget = makeWidget(matchedPage, currentUrl);
         signature = nextSignature;
       }
@@ -934,12 +1357,14 @@
     sync();
     window.addEventListener("popstate", sync);
     window.addEventListener("hashchange", sync);
+    window.addEventListener("resize", () => { if (widget && widget.__nobsdl) widget.__nobsdl.relayout(); });
     setInterval(sync, 750);
   }
 
   const api = {
     NOBSDL_ORIGIN, VIDEO_AUDIO, pageFor, realYoutubePlaylist, sourceUrlFor, targetUrl,
     normalizeChoices, downloadParams, progressView, safeFileUrl, safeStatusPath, formatSize,
+    feedPageFor, findFeedTarget, readDock,
   };
   if (typeof module === "object" && module.exports) {
     module.exports = api;
