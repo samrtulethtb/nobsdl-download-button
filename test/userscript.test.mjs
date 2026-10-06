@@ -305,3 +305,30 @@ test("button position: defaults clear mobile bottom bars and bad stored values a
     delete globalThis.GM_getValue;
   }
 });
+
+test("site counts in the name and the listing match the platforms the script really serves", () => {
+  // Distinct platforms behind the @match domains (youtu.be is YouTube, redd.it is Reddit...).
+  const source = readFileSync(SCRIPT, "utf8");
+  const header = source.slice(0, source.indexOf("// ==/UserScript=="));
+  const domains = [...header.matchAll(/^\/\/ @match\s+\*:\/\/(?:\*\.)?([^/]+)\/\*$/gm)].map((m) => m[1]);
+  const sample = {
+    "youtube.com": "https://www.youtube.com/watch?v=dQw4w9WgXcQ", "youtu.be": "https://youtu.be/dQw4w9WgXcQ",
+    "youtube-nocookie.com": "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ", "tiktok.com": "https://www.tiktok.com/@u/video/1",
+    "instagram.com": "https://www.instagram.com/reel/ABC_123/", "facebook.com": "https://www.facebook.com/reel/123456",
+    "reddit.com": "https://www.reddit.com/r/v/comments/abc123/t/", "redd.it": "https://redd.it/abc123",
+    "x.com": "https://x.com/u/status/1", "twitter.com": "https://twitter.com/u/status/1",
+    "soundcloud.com": "https://soundcloud.com/artist/track", "twitch.tv": "https://clips.twitch.tv/FaintLightGullWholeWheat",
+    "dailymotion.com": "https://www.dailymotion.com/video/x5kesuj", "pinterest.com": "https://www.pinterest.com/pin/664281013778109217/",
+    "bsky.app": "https://bsky.app/profile/bsky.app/post/3l3vgf77uco2g", "streamable.com": "https://streamable.com/dnd1",
+    "imgur.com": "https://imgur.com/A61SaA1", "9gag.com": "https://9gag.com/gag/ae5Ag7B", "odysee.com": "https://odysee.com/@a:b/c:e",
+    "rutube.ru": "https://rutube.ru/video/3eac3b4561676c17df9132a9a1e62e3e/", "ok.ru": "https://ok.ru/video/1484130554189",
+    "bandcamp.com": "https://benprunty.bandcamp.com/track/lanius-battle", "mixcloud.com": "https://www.mixcloud.com/dholbach/cryptkeeper/",
+  };
+  const platforms = new Set(domains.map((d) => page(sample[d]).platform));
+  const name = header.match(/^\/\/ @name\s+(.*)$/m)[1];
+  const named = name.match(/– (.*) & (\d+) more/);
+  assert.ok(named, name);
+  assert.equal(named[1].split(", ").length + Number(named[2]), platforms.size, name);
+  const listing = readFileSync(new URL("GREASYFORK_LISTING.md", SCRIPT), "utf8");
+  assert.equal(Number(listing.match(/\*\*(\d+) sites:\*\*/)[1]), platforms.size);
+});

@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         All-in-One Video Downloader – YouTube, TikTok, Instagram, X, Facebook & 15 more (MP4/MP3)
+// @name         All-in-One Video Downloader – YouTube, TikTok, Instagram, X, Facebook & 14 more (MP4/MP3)
 // @name:ro      NoBsDL Video Downloader – descarcă MP4 și MP3 de pe YouTube, TikTok, Instagram, X, Facebook
 // @name:es      NoBsDL Video Downloader – descarga MP4 y MP3 de YouTube, TikTok, Instagram, X, Facebook
 // @name:pt-BR   NoBsDL Video Downloader – baixe MP4 e MP3 do YouTube, TikTok, Instagram, X, Facebook
@@ -17,7 +17,7 @@
 // @name:ko      NoBsDL Video Downloader – YouTube, TikTok, Instagram, X, Facebook에서 MP4·MP3 다운로드
 // @name:zh-CN   NoBsDL 视频下载器 – 从 YouTube、TikTok、Instagram、X、Facebook 下载 MP4 和 MP3
 // @namespace    https://nobsdl.com/
-// @version      2.2.0
+// @version      2.2.1
 // @description  Download videos as MP4 and audio as MP3 without leaving the page: pick a real quality with its file size, watch live progress, and the file goes straight to your downloads. YouTube (incl. Shorts), TikTok, Instagram, X/Twitter, Facebook, Reddit, Twitch clips, Dailymotion, Pinterest, Bluesky, Streamable, Imgur, 9GAG, Odysee, Rutube, OK.ru, SoundCloud, Bandcamp and Mixcloud. In TikTok For You, X and Bluesky feeds it takes the clip on screen. By NoBsDL.
 // @description:ro  Descarcă video MP4 și audio MP3 fără să părăsești pagina. Alegi o calitate reală cu mărimea fișierului, vezi progresul live de pe server, iar fișierul ajunge direct în descărcările browserului. YouTube (inclusiv Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
 // @description:es  Descarga vídeos en MP4 y audio en MP3 sin salir de la página. Elige una calidad real con su tamaño, mira el progreso en vivo y el archivo llega directo a tus descargas. YouTube (incl. Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
