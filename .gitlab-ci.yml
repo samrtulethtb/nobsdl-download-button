@@ -1,0 +1,13 @@
+# GitLab Pages: serves docs/ (the same page GitHub Pages serves) from
+# smartulethtb/nobsdl-download-button on its *.gitlab.io address.
+pages:
+  stage: deploy
+  image: alpine:latest
+  script:
+    - mkdir -p public
+    - cp -r docs/. public/
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"

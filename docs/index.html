@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NoBsDL Video Downloader userscript – download videos and MP3 in the page</title>
+<meta name="description" content="Free, open-source userscript that adds a Download button to YouTube, TikTok, Instagram, X, Facebook, Reddit and 13 more sites. Real qualities with real sizes, live progress, MP4 and MP3. Powered by NoBsDL.">
+<link rel="canonical" href="https://samrtulethtb.github.io/nobsdl-download-button/">
+<meta property="og:title" content="NoBsDL Video Downloader userscript">
+<meta property="og:description" content="A Download button on YouTube, TikTok, Instagram, X and 15 more sites: real qualities, real sizes, live progress.">
+<meta property="og:image" content="https://raw.githubusercontent.com/samrtulethtb/nobsdl-download-button/main/media/youtube-formats.jpg">
+<style>
+  :root { --bg: #090b11; --card: #121725; --text: #f1f5f9; --muted: #a3b0c5; --accent: #6862f6; --accent2: #3dd6f5; --line: rgba(148,163,184,.22); }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 860px; margin: 0 auto; padding: 32px 16px 56px; }
+  h1 { font-size: clamp(1.7rem, 4vw, 2.4rem); line-height: 1.2; margin: 0 0 12px; }
+  h2 { font-size: 1.25rem; margin: 36px 0 12px; }
+  p, li { color: var(--muted); }
+  strong { color: var(--text); }
+  a { color: #a5b4fc; }
+  .lead { font-size: 1.1rem; }
+  .promise { display: inline-block; margin-bottom: 14px; padding: 2px 10px; border: 1px solid var(--line); border-radius: 999px; font-size: .85rem; color: var(--muted); }
+  .cta { display: flex; flex-wrap: wrap; gap: 10px; margin: 22px 0 8px; }
+  .btn { display: inline-block; padding: 12px 18px; border-radius: 12px; font-weight: 800; text-decoration: none; color: #fff; background: linear-gradient(135deg, var(--accent), #497fee); }
+  .btn.ghost { background: transparent; border: 1px solid var(--line); color: #cbd5e1; }
+  .shot { display: block; width: 100%; height: auto; margin: 18px 0 4px; border: 1px solid var(--line); border-radius: 14px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; padding: 0; list-style: none; }
+  .grid li a { display: block; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--card); color: var(--text); text-decoration: none; }
+  .grid li a:hover { border-color: var(--accent2); }
+  ul.features li { margin: 6px 0; }
+  footer { margin-top: 44px; padding-top: 16px; border-top: 1px solid var(--line); font-size: .9rem; color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <span class="promise">No popups. No forced redirects. No fake download buttons. Just download.</span>
+  <h1>NoBsDL Video Downloader userscript</h1>
+  <p class="lead">A free, open-source userscript that puts a <strong>Download</strong> button on video pages. Pick a real quality with its file size, as MP4 video or MP3 audio, and the file goes straight to your browser's downloads: no new tab, no copied links, no third-party converter sites. Version 2.2.1, MIT licensed.</p>
+  <div class="cta">
+    <a class="btn" href="https://greasyfork.org/scripts/597631">Install from Greasy Fork</a>
+    <a class="btn ghost" href="https://github.com/samrtulethtb/nobsdl-download-button">Source on GitHub</a>
+    <a class="btn ghost" href="https://nobsdl.com/">Use NoBsDL without the script</a>
+  </div>
+  <img class="shot" src="https://raw.githubusercontent.com/samrtulethtb/nobsdl-download-button/main/media/youtube-formats.jpg" alt="The NoBsDL panel on a video page: real qualities with their sizes" width="1100" height="618" loading="lazy">
+
+  <h2>What it does</h2>
+  <ul class="features">
+    <li><strong>Real qualities, real sizes.</strong> Every choice comes from the actual source (for example 720p60 · ~173 MB, or MP3 320 kbps), listed by <a href="https://nobsdl.com/">NoBsDL</a>. Nothing is invented.</li>
+    <li><strong>Live progress.</strong> Queue → Download → Process → Ready, with a real percentage, speed and time left measured on the server.</li>
+    <li><strong>MP4 and MP3.</strong> Video qualities next to MP3 at 128, 256 and 320 kbps.</li>
+    <li><strong>Works while you scroll.</strong> On TikTok's For You feed, X timelines and Bluesky the button takes the clip on screen, without opening each video first.</li>
+    <li><strong>Made for phones too.</strong> A round button you can drag anywhere and a bottom sheet with big touch targets.</li>
+    <li><strong>Stays out of the way.</strong> Close the panel mid-download and it keeps going; the button shows the percentage.</li>
+  </ul>
+
+  <h2>Supported sites</h2>
+  <p>Each link opens that site's downloader on nobsdl.com, which also works without the script.</p>
+  <ul class="grid">
+    <li><a href="https://nobsdl.com/youtube-downloader">YouTube downloader</a></li>
+    <li><a href="https://nobsdl.com/youtube-to-mp3">YouTube to MP3</a></li>
+    <li><a href="https://nobsdl.com/youtube-shorts-downloader">YouTube Shorts downloader</a></li>
+    <li><a href="https://nobsdl.com/youtube-playlist-downloader">YouTube playlist downloader</a></li>
+    <li><a href="https://nobsdl.com/tiktok-downloader">TikTok downloader</a></li>
+    <li><a href="https://nobsdl.com/instagram-downloader">Instagram downloader</a></li>
+    <li><a href="https://nobsdl.com/facebook-downloader">Facebook video downloader</a></li>
+    <li><a href="https://nobsdl.com/reddit-downloader">Reddit video downloader</a></li>
+    <li><a href="https://nobsdl.com/x-downloader">X (Twitter) video downloader</a></li>
+    <li><a href="https://nobsdl.com/soundcloud-to-mp3">SoundCloud to MP3</a></li>
+  </ul>
+  <p>Twitch clips and videos, Dailymotion, Pinterest, Bluesky, Streamable, Imgur, 9GAG, Odysee, Rutube, OK.ru, and Bandcamp and Mixcloud as MP3 work through the <a href="https://nobsdl.com/universal-downloader">universal video downloader</a>.</p>
+
+  <h2>Guides</h2>
+  <ul>
+    <li><a href="https://nobsdl.com/guides/download-video-from-link">How to download a video from a link</a></li>
+    <li><a href="https://nobsdl.com/guides/youtube-video-quality">YouTube video quality explained</a></li>
+    <li><a href="https://nobsdl.com/guides/youtube-mp3-320kbps">What 320 kbps MP3 actually means</a></li>
+    <li><a href="https://nobsdl.com/guides/download-youtube-playlist">How to download a YouTube playlist</a></li>
+    <li><a href="https://nobsdl.com/guides/downloader-without-popups">A downloader without popups or fake buttons</a></li>
+    <li><a href="https://nobsdl.com/guides/download-video-on-iphone">Download a video from a link on iPhone</a></li>
+    <li><a href="https://nobsdl.com/guides/download-video-on-android">Download a video from a link on Android</a></li>
+    <li><a href="https://nobsdl.com/guides/video-link-not-downloading">Video link not downloading? Causes and fixes</a></li>
+  </ul>
+
+  <h2>Install</h2>
+  <ol>
+    <li>Install <a href="https://www.tampermonkey.net/">Tampermonkey</a> or <a href="https://violentmonkey.github.io/">Violentmonkey</a>.</li>
+    <li>Open the script on <a href="https://greasyfork.org/scripts/597631">Greasy Fork</a> and press Install. Updates arrive automatically.</li>
+  </ol>
+
+  <h2>Privacy</h2>
+  <p>The script talks only to nobsdl.com, and only after you click. It contains no analytics, ads or tracking code, and stores only whether you minimized the button and where you dragged it. The code is readable and unminified.</p>
+
+  <footer>
+    Most downloads are free; some higher resolutions and files over the free size limits (500 MB video, 100 MB MP3) need a paid <a href="https://nobsdl.com/supporter">NoBsDL Supporter key</a>. Download only media you are allowed to save. ·
+    <a href="https://nobsdl.com/">nobsdl.com</a> · <a href="https://gitlab.com/smartulethtb/nobsdl-download-button">GitLab mirror</a>
+  </footer>
+</main>
+</body>
+</html>

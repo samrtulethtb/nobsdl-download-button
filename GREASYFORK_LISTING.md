@@ -6,10 +6,25 @@ Click **Download** on a supported page, pick a quality, and the file goes
 straight to your browser's downloads — no new tab, no copy-pasting links, no
 captcha pages.
 
-**19 sites:** YouTube (incl. Shorts) · TikTok · Instagram Reels · X / Twitter ·
-Facebook · Reddit · Twitch clips & videos · Dailymotion · Pinterest ·
-Bluesky · Streamable · Imgur · 9GAG · Odysee · Rutube · OK.ru ·
-SoundCloud, Bandcamp & Mixcloud (MP3)
+**19 sites:** YouTube (videos, Shorts, MP3, playlists) · TikTok · Instagram Reels ·
+X / Twitter · Facebook · Reddit · SoundCloud (MP3) · Twitch clips & videos ·
+Dailymotion · Pinterest · Bluesky · Streamable · Imgur · 9GAG · Odysee · Rutube ·
+OK.ru · Bandcamp & Mixcloud (MP3)
+
+**Works on** — each link opens that site's downloader on nobsdl.com, which also
+works without the script:
+[YouTube downloader](https://nobsdl.com/youtube-downloader) ·
+[YouTube to MP3](https://nobsdl.com/youtube-to-mp3) ·
+[YouTube Shorts downloader](https://nobsdl.com/youtube-shorts-downloader) ·
+[YouTube playlist downloader](https://nobsdl.com/youtube-playlist-downloader) ·
+[TikTok downloader](https://nobsdl.com/tiktok-downloader) ·
+[Instagram downloader](https://nobsdl.com/instagram-downloader) ·
+[Facebook video downloader](https://nobsdl.com/facebook-downloader) ·
+[Reddit video downloader](https://nobsdl.com/reddit-downloader) ·
+[X (Twitter) video downloader](https://nobsdl.com/x-downloader) ·
+[SoundCloud to MP3](https://nobsdl.com/soundcloud-to-mp3) ·
+[Universal video downloader](https://nobsdl.com/universal-downloader) (Twitch,
+Dailymotion, Pinterest, Bluesky and the other sites above)
 
 ### Why this one
 
