@@ -90,6 +90,9 @@ test("2.1 universal sites: individual media pages only, routed to the universal 
     ["https://www.dailymotion.com/video/x5kesuj", "dailymotion", "mp4"],
     ["https://benprunty.bandcamp.com/track/lanius-battle", "bandcamp", "mp3"],
     ["https://www.mixcloud.com/dholbach/cryptkeeper/", "mixcloud", "mp3"],
+    ["https://www.bilibili.com/video/BV13x41117TL", "bilibili", "mp4"],
+    ["https://m.bilibili.com/video/BV1bK411W797", "bilibili", "mp4"],
+    ["https://www.bilibili.com/video/av170001/", "bilibili", "mp4"],
   ];
   for (const [href, platform, first] of positives) {
     const matched = page(href);
@@ -106,6 +109,7 @@ test("2.1 universal sites: individual media pages only, routed to the universal 
     "https://streamable.com/login", "https://imgur.com/upload", "https://imgur.com/search", "https://bsky.app/profile/bsky.app",
     "https://www.mixcloud.com/discover/jazz/", "https://www.mixcloud.com/dholbach/favorites/", "https://bandcamp.com/track/x",
     "https://adrianvonziegler.bandcamp.com/", "https://www.dailymotion.com/us", "https://ok.ru/", "https://rutube.ru/", "https://9gag.com/hot",
+    "https://www.bilibili.com/", "https://space.bilibili.com/123456", "https://www.bilibili.com/bangumi/play/ep123", "https://search.bilibili.com/all?keyword=x",
   ]) assert.equal(page(href), null, href);
 });
 
@@ -125,6 +129,7 @@ test("every @match domain has functionality (Greasy Fork rule)", () => {
     "imgur.com": "https://imgur.com/A61SaA1", "9gag.com": "https://9gag.com/gag/ae5Ag7B", "odysee.com": "https://odysee.com/@a:b/c:e",
     "rutube.ru": "https://rutube.ru/video/3eac3b4561676c17df9132a9a1e62e3e/", "ok.ru": "https://ok.ru/video/1484130554189",
     "bandcamp.com": "https://benprunty.bandcamp.com/track/lanius-battle", "mixcloud.com": "https://www.mixcloud.com/dholbach/cryptkeeper/",
+    "bilibili.com": "https://www.bilibili.com/video/BV13x41117TL",
   };
   assert.deepEqual([...domains].sort(), Object.keys(sample).sort());
   for (const domain of domains) assert.ok(page(sample[domain]), domain);
@@ -325,6 +330,7 @@ test("site counts in the name and the listing match the platforms the script rea
     "imgur.com": "https://imgur.com/A61SaA1", "9gag.com": "https://9gag.com/gag/ae5Ag7B", "odysee.com": "https://odysee.com/@a:b/c:e",
     "rutube.ru": "https://rutube.ru/video/3eac3b4561676c17df9132a9a1e62e3e/", "ok.ru": "https://ok.ru/video/1484130554189",
     "bandcamp.com": "https://benprunty.bandcamp.com/track/lanius-battle", "mixcloud.com": "https://www.mixcloud.com/dholbach/cryptkeeper/",
+    "bilibili.com": "https://www.bilibili.com/video/BV13x41117TL",
   };
   const platforms = new Set(domains.map((d) => page(sample[d]).platform));
   const name = header.match(/^\/\/ @name\s+(.*)$/m)[1];
@@ -355,4 +361,6 @@ test("buttons on videos open the bare video, never a playlist or tracking link",
   assert.equal(singleVideoUrl("https://www.youtube.com/playlist?list=PLabcdefghijkl"), null);
   assert.equal(singleVideoUrl("https://www.tiktok.com/@someone/video/7300000000000000000"), "https://www.tiktok.com/@someone/video/7300000000000000000");
   assert.equal(singleVideoUrl("https://www.youtube.com/"), null);
+  assert.equal(singleVideoUrl("https://www.bilibili.com/video/BV1ocaW6rETo?track_id=abc&spm_id_from=333"), "https://www.bilibili.com/video/BV1ocaW6rETo");
+  assert.equal(singleVideoUrl("https://www.bilibili.com/video/BV1bK411W797?p=22&vd_source=x"), "https://www.bilibili.com/video/BV1bK411W797?p=22");
 });

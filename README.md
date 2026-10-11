@@ -24,7 +24,7 @@ progress, and the file goes straight to your browser's downloads. Powered by
 - **A button on every video** (with a mouse): pointing at a video or a
   thumbnail shows a ⬇ Download button on it that opens that exact clip:
   YouTube's player and its home, search and sidebar thumbnails, videos in X,
-  Reddit, Instagram, Facebook, Bluesky and 9GAG feeds, TikTok and Twitch
+  Reddit, Instagram, Facebook, Bluesky and 9GAG feeds, TikTok, Twitch and Bilibili
   thumbnails. "Turn the buttons on videos on/off" in the userscript
   manager's menu hides them.
 - **Feeds too**: on TikTok's For You feed, X timelines and Bluesky the URL
@@ -65,7 +65,7 @@ without the script (paste a link there).
 - Reddit video posts and direct `redd.it` media links — [Reddit video downloader](https://nobsdl.com/reddit-downloader).
 - X/Twitter status pages containing media — [X (Twitter) video downloader](https://nobsdl.com/x-downloader).
 - SoundCloud tracks (MP3) — [SoundCloud to MP3](https://nobsdl.com/soundcloud-to-mp3).
-- Twitch clips and past videos, Dailymotion videos, Pinterest pins, Bluesky
+- Twitch clips and past videos, Bilibili videos, Dailymotion videos, Pinterest pins, Bluesky
   posts, Streamable, Imgur, 9GAG, Odysee, Rutube and OK.ru video pages, plus
   Bandcamp tracks and Mixcloud shows as MP3 — the
   [universal video downloader](https://nobsdl.com/universal-downloader) (each

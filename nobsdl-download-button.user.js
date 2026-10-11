@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Free All-in-One Video Downloader – YouTube, TikTok, Instagram, X, Facebook & 14 more (HD MP4/MP3)
+// @name         Free All-in-One Video Downloader – YouTube, TikTok, Instagram, X, Facebook & 15 more (HD MP4/MP3)
 // @name:ro      Descărcător video all-in-one gratuit – YouTube, TikTok, Instagram, X, Facebook etc. (MP4/MP3 HD)
 // @name:es      Descargador de vídeos todo en uno gratis – YouTube, TikTok, Instagram, X, Facebook… (MP4/MP3 HD)
 // @name:pt-BR   Baixador de vídeos tudo em um grátis – YouTube, TikTok, Instagram, X, Facebook e mais (MP4/MP3 HD)
@@ -40,8 +40,8 @@
 // @name:mr      मोफत ऑल-इन-वन व्हिडिओ डाउनलोडर – YouTube, TikTok, Instagram, X, Facebook आणि अधिक (HD MP4/MP3)
 // @name:ne      निःशुल्क अल-इन-वन भिडियो डाउनलोडर – YouTube, TikTok, Instagram, X, Facebook र थप (HD MP4/MP3)
 // @namespace    https://nobsdl.com/
-// @version      2.4.0
-// @description  Download videos as MP4 and audio as MP3 without leaving the page: pick a real quality with its file size, watch live progress, and the file goes straight to your downloads. YouTube (incl. Shorts), TikTok, Instagram, X/Twitter, Facebook, Reddit, Twitch clips, Dailymotion, Pinterest, Bluesky, Streamable, Imgur, 9GAG, Odysee, Rutube, OK.ru, SoundCloud, Bandcamp and Mixcloud. In TikTok For You, X and Bluesky feeds it takes the clip on screen. By NoBsDL.
+// @version      2.5.0
+// @description  Download videos as MP4 and audio as MP3 without leaving the page: pick a real quality with its file size, watch live progress, and the file goes straight to your downloads. YouTube (incl. Shorts), TikTok, Instagram, X/Twitter, Facebook, Reddit, Twitch clips, Dailymotion, Pinterest, Bluesky, Streamable, Imgur, 9GAG, Odysee, Rutube, OK.ru, Bilibili, SoundCloud, Bandcamp and Mixcloud. In TikTok For You, X and Bluesky feeds it takes the clip on screen. By NoBsDL.
 // @description:ro  Descarcă video MP4 și audio MP3 fără să părăsești pagina. Alegi o calitate reală cu mărimea fișierului, vezi progresul live de pe server, iar fișierul ajunge direct în descărcările browserului. YouTube (inclusiv Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
 // @description:es  Descarga vídeos en MP4 y audio en MP3 sin salir de la página. Elige una calidad real con su tamaño, mira el progreso en vivo y el archivo llega directo a tus descargas. YouTube (incl. Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
 // @description:pt-BR  Baixe vídeos em MP4 e áudio em MP3 sem sair da página. Escolha uma qualidade real com o tamanho do arquivo, acompanhe o progresso ao vivo e o arquivo vai direto para seus downloads. YouTube (incl. Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
@@ -109,6 +109,7 @@
 // @match        *://*.ok.ru/*
 // @match        *://*.bandcamp.com/*
 // @match        *://*.mixcloud.com/*
+// @match        *://*.bilibili.com/*
 // @grant        GM_xmlhttpRequest
 // @grant        GM.xmlHttpRequest
 // @grant        GM_getValue
@@ -321,6 +322,10 @@
     if (hostIs(host, "dailymotion.com")) {
       return /^\/video\/[A-Za-z0-9]+\/?$/.test(path) ? universal("dailymotion", "Dailymotion") : null;
     }
+    if (hostIs(host, "bilibili.com")) {
+      // Verified 2026-10-11 end to end (video + audio, multi-part ?p=N too).
+      return /^\/video\/(?:BV[0-9A-Za-z]{10}|av\d+)\/?$/.test(path) ? universal("bilibili", "Bilibili") : null;
+    }
     if (hostIs(host, "dai.ly")) {
       return parts[0] ? universal("dailymotion", "Dailymotion") : null;
     }
@@ -504,7 +509,7 @@
   // page is read; nothing is sent until the button is clicked.
   const INLINE_MIN_WIDTH = 120;
   const INLINE_MIN_HEIGHT = 66;
-  const THUMB_PLATFORMS = new Set(["youtube", "tiktok", "twitch", "dailymotion", "rutube", "okru", "odysee", "streamable"]);
+  const THUMB_PLATFORMS = new Set(["youtube", "tiktok", "twitch", "dailymotion", "rutube", "okru", "odysee", "streamable", "bilibili"]);
   const POST_PLATFORMS = new Set(["twitter", "reddit", "instagram", "facebook", "bluesky", "9gag"]);
 
   // YouTube's main player counts before its <video> has loaded (a cued
@@ -529,6 +534,11 @@
     if (!matched) return null;
     const v = url.searchParams.get("v");
     if (matched.platform === "youtube" && url.pathname.toLowerCase() === "/watch" && validId(v)) return "https://www.youtube.com/watch?v=" + v;
+    if (matched.platform === "bilibili") {
+      // Only the part number matters; feed links add tracking ids.
+      const part = url.searchParams.get("p");
+      return url.origin + url.pathname + (/^\d{1,4}$/.test(part || "") ? "?p=" + part : "");
+    }
     return matched.workflow === "playlist" ? null : url.href;
   }
 

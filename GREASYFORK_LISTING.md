@@ -6,10 +6,10 @@ Point at a video or thumbnail and click its **⬇ Download** button (or the one
 in the corner), pick a quality, and the file goes straight to your browser's
 downloads — no new tab, no copy-pasting links, no captcha pages.
 
-**19 sites:** YouTube (videos, Shorts, MP3, playlists) · TikTok · Instagram Reels ·
+**20 sites:** YouTube (videos, Shorts, MP3, playlists) · TikTok · Instagram Reels ·
 X / Twitter · Facebook · Reddit · SoundCloud (MP3) · Twitch clips & videos ·
-Dailymotion · Pinterest · Bluesky · Streamable · Imgur · 9GAG · Odysee · Rutube ·
-OK.ru · Bandcamp & Mixcloud (MP3)
+Bilibili · Dailymotion · Pinterest · Bluesky · Streamable · Imgur · 9GAG · Odysee ·
+Rutube · OK.ru · Bandcamp & Mixcloud (MP3)
 
 **Works on** — each link opens that site's downloader on nobsdl.com, which also
 works without the script:
@@ -24,14 +24,14 @@ works without the script:
 [X (Twitter) video downloader](https://nobsdl.com/x-downloader) ·
 [SoundCloud to MP3](https://nobsdl.com/soundcloud-to-mp3) ·
 [Universal video downloader](https://nobsdl.com/universal-downloader) (Twitch,
-Dailymotion, Pinterest, Bluesky and the other sites above)
+Bilibili, Dailymotion, Pinterest, Bluesky and the other sites above)
 
 ### Why this one
 
 - ⬇️ **A Download button on every video.** With a mouse, the button appears on
   the video or thumbnail you point at: YouTube's player, home, search and
   sidebar thumbnails, videos in X, Reddit, Instagram, Facebook, Bluesky and
-  9GAG feeds, TikTok and Twitch thumbnails. It opens that exact clip. Turn it
+  9GAG feeds, TikTok, Twitch and Bilibili thumbnails. It opens that exact clip. Turn it
   off from your userscript manager's menu if you prefer only the corner button.
 - 🎯 **Real formats with real sizes.** Every choice (e.g. 720p60 · ~173 MB,
   MP3 320 kbps · ~24 MB) comes from the actual source. Nothing invented.
@@ -63,6 +63,7 @@ After installing, open one of these public pages and click **Download**:
 |---|---|
 | YouTube | https://www.youtube.com/watch?v=aqz-KE-bpKQ |
 | Twitch clip | https://www.twitch.tv/xqc/clip/CulturedAmazingKuduDatSheffy-TiZ_-ixAGYR3y2Uy |
+| Bilibili | https://www.bilibili.com/video/BV13x41117TL |
 | Dailymotion | https://www.dailymotion.com/video/x5kesuj |
 | Pinterest | https://www.pinterest.com/pin/664281013778109217/ |
 | Bluesky | https://bsky.app/profile/bsky.app/post/3l3vgf77uco2g |
