@@ -39,6 +39,11 @@ progress, and the file goes straight to your browser's downloads. Powered by
 - **Close it any time**: the job keeps running, the button shows the
   percentage and the file is still saved when ready.
 - **MP3 128 / 256 / 320 kbps** next to the MP4 qualities.
+- **In your language**: the panel follows the browser's language (English,
+  Simplified and Traditional Chinese, Russian, Ukrainian, Spanish,
+  Portuguese, French, German, Italian, Polish, Turkish, Indonesian,
+  Vietnamese, Japanese, Korean). Messages written by the NoBsDL server stay
+  as it sends them.
 - **Minimize** to a small round button, or drag the button elsewhere; both
   are remembered.
 - Falls back to opening the matching NoBsDL page when your userscript manager

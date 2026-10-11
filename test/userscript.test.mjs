@@ -347,7 +347,7 @@ test("asks for a rating once, after the third saved file, and only locally", () 
   assert.match(source, /writeValue\("savedCount", saved\)/);
   assert.match(source, /saved >= 3 && readValue\("rateDismissed", false\) !== true/);
   assert.match(source, /const dismiss = \(\) => \{ writeValue\("rateDismissed", true\); note\.remove\(\); \};/);
-  assert.match(source, /externalLink\(LISTING_URL \+ "\/feedback", "Rate it ★"\)/);
+  assert.match(source, /externalLink\(LISTING_URL \+ "\/feedback", t\("Rate it ★"\)\)/);
   assert.match(source, /rate\.addEventListener\("click", dismiss\)/);
   // No reward is offered and nothing about it is sent anywhere.
   assert.doesNotMatch(source, /rate[^\n]{0,80}(?:unlock|reward|bonus|free download)/i);
@@ -363,4 +363,40 @@ test("buttons on videos open the bare video, never a playlist or tracking link",
   assert.equal(singleVideoUrl("https://www.youtube.com/"), null);
   assert.equal(singleVideoUrl("https://www.bilibili.com/video/BV1ocaW6rETo?track_id=abc&spm_id_from=333"), "https://www.bilibili.com/video/BV1ocaW6rETo");
   assert.equal(singleVideoUrl("https://www.bilibili.com/video/BV1bK411W797?p=22&vd_source=x"), "https://www.bilibili.com/video/BV1bK411W797?p=22");
+});
+
+test("2.6 panel language: complete translations, same placeholders, English fallback", () => {
+  const mod = require(SCRIPT.pathname);
+  const {UI_KEYS, UI_TEXT, t, setLocale, pickLocale} = mod;
+  const source = readFileSync(SCRIPT, "utf8");
+  // Every literal passed to t() in the code has a translation slot.
+  const used = new Set([...source.matchAll(/\bt\("((?:[^"\\]|\\.)*)"/g)].map((m) => m[1]));
+  for (const key of ["Queue", "Download", "Process", "Ready"]) used.add(key);   // the step labels go through t(label)
+  for (const key of used) assert.ok(UI_KEYS.includes(key), "missing key: " + key);
+  assert.equal(new Set(UI_KEYS).size, UI_KEYS.length, "duplicate keys");
+  const holes = (text) => [...text.matchAll(/\{\d\}/g)].map((m) => m[0]).sort().join();
+  for (const [locale, list] of Object.entries(UI_TEXT)) {
+    assert.equal(list.length, UI_KEYS.length, locale);
+    list.forEach((text, i) => {
+      assert.ok(typeof text === "string" && text.trim(), locale + " #" + i);
+      assert.equal(holes(text), holes(UI_KEYS[i]), locale + ": " + UI_KEYS[i]);
+      // A note that runs into a link keeps its trailing space (CJK needs none).
+      if (UI_KEYS[i].endsWith(" ") && !/^(?:zh|ja)/.test(locale)) assert.ok(text.endsWith(" "), locale + ": " + UI_KEYS[i]);
+    });
+  }
+  assert.deepEqual(Object.keys(UI_TEXT).sort(), ["de", "es", "fr", "id", "it", "ja", "ko", "pl", "pt", "ru", "tr", "uk", "vi", "zh-CN", "zh-TW"]);
+  assert.equal(pickLocale(["zh-TW", "en"]), "zh-TW");
+  assert.equal(pickLocale(["zh-Hant-HK"]), "zh-TW");
+  assert.equal(pickLocale(["zh"]), "zh-CN");
+  assert.equal(pickLocale(["pt-BR"]), "pt");
+  assert.equal(pickLocale(["ro-RO", "de-DE"]), "de");
+  assert.equal(pickLocale(["en-GB", "fr"]), "en");
+  assert.equal(pickLocale(["ro"]), "en");
+  setLocale("ru");
+  assert.equal(t("Connecting to {0}", "YouTube"), "Подключение к YouTube");
+  assert.equal(t("{0} of {1}", "50.0 MB", "200 MB"), "50.0 MB из 200 MB");
+  assert.equal(t("not a key"), "not a key");
+  setLocale("xx");
+  assert.equal(t("Download"), "Download");
+  setLocale("en");
 });

@@ -39,6 +39,9 @@ Bilibili, Dailymotion, Pinterest, Bluesky and the other sites above)
   a real percentage, speed and time left measured on the server — not a fake
   timer bar. MP3 encoding shows its own real percentage too.
 - 🎵 **MP3 128 / 256 / 320 kbps** next to the MP4 qualities.
+- 🌍 **In your language.** The panel follows your browser: English, 简体中文,
+  繁體中文, Русский, Українська, Español, Português, Français, Deutsch,
+  Italiano, Polski, Türkçe, Bahasa Indonesia, Tiếng Việt, 日本語, 한국어.
 - 📜 **Works while you scroll.** On TikTok's For You feed, X timelines and
   Bluesky the button takes the clip on screen (briefly outlined) — no need to
   open each video first.

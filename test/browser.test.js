@@ -268,6 +268,32 @@ async function main() {
     await context.close();
   }
 
+  // 1e. A Chinese browser gets the panel in Chinese; numbers and sizes stay as measured.
+  {
+    const {page, context, errors} = await setup(browser, {api: happyApi(), contextOptions: {locale: 'zh-CN'}});
+    await page.goto('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+    await inject(page, true);
+    check('zh-CN: the dock says 下载', (await shadow(page, '.dock .btn-primary').textContent()) === '下载');
+    await shadow(page, '.dock .btn-primary').click();
+    await shadow(page, '.card').first().waitFor();
+    const headings = await shadow(page, '.section h4').allTextContents();
+    check('zh-CN: format groups are translated', JSON.stringify(headings) === JSON.stringify(['视频 · MP4', '音频 · MP3']), headings);
+    check('zh-CN: the Supporter note is translated around its link', (await shadow(page, '.note').textContent()) === '🔒 锁定的画质需要付费的NoBsDL Supporter 密钥。其他全部免费。');
+    const downloadPromise = page.waitForEvent('download');
+    await shadow(page, '.card:not(.locked)').first().click();
+    await page.waitForFunction(() => {
+      const t = document.getElementById('nobsdl-download-widget').shadowRoot.querySelector('.status-line');
+      return t && t.textContent.startsWith('25%');
+    });
+    check('zh-CN: measured progress keeps its numbers', (await shadow(page, '.status-line').textContent()) === '25% · 50.0 MB / 200 MB · 5.0 MB/s · 剩余约 30 秒');
+    check('zh-CN: the steps are translated', JSON.stringify(await shadow(page, '.steps li').allTextContents()) === JSON.stringify(['排队', '下载', '处理', '完成']));
+    await downloadPromise;
+    await shadow(page, '.result-ok').waitFor();
+    check('zh-CN: the result is translated', (await shadow(page, '.result-ok').textContent()).startsWith('✅ 文件已就绪'));
+    check('zh-CN: no page errors', errors.length === 0, errors);
+    await context.close();
+  }
+
   // 2. Stale format: backend asks to choose again -> Refresh formats, no blind retry.
   {
     const api = (route, url) => {

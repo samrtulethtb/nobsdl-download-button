@@ -40,7 +40,7 @@
 // @name:mr      मोफत ऑल-इन-वन व्हिडिओ डाउनलोडर – YouTube, TikTok, Instagram, X, Facebook आणि अधिक (HD MP4/MP3)
 // @name:ne      निःशुल्क अल-इन-वन भिडियो डाउनलोडर – YouTube, TikTok, Instagram, X, Facebook र थप (HD MP4/MP3)
 // @namespace    https://nobsdl.com/
-// @version      2.5.0
+// @version      2.6.0
 // @description  Download videos as MP4 and audio as MP3 without leaving the page: pick a real quality with its file size, watch live progress, and the file goes straight to your downloads. YouTube (incl. Shorts), TikTok, Instagram, X/Twitter, Facebook, Reddit, Twitch clips, Dailymotion, Pinterest, Bluesky, Streamable, Imgur, 9GAG, Odysee, Rutube, OK.ru, Bilibili, SoundCloud, Bandcamp and Mixcloud. In TikTok For You, X and Bluesky feeds it takes the clip on screen. By NoBsDL.
 // @description:ro  Descarcă video MP4 și audio MP3 fără să părăsești pagina. Alegi o calitate reală cu mărimea fișierului, vezi progresul live de pe server, iar fișierul ajunge direct în descărcările browserului. YouTube (inclusiv Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
 // @description:es  Descarga vídeos en MP4 y audio en MP3 sin salir de la página. Elige una calidad real con su tamaño, mira el progreso en vivo y el archivo llega directo a tus descargas. YouTube (incl. Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
@@ -155,6 +155,365 @@
   const PLAYLIST_ONLY = Object.freeze(["playlist"]);
   const POLL_INTERVAL_MS = 1000;
   const POLL_DEADLINE_MS = 20 * 60 * 1000;
+
+  // ── Interface language (2.6.0) ─────────────────────────────────────────
+  // The panel follows the browser's language when it is one of these;
+  // otherwise it stays in English. Each list follows UI_KEYS, the English
+  // text; {0} and {1} stand for numbers or names. Messages written by the
+  // NoBsDL server itself stay as the server sends them.
+  const UI_KEYS = [
+    "Waiting for a free download slot", "Connecting to {0}", "Downloading on NoBsDL", "Merging video and audio",
+    "Converting to MP3", "Processing the file", "Finishing up", "Ready", "Starting your download",
+    "Ready — your browser is saving the file.", "{0} of {1}", "{0} downloaded", "~{0}s left", "~{0} min left",
+    "Queue", "Download", "Process", "Download MP3", "✓ Saved", "Minimize", "Drag to move", "Close",
+    "Finding the real formats…", "Checking this link on NoBsDL", "Video · MP4", "Audio · MP3",
+    "No downloadable format was found for this link.", "🔒 Locked qualities need a paid ", "NoBsDL Supporter key",
+    ". Everything else is free.", "✓ Supporter active on this browser.", "🔒 Supporter",
+    "✅ File ready. Your browser is saving it — check your downloads.", "Download another format",
+    "Didn’t start? Save again", "Try again", "Refresh formats", "Supporter options", "Something went wrong.",
+    "No popups. No forced redirects.", "Open on NoBsDL ↗", "Which clip?", "That isn’t a supported video link.",
+    "{0} doesn’t show which clip is playing on this page. Tap Share → Copy link on the clip and paste it here:",
+    "Scroll until the clip is on screen and try again, or paste its link:", "Go", "Video link",
+    "This is taking unusually long. Try again or open it on NoBsDL.",
+    "Working well? A quick rating helps other people find it. ", "Rate it ★", "Not now", "Download this video with NoBsDL",
+    "Can’t reach NoBsDL. Check your connection.", "NoBsDL took too long to answer. Try again.",
+    "NoBsDL couldn’t process this link.", "NoBsDL isn’t available in your country.",
+    "NoBsDL returned an unexpected answer. Try again.", "NoBsDL returned an unexpected file link.", "{0} feed",
+    "Turn the buttons on videos on/off", "Download progress",
+  ];
+  const UI_TEXT = {
+    "zh-CN": [
+      "等待空闲的下载位置", "正在连接 {0}", "正在 NoBsDL 上下载", "正在合并视频和音频",
+      "正在转换为 MP3", "正在处理文件", "即将完成", "完成", "正在开始下载",
+      "完成 — 浏览器正在保存文件。", "{0} / {1}", "已下载 {0}", "剩余约 {0} 秒", "剩余约 {0} 分钟",
+      "排队", "下载", "处理", "下载 MP3", "✓ 已保存", "最小化", "拖动以移动", "关闭",
+      "正在查找真实格式…", "正在 NoBsDL 上检查此链接", "视频 · MP4", "音频 · MP3",
+      "未找到此链接可下载的格式。", "🔒 锁定的画质需要付费的", "NoBsDL Supporter 密钥",
+      "。其他全部免费。", "✓ 此浏览器已启用 Supporter。", "🔒 Supporter",
+      "✅ 文件已就绪。浏览器正在保存 — 请查看下载内容。", "下载其他格式",
+      "没有开始？再次保存", "重试", "刷新格式", "Supporter 选项", "出了点问题。",
+      "无弹窗。无强制跳转。", "在 NoBsDL 打开 ↗", "哪个片段？", "这不是支持的视频链接。",
+      "{0} 没有显示此页面正在播放哪个片段。请在该片段上点按 分享 → 复制链接，然后粘贴到这里：",
+      "请滚动到片段出现在屏幕上后重试，或粘贴其链接：", "前往", "视频链接",
+      "时间比平时长。请重试或在 NoBsDL 上打开。",
+      "好用吗？快速评分可以帮助其他人找到它。", "评分 ★", "以后再说", "用 NoBsDL 下载此视频",
+      "无法连接 NoBsDL。请检查网络连接。", "NoBsDL 响应超时。请重试。",
+      "NoBsDL 无法处理此链接。", "NoBsDL 在你所在的国家/地区不可用。",
+      "NoBsDL 返回了意外的响应。请重试。", "NoBsDL 返回了意外的文件链接。", "{0} 信息流",
+      "开启/关闭视频上的按钮", "下载进度",
+    ],
+    "zh-TW": [
+      "等待空閒的下載位置", "正在連線至 {0}", "正在 NoBsDL 上下載", "正在合併影片和音訊",
+      "正在轉換為 MP3", "正在處理檔案", "即將完成", "完成", "正在開始下載",
+      "完成 — 瀏覽器正在儲存檔案。", "{0} / {1}", "已下載 {0}", "剩餘約 {0} 秒", "剩餘約 {0} 分鐘",
+      "排隊", "下載", "處理", "下載 MP3", "✓ 已儲存", "最小化", "拖曳以移動", "關閉",
+      "正在尋找真實格式…", "正在 NoBsDL 上檢查此連結", "影片 · MP4", "音訊 · MP3",
+      "找不到此連結可下載的格式。", "🔒 鎖定的畫質需要付費的", "NoBsDL Supporter 金鑰",
+      "。其他全部免費。", "✓ 此瀏覽器已啟用 Supporter。", "🔒 Supporter",
+      "✅ 檔案已就緒。瀏覽器正在儲存 — 請查看下載內容。", "下載其他格式",
+      "沒有開始？再次儲存", "重試", "重新整理格式", "Supporter 選項", "發生問題。",
+      "無彈出視窗。無強制跳轉。", "在 NoBsDL 開啟 ↗", "哪個片段？", "這不是支援的影片連結。",
+      "{0} 沒有顯示此頁面正在播放哪個片段。請在該片段上點按 分享 → 複製連結，然後貼到這裡：",
+      "請捲動到片段出現在螢幕上後重試，或貼上其連結：", "前往", "影片連結",
+      "時間比平常長。請重試或在 NoBsDL 上開啟。",
+      "好用嗎？快速評分能幫助其他人找到它。", "評分 ★", "以後再說", "用 NoBsDL 下載此影片",
+      "無法連線至 NoBsDL。請檢查網路連線。", "NoBsDL 回應逾時。請重試。",
+      "NoBsDL 無法處理此連結。", "NoBsDL 在你所在的國家/地區無法使用。",
+      "NoBsDL 傳回了非預期的回應。請重試。", "NoBsDL 傳回了非預期的檔案連結。", "{0} 動態",
+      "開啟/關閉影片上的按鈕", "下載進度",
+    ],
+    ru: [
+      "Ожидание свободного слота", "Подключение к {0}", "Загрузка на NoBsDL", "Объединение видео и звука",
+      "Конвертация в MP3", "Обработка файла", "Завершение", "Готово", "Запуск загрузки",
+      "Готово — браузер сохраняет файл.", "{0} из {1}", "Загружено {0}", "осталось ~{0} с", "осталось ~{0} мин",
+      "Очередь", "Скачать", "Обработка", "Скачать MP3", "✓ Сохранено", "Свернуть", "Перетащите, чтобы переместить", "Закрыть",
+      "Ищем реальные форматы…", "Проверяем ссылку на NoBsDL", "Видео · MP4", "Аудио · MP3",
+      "Для этой ссылки не найдено форматов для скачивания.", "🔒 Для закрытых вариантов качества нужен платный ", "ключ NoBsDL Supporter",
+      ". Всё остальное бесплатно.", "✓ Supporter активен в этом браузере.", "🔒 Supporter",
+      "✅ Файл готов. Браузер сохраняет его — проверьте загрузки.", "Скачать другой формат",
+      "Не началось? Сохранить снова", "Повторить", "Обновить форматы", "Варианты Supporter", "Что-то пошло не так.",
+      "Без всплывающих окон. Без принудительных переходов.", "Открыть на NoBsDL ↗", "Какой клип?", "Это не поддерживаемая ссылка на видео.",
+      "{0} не показывает, какой клип играет на этой странице. Нажмите «Поделиться» → «Копировать ссылку» на клипе и вставьте её сюда:",
+      "Прокрутите, пока клип не окажется на экране, и попробуйте снова или вставьте его ссылку:", "OK", "Ссылка на видео",
+      "Это занимает необычно долго. Повторите попытку или откройте на NoBsDL.",
+      "Всё работает? Быстрая оценка поможет другим найти скрипт. ", "Оценить ★", "Не сейчас", "Скачать это видео через NoBsDL",
+      "Нет связи с NoBsDL. Проверьте подключение.", "NoBsDL слишком долго не отвечает. Попробуйте снова.",
+      "NoBsDL не удалось обработать эту ссылку.", "NoBsDL недоступен в вашей стране.",
+      "NoBsDL вернул неожиданный ответ. Попробуйте снова.", "NoBsDL вернул неожиданную ссылку на файл.", "Лента {0}",
+      "Включить/выключить кнопки на видео", "Ход загрузки",
+    ],
+    uk: [
+      "Очікування вільного слота", "Підключення до {0}", "Завантаження на NoBsDL", "Об’єднання відео та звуку",
+      "Конвертація в MP3", "Обробка файлу", "Завершення", "Готово", "Запуск завантаження",
+      "Готово — браузер зберігає файл.", "{0} з {1}", "Завантажено {0}", "залишилось ~{0} с", "залишилось ~{0} хв",
+      "Черга", "Завантажити", "Обробка", "Завантажити MP3", "✓ Збережено", "Згорнути", "Перетягніть, щоб перемістити", "Закрити",
+      "Шукаємо справжні формати…", "Перевіряємо посилання на NoBsDL", "Відео · MP4", "Аудіо · MP3",
+      "Для цього посилання не знайдено форматів для завантаження.", "🔒 Для закритих варіантів якості потрібен платний ", "ключ NoBsDL Supporter",
+      ". Усе інше безкоштовно.", "✓ Supporter активний у цьому браузері.", "🔒 Supporter",
+      "✅ Файл готовий. Браузер зберігає його — перевірте завантаження.", "Завантажити інший формат",
+      "Не почалося? Зберегти ще раз", "Спробувати ще", "Оновити формати", "Варіанти Supporter", "Щось пішло не так.",
+      "Без спливаючих вікон. Без примусових переходів.", "Відкрити на NoBsDL ↗", "Який кліп?", "Це не підтримуване посилання на відео.",
+      "{0} не показує, який кліп грає на цій сторінці. Натисніть «Поділитися» → «Копіювати посилання» на кліпі та вставте його сюди:",
+      "Прокрутіть, доки кліп не з’явиться на екрані, і спробуйте ще раз або вставте його посилання:", "OK", "Посилання на відео",
+      "Це триває незвично довго. Спробуйте ще раз або відкрийте на NoBsDL.",
+      "Усе працює? Швидка оцінка допоможе іншим знайти скрипт. ", "Оцінити ★", "Не зараз", "Завантажити це відео через NoBsDL",
+      "Немає зв’язку з NoBsDL. Перевірте підключення.", "NoBsDL занадто довго не відповідає. Спробуйте ще раз.",
+      "NoBsDL не вдалося обробити це посилання.", "NoBsDL недоступний у вашій країні.",
+      "NoBsDL повернув неочікувану відповідь. Спробуйте ще раз.", "NoBsDL повернув неочікуване посилання на файл.", "Стрічка {0}",
+      "Увімкнути/вимкнути кнопки на відео", "Хід завантаження",
+    ],
+    es: [
+      "Esperando un hueco libre de descarga", "Conectando con {0}", "Descargando en NoBsDL", "Uniendo vídeo y audio",
+      "Convirtiendo a MP3", "Procesando el archivo", "Terminando", "Listo", "Iniciando tu descarga",
+      "Listo: tu navegador está guardando el archivo.", "{0} de {1}", "{0} descargados", "quedan ~{0} s", "quedan ~{0} min",
+      "Cola", "Descargar", "Procesar", "Descargar MP3", "✓ Guardado", "Minimizar", "Arrastra para mover", "Cerrar",
+      "Buscando los formatos reales…", "Comprobando este enlace en NoBsDL", "Vídeo · MP4", "Audio · MP3",
+      "No se encontró ningún formato descargable para este enlace.", "🔒 Las calidades bloqueadas requieren una ", "clave NoBsDL Supporter",
+      " de pago. Todo lo demás es gratis.", "✓ Supporter activo en este navegador.", "🔒 Supporter",
+      "✅ Archivo listo. Tu navegador lo está guardando: revisa tus descargas.", "Descargar otro formato",
+      "¿No empezó? Guardar de nuevo", "Reintentar", "Actualizar formatos", "Opciones de Supporter", "Algo salió mal.",
+      "Sin pop-ups. Sin redirecciones forzadas.", "Abrir en NoBsDL ↗", "¿Qué clip?", "Ese no es un enlace de vídeo compatible.",
+      "{0} no muestra qué clip se reproduce en esta página. Toca Compartir → Copiar enlace en el clip y pégalo aquí:",
+      "Desplázate hasta que el clip esté en pantalla e inténtalo de nuevo, o pega su enlace:", "Ir", "Enlace del vídeo",
+      "Está tardando más de lo normal. Inténtalo de nuevo o ábrelo en NoBsDL.",
+      "¿Funciona bien? Una valoración rápida ayuda a otros a encontrarlo. ", "Valorar ★", "Ahora no", "Descargar este vídeo con NoBsDL",
+      "No se puede conectar con NoBsDL. Revisa tu conexión.", "NoBsDL tardó demasiado en responder. Inténtalo de nuevo.",
+      "NoBsDL no pudo procesar este enlace.", "NoBsDL no está disponible en tu país.",
+      "NoBsDL devolvió una respuesta inesperada. Inténtalo de nuevo.", "NoBsDL devolvió un enlace de archivo inesperado.", "Feed de {0}",
+      "Activar/desactivar los botones en los vídeos", "Progreso de la descarga",
+    ],
+    pt: [
+      "Aguardando uma vaga de download", "Conectando a {0}", "Baixando no NoBsDL", "Juntando vídeo e áudio",
+      "Convertendo para MP3", "Processando o arquivo", "Finalizando", "Pronto", "Iniciando seu download",
+      "Pronto — seu navegador está salvando o arquivo.", "{0} de {1}", "{0} baixados", "faltam ~{0} s", "faltam ~{0} min",
+      "Fila", "Baixar", "Processar", "Baixar MP3", "✓ Salvo", "Minimizar", "Arraste para mover", "Fechar",
+      "Buscando os formatos reais…", "Verificando este link no NoBsDL", "Vídeo · MP4", "Áudio · MP3",
+      "Nenhum formato para download foi encontrado para este link.", "🔒 Qualidades bloqueadas exigem uma ", "chave NoBsDL Supporter",
+      " paga. Todo o resto é grátis.", "✓ Supporter ativo neste navegador.", "🔒 Supporter",
+      "✅ Arquivo pronto. Seu navegador está salvando — confira seus downloads.", "Baixar outro formato",
+      "Não começou? Salvar de novo", "Tentar novamente", "Atualizar formatos", "Opções Supporter", "Algo deu errado.",
+      "Sem pop-ups. Sem redirecionamentos forçados.", "Abrir no NoBsDL ↗", "Qual clipe?", "Esse não é um link de vídeo compatível.",
+      "{0} não mostra qual clipe está tocando nesta página. Toque em Compartilhar → Copiar link no clipe e cole aqui:",
+      "Role até o clipe aparecer na tela e tente de novo, ou cole o link dele:", "Ir", "Link do vídeo",
+      "Está demorando mais que o normal. Tente de novo ou abra no NoBsDL.",
+      "Funcionando bem? Uma avaliação rápida ajuda outras pessoas a encontrá-lo. ", "Avaliar ★", "Agora não", "Baixar este vídeo com o NoBsDL",
+      "Não foi possível conectar ao NoBsDL. Verifique sua conexão.", "O NoBsDL demorou demais para responder. Tente de novo.",
+      "O NoBsDL não conseguiu processar este link.", "O NoBsDL não está disponível no seu país.",
+      "O NoBsDL retornou uma resposta inesperada. Tente de novo.", "O NoBsDL retornou um link de arquivo inesperado.", "Feed do {0}",
+      "Ativar/desativar os botões nos vídeos", "Progresso do download",
+    ],
+    fr: [
+      "En attente d’un créneau de téléchargement", "Connexion à {0}", "Téléchargement sur NoBsDL", "Fusion de la vidéo et de l’audio",
+      "Conversion en MP3", "Traitement du fichier", "Finalisation", "Prêt", "Démarrage du téléchargement",
+      "Prêt — votre navigateur enregistre le fichier.", "{0} sur {1}", "{0} téléchargés", "~{0} s restantes", "~{0} min restantes",
+      "File", "Télécharger", "Traitement", "Télécharger en MP3", "✓ Enregistré", "Réduire", "Faites glisser pour déplacer", "Fermer",
+      "Recherche des vrais formats…", "Vérification de ce lien sur NoBsDL", "Vidéo · MP4", "Audio · MP3",
+      "Aucun format téléchargeable trouvé pour ce lien.", "🔒 Les qualités verrouillées nécessitent une ", "clé NoBsDL Supporter",
+      " payante. Tout le reste est gratuit.", "✓ Supporter actif dans ce navigateur.", "🔒 Supporter",
+      "✅ Fichier prêt. Votre navigateur l’enregistre — vérifiez vos téléchargements.", "Télécharger un autre format",
+      "Rien ne démarre ? Enregistrer à nouveau", "Réessayer", "Actualiser les formats", "Options Supporter", "Une erreur s’est produite.",
+      "Sans pop-up. Sans redirection forcée.", "Ouvrir sur NoBsDL ↗", "Quel clip ?", "Ce lien vidéo n’est pas pris en charge.",
+      "{0} n’indique pas quel clip est lu sur cette page. Touchez Partager → Copier le lien sur le clip et collez-le ici :",
+      "Faites défiler jusqu’à ce que le clip soit à l’écran et réessayez, ou collez son lien :", "OK", "Lien de la vidéo",
+      "C’est plus long que d’habitude. Réessayez ou ouvrez-le sur NoBsDL.",
+      "Ça marche bien ? Une note rapide aide d’autres personnes à le trouver. ", "Noter ★", "Plus tard", "Télécharger cette vidéo avec NoBsDL",
+      "Impossible de joindre NoBsDL. Vérifiez votre connexion.", "NoBsDL a mis trop de temps à répondre. Réessayez.",
+      "NoBsDL n’a pas pu traiter ce lien.", "NoBsDL n’est pas disponible dans votre pays.",
+      "NoBsDL a renvoyé une réponse inattendue. Réessayez.", "NoBsDL a renvoyé un lien de fichier inattendu.", "Fil {0}",
+      "Activer/désactiver les boutons sur les vidéos", "Progression du téléchargement",
+    ],
+    de: [
+      "Warte auf einen freien Download-Platz", "Verbinde mit {0}", "Lädt auf NoBsDL herunter", "Video und Audio werden zusammengefügt",
+      "Umwandlung in MP3", "Datei wird verarbeitet", "Wird abgeschlossen", "Fertig", "Download wird gestartet",
+      "Fertig – dein Browser speichert die Datei.", "{0} von {1}", "{0} heruntergeladen", "noch ~{0} s", "noch ~{0} Min.",
+      "Warteschlange", "Herunterladen", "Verarbeiten", "MP3 herunterladen", "✓ Gespeichert", "Minimieren", "Zum Verschieben ziehen", "Schließen",
+      "Echte Formate werden gesucht…", "Link wird auf NoBsDL geprüft", "Video · MP4", "Audio · MP3",
+      "Für diesen Link wurde kein herunterladbares Format gefunden.", "🔒 Gesperrte Qualitäten brauchen einen kostenpflichtigen ", "NoBsDL-Supporter-Schlüssel",
+      ". Alles andere ist kostenlos.", "✓ Supporter in diesem Browser aktiv.", "🔒 Supporter",
+      "✅ Datei fertig. Dein Browser speichert sie – sieh in deinen Downloads nach.", "Anderes Format herunterladen",
+      "Nicht gestartet? Erneut speichern", "Erneut versuchen", "Formate aktualisieren", "Supporter-Optionen", "Etwas ist schiefgelaufen.",
+      "Keine Pop-ups. Keine erzwungenen Weiterleitungen.", "Auf NoBsDL öffnen ↗", "Welcher Clip?", "Das ist kein unterstützter Videolink.",
+      "{0} zeigt nicht, welcher Clip auf dieser Seite läuft. Tippe beim Clip auf Teilen → Link kopieren und füge ihn hier ein:",
+      "Scrolle, bis der Clip auf dem Bildschirm ist, und versuche es erneut – oder füge seinen Link ein:", "Los", "Videolink",
+      "Das dauert ungewöhnlich lange. Versuche es erneut oder öffne es auf NoBsDL.",
+      "Läuft alles? Eine kurze Bewertung hilft anderen, es zu finden. ", "Bewerten ★", "Später", "Dieses Video mit NoBsDL herunterladen",
+      "NoBsDL ist nicht erreichbar. Prüfe deine Verbindung.", "NoBsDL hat zu lange gebraucht. Versuche es erneut.",
+      "NoBsDL konnte diesen Link nicht verarbeiten.", "NoBsDL ist in deinem Land nicht verfügbar.",
+      "NoBsDL hat eine unerwartete Antwort geliefert. Versuche es erneut.", "NoBsDL hat einen unerwarteten Dateilink geliefert.", "{0}-Feed",
+      "Buttons auf Videos ein/aus", "Download-Fortschritt",
+    ],
+    it: [
+      "In attesa di uno slot di download libero", "Connessione a {0}", "Download su NoBsDL", "Unione di video e audio",
+      "Conversione in MP3", "Elaborazione del file", "Quasi fatto", "Pronto", "Avvio del download",
+      "Pronto: il browser sta salvando il file.", "{0} di {1}", "{0} scaricati", "~{0} s rimanenti", "~{0} min rimanenti",
+      "Coda", "Scarica", "Elabora", "Scarica MP3", "✓ Salvato", "Riduci", "Trascina per spostare", "Chiudi",
+      "Ricerca dei formati reali…", "Verifica del link su NoBsDL", "Video · MP4", "Audio · MP3",
+      "Nessun formato scaricabile trovato per questo link.", "🔒 Le qualità bloccate richiedono una ", "chiave NoBsDL Supporter",
+      " a pagamento. Tutto il resto è gratis.", "✓ Supporter attivo in questo browser.", "🔒 Supporter",
+      "✅ File pronto. Il browser lo sta salvando: controlla i download.", "Scarica un altro formato",
+      "Non è partito? Salva di nuovo", "Riprova", "Aggiorna i formati", "Opzioni Supporter", "Qualcosa è andato storto.",
+      "Niente pop-up. Nessun reindirizzamento forzato.", "Apri su NoBsDL ↗", "Quale clip?", "Questo non è un link video supportato.",
+      "{0} non mostra quale clip è in riproduzione su questa pagina. Tocca Condividi → Copia link sulla clip e incollalo qui:",
+      "Scorri finché la clip è sullo schermo e riprova, oppure incolla il suo link:", "Vai", "Link del video",
+      "Ci sta mettendo più del solito. Riprova o aprilo su NoBsDL.",
+      "Funziona bene? Una valutazione veloce aiuta altri a trovarlo. ", "Valuta ★", "Non ora", "Scarica questo video con NoBsDL",
+      "Impossibile raggiungere NoBsDL. Controlla la connessione.", "NoBsDL ha impiegato troppo a rispondere. Riprova.",
+      "NoBsDL non è riuscito a elaborare questo link.", "NoBsDL non è disponibile nel tuo paese.",
+      "NoBsDL ha restituito una risposta inattesa. Riprova.", "NoBsDL ha restituito un link al file inatteso.", "Feed di {0}",
+      "Attiva/disattiva i pulsanti sui video", "Avanzamento del download",
+    ],
+    pl: [
+      "Czekam na wolne miejsce pobierania", "Łączenie z {0}", "Pobieranie na NoBsDL", "Łączenie obrazu i dźwięku",
+      "Konwersja do MP3", "Przetwarzanie pliku", "Kończenie", "Gotowe", "Rozpoczynanie pobierania",
+      "Gotowe — przeglądarka zapisuje plik.", "{0} z {1}", "Pobrano {0}", "zostało ~{0} s", "zostało ~{0} min",
+      "Kolejka", "Pobierz", "Przetwarzanie", "Pobierz MP3", "✓ Zapisano", "Minimalizuj", "Przeciągnij, aby przesunąć", "Zamknij",
+      "Szukam prawdziwych formatów…", "Sprawdzam ten link w NoBsDL", "Wideo · MP4", "Audio · MP3",
+      "Nie znaleziono formatu do pobrania dla tego linku.", "🔒 Zablokowane jakości wymagają płatnego ", "klucza NoBsDL Supporter",
+      ". Wszystko inne jest darmowe.", "✓ Supporter aktywny w tej przeglądarce.", "🔒 Supporter",
+      "✅ Plik gotowy. Przeglądarka go zapisuje — sprawdź pobrane pliki.", "Pobierz inny format",
+      "Nie ruszyło? Zapisz ponownie", "Spróbuj ponownie", "Odśwież formaty", "Opcje Supporter", "Coś poszło nie tak.",
+      "Bez wyskakujących okien. Bez wymuszonych przekierowań.", "Otwórz w NoBsDL ↗", "Który klip?", "To nie jest obsługiwany link do wideo.",
+      "{0} nie pokazuje, który klip jest odtwarzany na tej stronie. Stuknij Udostępnij → Kopiuj link przy klipie i wklej go tutaj:",
+      "Przewiń, aż klip będzie na ekranie, i spróbuj ponownie albo wklej jego link:", "Dalej", "Link do wideo",
+      "Trwa to dłużej niż zwykle. Spróbuj ponownie lub otwórz w NoBsDL.",
+      "Działa dobrze? Szybka ocena pomoże innym go znaleźć. ", "Oceń ★", "Nie teraz", "Pobierz to wideo przez NoBsDL",
+      "Brak połączenia z NoBsDL. Sprawdź połączenie.", "NoBsDL odpowiadał zbyt długo. Spróbuj ponownie.",
+      "NoBsDL nie mógł przetworzyć tego linku.", "NoBsDL nie jest dostępny w Twoim kraju.",
+      "NoBsDL zwrócił nieoczekiwaną odpowiedź. Spróbuj ponownie.", "NoBsDL zwrócił nieoczekiwany link do pliku.", "Kanał {0}",
+      "Włącz/wyłącz przyciski na filmach", "Postęp pobierania",
+    ],
+    tr: [
+      "Boş bir indirme yeri bekleniyor", "{0} sitesine bağlanılıyor", "NoBsDL'de indiriliyor", "Video ve ses birleştiriliyor",
+      "MP3'e dönüştürülüyor", "Dosya işleniyor", "Bitiriliyor", "Hazır", "İndirme başlatılıyor",
+      "Hazır — tarayıcınız dosyayı kaydediyor.", "{0} / {1}", "{0} indirildi", "~{0} sn kaldı", "~{0} dk kaldı",
+      "Sıra", "İndir", "İşle", "MP3 indir", "✓ Kaydedildi", "Küçült", "Taşımak için sürükleyin", "Kapat",
+      "Gerçek formatlar aranıyor…", "Bu bağlantı NoBsDL'de kontrol ediliyor", "Video · MP4", "Ses · MP3",
+      "Bu bağlantı için indirilebilir format bulunamadı.", "🔒 Kilitli kaliteler için ücretli bir ", "NoBsDL Supporter anahtarı",
+      " gerekir. Geri kalan her şey ücretsiz.", "✓ Supporter bu tarayıcıda etkin.", "🔒 Supporter",
+      "✅ Dosya hazır. Tarayıcınız kaydediyor — indirilenlere bakın.", "Başka bir format indir",
+      "Başlamadı mı? Yeniden kaydet", "Tekrar dene", "Formatları yenile", "Supporter seçenekleri", "Bir şeyler ters gitti.",
+      "Açılır pencere yok. Zorla yönlendirme yok.", "NoBsDL'de aç ↗", "Hangi klip?", "Bu desteklenen bir video bağlantısı değil.",
+      "{0} bu sayfada hangi klibin oynadığını göstermiyor. Klipte Paylaş → Bağlantıyı kopyala'ya dokunun ve buraya yapıştırın:",
+      "Klip ekranda görünene kadar kaydırıp tekrar deneyin ya da bağlantısını yapıştırın:", "Git", "Video bağlantısı",
+      "Bu normalden uzun sürüyor. Tekrar deneyin veya NoBsDL'de açın.",
+      "İyi çalışıyor mu? Kısa bir puan, başkalarının da bulmasına yardımcı olur. ", "Puan ver ★", "Şimdi değil", "Bu videoyu NoBsDL ile indir",
+      "NoBsDL'ye ulaşılamıyor. Bağlantınızı kontrol edin.", "NoBsDL çok geç yanıt verdi. Tekrar deneyin.",
+      "NoBsDL bu bağlantıyı işleyemedi.", "NoBsDL ülkenizde kullanılamıyor.",
+      "NoBsDL beklenmeyen bir yanıt verdi. Tekrar deneyin.", "NoBsDL beklenmeyen bir dosya bağlantısı verdi.", "{0} akışı",
+      "Videolardaki düğmeleri aç/kapat", "İndirme ilerlemesi",
+    ],
+    id: [
+      "Menunggu slot unduhan kosong", "Menghubungkan ke {0}", "Mengunduh di NoBsDL", "Menggabungkan video dan audio",
+      "Mengonversi ke MP3", "Memproses file", "Menyelesaikan", "Siap", "Memulai unduhan",
+      "Siap — browser sedang menyimpan file.", "{0} dari {1}", "{0} terunduh", "sisa ~{0} dtk", "sisa ~{0} mnt",
+      "Antre", "Unduh", "Proses", "Unduh MP3", "✓ Tersimpan", "Kecilkan", "Seret untuk memindahkan", "Tutup",
+      "Mencari format asli…", "Memeriksa tautan ini di NoBsDL", "Video · MP4", "Audio · MP3",
+      "Tidak ada format yang bisa diunduh untuk tautan ini.", "🔒 Kualitas yang terkunci memerlukan ", "kunci NoBsDL Supporter",
+      " berbayar. Selebihnya gratis.", "✓ Supporter aktif di browser ini.", "🔒 Supporter",
+      "✅ File siap. Browser sedang menyimpannya — periksa unduhan Anda.", "Unduh format lain",
+      "Tidak mulai? Simpan lagi", "Coba lagi", "Muat ulang format", "Opsi Supporter", "Terjadi kesalahan.",
+      "Tanpa pop-up. Tanpa pengalihan paksa.", "Buka di NoBsDL ↗", "Klip yang mana?", "Itu bukan tautan video yang didukung.",
+      "{0} tidak menunjukkan klip mana yang diputar di halaman ini. Ketuk Bagikan → Salin tautan pada klip lalu tempel di sini:",
+      "Gulir sampai klip terlihat di layar lalu coba lagi, atau tempel tautannya:", "Buka", "Tautan video",
+      "Ini memakan waktu lebih lama dari biasanya. Coba lagi atau buka di NoBsDL.",
+      "Berjalan lancar? Penilaian singkat membantu orang lain menemukannya. ", "Beri nilai ★", "Nanti saja", "Unduh video ini dengan NoBsDL",
+      "Tidak dapat terhubung ke NoBsDL. Periksa koneksi Anda.", "NoBsDL terlalu lama merespons. Coba lagi.",
+      "NoBsDL tidak dapat memproses tautan ini.", "NoBsDL tidak tersedia di negara Anda.",
+      "NoBsDL memberikan respons yang tidak terduga. Coba lagi.", "NoBsDL memberikan tautan file yang tidak terduga.", "Feed {0}",
+      "Aktifkan/nonaktifkan tombol pada video", "Progres unduhan",
+    ],
+    vi: [
+      "Đang chờ lượt tải trống", "Đang kết nối tới {0}", "Đang tải trên NoBsDL", "Đang ghép video và âm thanh",
+      "Đang chuyển sang MP3", "Đang xử lý tệp", "Sắp xong", "Xong", "Đang bắt đầu tải",
+      "Xong — trình duyệt đang lưu tệp.", "{0} / {1}", "Đã tải {0}", "còn ~{0} giây", "còn ~{0} phút",
+      "Hàng chờ", "Tải xuống", "Xử lý", "Tải MP3", "✓ Đã lưu", "Thu nhỏ", "Kéo để di chuyển", "Đóng",
+      "Đang tìm định dạng thật…", "Đang kiểm tra liên kết trên NoBsDL", "Video · MP4", "Âm thanh · MP3",
+      "Không tìm thấy định dạng tải được cho liên kết này.", "🔒 Chất lượng bị khóa cần ", "khóa NoBsDL Supporter",
+      " trả phí. Mọi thứ khác đều miễn phí.", "✓ Supporter đang hoạt động trên trình duyệt này.", "🔒 Supporter",
+      "✅ Tệp đã sẵn sàng. Trình duyệt đang lưu — hãy xem mục tải xuống.", "Tải định dạng khác",
+      "Chưa bắt đầu? Lưu lại", "Thử lại", "Làm mới định dạng", "Tùy chọn Supporter", "Đã xảy ra lỗi.",
+      "Không pop-up. Không chuyển hướng ép buộc.", "Mở trên NoBsDL ↗", "Clip nào?", "Đây không phải liên kết video được hỗ trợ.",
+      "{0} không cho biết clip nào đang phát trên trang này. Nhấn Chia sẻ → Sao chép liên kết trên clip rồi dán vào đây:",
+      "Cuộn đến khi clip hiện trên màn hình rồi thử lại, hoặc dán liên kết của nó:", "Đi", "Liên kết video",
+      "Việc này lâu hơn bình thường. Hãy thử lại hoặc mở trên NoBsDL.",
+      "Dùng tốt chứ? Một đánh giá nhanh giúp người khác tìm thấy nó. ", "Đánh giá ★", "Để sau", "Tải video này bằng NoBsDL",
+      "Không kết nối được NoBsDL. Hãy kiểm tra kết nối.", "NoBsDL phản hồi quá lâu. Hãy thử lại.",
+      "NoBsDL không xử lý được liên kết này.", "NoBsDL không khả dụng ở quốc gia của bạn.",
+      "NoBsDL trả về phản hồi không mong đợi. Hãy thử lại.", "NoBsDL trả về liên kết tệp không mong đợi.", "Bảng tin {0}",
+      "Bật/tắt nút trên video", "Tiến trình tải",
+    ],
+    ja: [
+      "空きスロットを待っています", "{0} に接続中", "NoBsDL でダウンロード中", "映像と音声を結合中",
+      "MP3 に変換中", "ファイルを処理中", "仕上げ中", "完了", "ダウンロードを開始しています",
+      "完了 — ブラウザーがファイルを保存しています。", "{0} / {1}", "{0} ダウンロード済み", "残り約 {0} 秒", "残り約 {0} 分",
+      "待機", "ダウンロード", "処理", "MP3 をダウンロード", "✓ 保存済み", "最小化", "ドラッグで移動", "閉じる",
+      "実際の形式を探しています…", "NoBsDL でこのリンクを確認中", "動画 · MP4", "音声 · MP3",
+      "このリンクにはダウンロードできる形式が見つかりませんでした。", "🔒 ロックされた画質には有料の", "NoBsDL Supporter キー",
+      "が必要です。それ以外はすべて無料です。", "✓ このブラウザーで Supporter が有効です。", "🔒 Supporter",
+      "✅ ファイルの準備ができました。ブラウザーが保存中です — ダウンロードを確認してください。", "別の形式をダウンロード",
+      "始まらない場合はもう一度保存", "再試行", "形式を更新", "Supporter のオプション", "問題が発生しました。",
+      "ポップアップなし。強制リダイレクトなし。", "NoBsDL で開く ↗", "どのクリップ？", "対応していない動画リンクです。",
+      "{0} はこのページで再生中のクリップを表示しません。クリップの「共有」→「リンクをコピー」をタップして、ここに貼り付けてください：",
+      "クリップが画面に表示されるまでスクロールしてもう一度試すか、リンクを貼り付けてください：", "移動", "動画のリンク",
+      "いつもより時間がかかっています。もう一度試すか NoBsDL で開いてください。",
+      "うまく動いていますか？評価をいただくと、ほかの人が見つけやすくなります。", "評価する ★", "今はしない", "この動画を NoBsDL でダウンロード",
+      "NoBsDL に接続できません。接続を確認してください。", "NoBsDL の応答に時間がかかりすぎました。もう一度お試しください。",
+      "NoBsDL はこのリンクを処理できませんでした。", "NoBsDL はお住まいの国では利用できません。",
+      "NoBsDL から予期しない応答がありました。もう一度お試しください。", "NoBsDL から予期しないファイルリンクが返されました。", "{0} のフィード",
+      "動画上のボタンをオン/オフ", "ダウンロードの進行状況",
+    ],
+    ko: [
+      "빈 다운로드 슬롯을 기다리는 중", "{0}에 연결 중", "NoBsDL에서 다운로드 중", "영상과 오디오 합치는 중",
+      "MP3로 변환 중", "파일 처리 중", "마무리 중", "완료", "다운로드 시작 중",
+      "완료 — 브라우저가 파일을 저장하고 있습니다.", "{0} / {1}", "{0} 다운로드됨", "약 {0}초 남음", "약 {0}분 남음",
+      "대기", "다운로드", "처리", "MP3 다운로드", "✓ 저장됨", "최소화", "드래그하여 이동", "닫기",
+      "실제 형식을 찾는 중…", "NoBsDL에서 이 링크를 확인하는 중", "동영상 · MP4", "오디오 · MP3",
+      "이 링크에서 다운로드할 수 있는 형식을 찾지 못했습니다.", "🔒 잠긴 화질에는 유료 ", "NoBsDL Supporter 키",
+      "가 필요합니다. 나머지는 모두 무료입니다.", "✓ 이 브라우저에서 Supporter가 활성화되어 있습니다.", "🔒 Supporter",
+      "✅ 파일이 준비되었습니다. 브라우저가 저장 중입니다 — 다운로드 폴더를 확인하세요.", "다른 형식 다운로드",
+      "시작되지 않았나요? 다시 저장", "다시 시도", "형식 새로 고침", "Supporter 옵션", "문제가 발생했습니다.",
+      "팝업 없음. 강제 리디렉션 없음.", "NoBsDL에서 열기 ↗", "어떤 클립인가요?", "지원되는 동영상 링크가 아닙니다.",
+      "{0}은(는) 이 페이지에서 재생 중인 클립을 표시하지 않습니다. 클립에서 공유 → 링크 복사를 누른 뒤 여기에 붙여 넣으세요:",
+      "클립이 화면에 보일 때까지 스크롤한 뒤 다시 시도하거나 링크를 붙여 넣으세요:", "이동", "동영상 링크",
+      "평소보다 오래 걸리고 있습니다. 다시 시도하거나 NoBsDL에서 여세요.",
+      "잘 작동하나요? 간단한 평가가 다른 사람들이 찾는 데 도움이 됩니다. ", "평가하기 ★", "나중에", "이 동영상을 NoBsDL로 다운로드",
+      "NoBsDL에 연결할 수 없습니다. 연결을 확인하세요.", "NoBsDL 응답이 너무 오래 걸렸습니다. 다시 시도하세요.",
+      "NoBsDL이 이 링크를 처리하지 못했습니다.", "NoBsDL은 현재 국가에서 사용할 수 없습니다.",
+      "NoBsDL이 예상치 못한 응답을 보냈습니다. 다시 시도하세요.", "NoBsDL이 예상치 못한 파일 링크를 보냈습니다.", "{0} 피드",
+      "동영상 위 버튼 켜기/끄기", "다운로드 진행률",
+    ],
+  };
+
+  // The interface language: the first of the browser's languages that has
+  // a translation (Chinese by script), else English.
+  function pickLocale(languages) {
+    for (const raw of languages || []) {
+      const lang = String(raw || "").toLowerCase();
+      if (lang.startsWith("zh")) return /-(?:tw|hk|mo|hant)\b/.test(lang) ? "zh-TW" : "zh-CN";
+      const base = lang.split("-")[0];
+      if (base === "en") return "en";
+      if (UI_TEXT[base]) return base;
+    }
+    return "en";
+  }
+
+  let uiLocale = "en";
+  try {
+    if (typeof navigator === "object" && navigator) uiLocale = pickLocale(navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language]);
+  } catch (_) { /* English */ }
+
+  // The interface text for an English template, with {0}/{1} filled in.
+  function t(text, ...args) {
+    const list = UI_TEXT[uiLocale];
+    const index = list ? UI_KEYS.indexOf(text) : -1;
+    let out = index >= 0 && list[index] ? list[index] : text;
+    args.forEach((value, i) => { out = out.split("{" + i + "}").join(String(value)); });
+    return out;
+  }
+
+  function setLocale(locale) {
+    uiLocale = locale === "en" || UI_TEXT[locale] ? locale : "en";
+  }
 
   function hostIs(host, suffix) {
     return host === suffix || host.endsWith("." + suffix);
@@ -734,7 +1093,7 @@
   }
 
   function formatEta(seconds) {
-    return seconds < 60 ? "~" + Math.max(1, seconds) + "s left" : "~" + Math.round(seconds / 60) + " min left";
+    return seconds < 60 ? t("~{0}s left", Math.max(1, seconds)) : t("~{0} min left", Math.round(seconds / 60));
   }
 
   function formatDuration(seconds) {
@@ -749,14 +1108,14 @@
 
   function phaseLabel(phase, platformName, format) {
     switch (phase) {
-      case "queued": return "Waiting for a free download slot";
-      case "connecting": return "Connecting to " + platformName;
-      case "downloading": return "Downloading on NoBsDL";
-      case "merging": return "Merging video and audio";
-      case "converting": return format === "mp3" ? "Converting to MP3" : "Processing the file";
-      case "finalizing": return "Finishing up";
-      case "ready": return "Ready";
-      default: return "Starting your download";
+      case "queued": return t("Waiting for a free download slot");
+      case "connecting": return t("Connecting to {0}", platformName);
+      case "downloading": return t("Downloading on NoBsDL");
+      case "merging": return t("Merging video and audio");
+      case "converting": return format === "mp3" ? t("Converting to MP3") : t("Processing the file");
+      case "finalizing": return t("Finishing up");
+      case "ready": return t("Ready");
+      default: return t("Starting your download");
     }
   }
 
@@ -773,13 +1132,13 @@
 
     let text;
     if (phase === "ready") {
-      text = "Ready — your browser is saving the file.";
+      text = t("Ready — your browser is saving the file.");
     } else if (phase === "downloading" && p.downloaded_bytes) {
       const parts = [];
       if (fraction !== null) parts.push(Math.floor(fraction * 100) + "%");
       parts.push(fraction !== null && p.total_bytes
-        ? formatBytes(p.downloaded_bytes) + " of " + formatBytes(p.total_bytes)
-        : formatBytes(p.downloaded_bytes) + " downloaded");
+        ? t("{0} of {1}", formatBytes(p.downloaded_bytes), formatBytes(p.total_bytes))
+        : t("{0} downloaded", formatBytes(p.downloaded_bytes)));
       if (p.speed_bps) parts.push(formatSpeed(p.speed_bps));
       if (typeof p.eta_seconds === "number" && p.eta_seconds > 0) parts.push(formatEta(p.eta_seconds));
       text = parts.join(" · ");
@@ -804,7 +1163,7 @@
 
   function humanMessage(data) {
     const texts = [data.message, data.detail, data.error].filter((v) => typeof v === "string" && v.trim());
-    return texts.find((v) => /\s/.test(v.trim())) || "NoBsDL couldn’t process this link.";
+    return texts.find((v) => /\s/.test(v.trim())) || t("NoBsDL couldn’t process this link.");
   }
 
   function apiGet(path, timeout) {
@@ -830,7 +1189,7 @@
             return;
           }
           if (status === 451 && !Object.keys(data).length) {
-            reject(Object.assign(new Error("NoBsDL isn’t available in your country."), {status}));
+            reject(Object.assign(new Error(t("NoBsDL isn’t available in your country.")), {status}));
             return;
           }
           reject(Object.assign(new Error(humanMessage(data).slice(0, 300)), {
@@ -840,8 +1199,8 @@
             retryable: status === 429 || status >= 500,
           }));
         },
-        onerror: () => fail("Can’t reach NoBsDL. Check your connection."),
-        ontimeout: () => fail("NoBsDL took too long to answer. Try again."),
+        onerror: () => fail(t("Can’t reach NoBsDL. Check your connection.")),
+        ontimeout: () => fail(t("NoBsDL took too long to answer. Try again.")),
       });
     });
   }
@@ -1051,7 +1410,7 @@
 
     const targetPage = () => (state.target ? state.target.page : matchedPage);
     const primaryOutput = () => targetPage().outputs[0];
-    const defaultLabel = () => (targetPage().outputs === AUDIO_ONLY ? "Download MP3" : "Download");
+    const defaultLabel = () => (targetPage().outputs === AUDIO_ONLY ? t("Download MP3") : t("Download"));
     const compactUi = () => state.mode === "compact" && inPage;
 
     function place() {
@@ -1119,7 +1478,7 @@
     function paintFab() {
       const button = state.primaryButton;
       if (!button || !button.classList.contains("fab")) return;
-      const label = state.dockLabel === "✓ Saved" ? "✓" : state.dockLabel;
+      const label = state.dockLabel === t("✓ Saved") ? "✓" : state.dockLabel;
       button.replaceChildren(label ? document.createTextNode(label) : el("span", {class: "ico", "aria-hidden": "true", text: "↓"}));
       const measured = typeof state.progress === "number";
       button.classList.toggle("ring", measured);
@@ -1157,7 +1516,7 @@
         return;
       }
       dock.removeAttribute("style");
-      const brand = el("div", {class: "brand", title: "Drag to move"}, [el("strong", {text: "↓ NoBsDL"}), el("small", {text: matchedPage.feed ? matchedPage.name + " feed" : matchedPage.name})]);
+      const brand = el("div", {class: "brand", title: t("Drag to move")}, [el("strong", {text: "↓ NoBsDL"}), el("small", {text: matchedPage.feed ? t("{0} feed", matchedPage.name) : matchedPage.name})]);
       makeDraggable(brand);
       const actions = el("div", {class: "actions"});
       if (inPage) {
@@ -1170,7 +1529,7 @@
         for (const output of matchedPage.outputs) actions.append(createAction(matchedPage, sourceUrlFor(currentUrl, matchedPage), output));
       }
       actions.append(el("button", {
-        class: "btn btn-icon", type: "button", title: "Minimize", "aria-label": "Minimize the NoBsDL button", text: "–",
+        class: "btn btn-icon", type: "button", title: t("Minimize"), "aria-label": "Minimize the NoBsDL button", text: "–",
         onclick: () => { closePanel(); state.collapsed = true; writeCollapsed(true); renderDock(); },
       }));
       dock.append(brand, actions);
@@ -1179,15 +1538,15 @@
     function header(titleText, subText) {
       return el("div", {class: "head"}, [
         el("div", {class: "meta"}, [el("p", {class: "title", text: titleText}), subText ? el("div", {class: "sub", text: subText}) : null]),
-        el("button", {class: "btn btn-icon", type: "button", "aria-label": "Close", text: "✕", onclick: closePanel}),
+        el("button", {class: "btn btn-icon", type: "button", "aria-label": t("Close"), text: "✕", onclick: closePanel}),
       ]);
     }
 
     function footer() {
       const href = state.target ? targetUrl(state.target.page, state.target.url, primaryOutput()) : NOBSDL_ORIGIN + matchedPage.route;
       return el("div", {class: "foot"}, [
-        el("span", {text: "No popups. No forced redirects."}),
-        externalLink(href, "Open on NoBsDL ↗"),
+        el("span", {text: t("No popups. No forced redirects.")}),
+        externalLink(href, t("Open on NoBsDL ↗")),
       ]);
     }
 
@@ -1268,13 +1627,13 @@
     // mobile web feed), or the clip scrolled away: ask for the link instead.
     function showLinkPrompt(reason) {
       state.keepView = false;
-      const input = el("input", {type: "url", inputmode: "url", autocomplete: "off", autocapitalize: "off", spellcheck: "false", placeholder: "https://…", "aria-label": "Video link"});
+      const input = el("input", {type: "url", inputmode: "url", autocomplete: "off", autocapitalize: "off", spellcheck: "false", placeholder: "https://…", "aria-label": t("Video link")});
       const message = el("p", {class: "hint", role: "status"});
       const use = () => {
         const value = input.value.trim();
         const pasted = pageFor(value);
         if (!pasted || pasted.workflow === "playlist") {
-          message.textContent = "That isn’t a supported video link.";
+          message.textContent = t("That isn’t a supported video link.");
           return;
         }
         state.target = {url: sourceUrlFor(value, pasted), page: pasted};
@@ -1284,28 +1643,28 @@
       };
       input.addEventListener("keydown", (event) => { if (event.key === "Enter") use(); });
       const text = reason === "unreadable"
-        ? matchedPage.name + " doesn’t show which clip is playing on this page. Tap Share → Copy link on the clip and paste it here:"
-        : "Scroll until the clip is on screen and try again, or paste its link:";
-      show([header(matchedPage.name, "Which clip?"),
-        el("div", {class: "body"}, [el("p", {class: "hint", text}), el("div", {class: "paste"}, [input, el("button", {class: "btn btn-primary", type: "button", text: "Go", onclick: use})]), message]),
+        ? t("{0} doesn’t show which clip is playing on this page. Tap Share → Copy link on the clip and paste it here:", matchedPage.name)
+        : t("Scroll until the clip is on screen and try again, or paste its link:");
+      show([header(matchedPage.name, t("Which clip?")),
+        el("div", {class: "body"}, [el("p", {class: "hint", text}), el("div", {class: "paste"}, [input, el("button", {class: "btn btn-primary", type: "button", text: t("Go"), onclick: use})]), message]),
         footer()]);
     }
 
     function showError(error, retry) {
       state.keepView = true;
       const actions = el("div", {class: "row"});
-      if (retry) actions.append(el("button", {class: "btn btn-primary", type: "button", text: error && error.refreshFormats ? "Refresh formats" : "Try again", onclick: retry}));
-      if (error && error.supporterCta) actions.append(externalLink(NOBSDL_ORIGIN + "/supporter", "Supporter options", "btn btn-ghost"));
+      if (retry) actions.append(el("button", {class: "btn btn-primary", type: "button", text: error && error.refreshFormats ? t("Refresh formats") : t("Try again"), onclick: retry}));
+      if (error && error.supporterCta) actions.append(externalLink(NOBSDL_ORIGIN + "/supporter", t("Supporter options"), "btn btn-ghost"));
       show([header(state.info ? state.info.title || targetPage().name : targetPage().name),
-        el("div", {class: "body"}, [el("div", {class: "error", role: "alert", text: (error && error.message) || "Something went wrong."}), actions]),
+        el("div", {class: "body"}, [el("div", {class: "error", role: "alert", text: (error && error.message) || t("Something went wrong.")}), actions]),
         footer()]);
     }
 
     async function loadFormats() {
       const token = ++state.token;
       state.keepView = false;
-      show([header(targetPage().name, "Finding the real formats…"),
-        el("div", {class: "body"}, [el("div", {class: "spinner", "aria-hidden": "true"}), el("p", {class: "center", text: "Checking this link on NoBsDL"})]),
+      show([header(targetPage().name, t("Finding the real formats…")),
+        el("div", {class: "body"}, [el("div", {class: "spinner", "aria-hidden": "true"}), el("p", {class: "center", text: t("Checking this link on NoBsDL")})]),
         footer()]);
       try {
         const data = await apiGet("/api/video-info?url=" + encodeURIComponent(state.target.url) + "&intent=" + primaryOutput(), 60000);
@@ -1321,7 +1680,7 @@
 
     function choiceCard(choice) {
       const badge = qualityBadge(choice);
-      const sub = choice.locked ? "🔒 Supporter" : [formatSize(choice.sizeMb), choice.fps ? choice.fps + " fps" : ""].filter(Boolean).join(" · ") || (choice.family === "audio" ? "MP3" : "MP4");
+      const sub = choice.locked ? t("🔒 Supporter") : [formatSize(choice.sizeMb), choice.fps ? choice.fps + " fps" : ""].filter(Boolean).join(" · ") || (choice.family === "audio" ? "MP3" : "MP4");
       const label = choice.title + " " + choice.format.toUpperCase() + (choice.sizeMb ? ", " + formatSize(choice.sizeMb) : "") + (choice.locked ? ", needs NoBsDL Supporter" : "");
       return el("button", {
         class: "card" + (choice.locked ? " locked" : ""), type: "button", "aria-label": label,
@@ -1335,17 +1694,17 @@
       state.keepView = false;
       const info = state.info || {};
       const choices = state.choices || [];
-      const families = [["video", "Video · MP4"], ["audio", "Audio · MP3"]];
+      const families = [["video", t("Video · MP4")], ["audio", t("Audio · MP3")]];
       if (primaryOutput() === "mp3") families.reverse();
       const sections = families
         .map(([family, heading]) => [heading, choices.filter((c) => c.family === family)])
         .filter(([, list]) => list.length)
         .map(([heading, list]) => el("div", {class: "section"}, [el("h4", {text: heading}), el("div", {class: "grid"}, list.map(choiceCard))]));
-      const body = el("div", {class: "body"}, sections.length ? sections : [el("p", {class: "center", text: "No downloadable format was found for this link."})]);
+      const body = el("div", {class: "body"}, sections.length ? sections : [el("p", {class: "center", text: t("No downloadable format was found for this link.")})]);
       if (choices.some((c) => c.locked)) {
-        body.append(el("p", {class: "note"}, ["🔒 Locked qualities need a paid ", externalLink(NOBSDL_ORIGIN + "/supporter", "NoBsDL Supporter key"), ". Everything else is free."]));
+        body.append(el("p", {class: "note"}, [t("🔒 Locked qualities need a paid "), externalLink(NOBSDL_ORIGIN + "/supporter", t("NoBsDL Supporter key")), t(". Everything else is free.")]));
       } else if (info.is_supporter) {
-        body.append(el("p", {class: "note", text: "✓ Supporter active on this browser."}));
+        body.append(el("p", {class: "note", text: t("✓ Supporter active on this browser.")}));
       }
       const sub = [targetPage().name, formatDuration(info.duration)].filter(Boolean).join(" · ");
       show([header(info.title || targetPage().name, sub), body, footer()]);
@@ -1360,10 +1719,10 @@
       const jobPage = targetPage();
       const sourceUrl = state.target.url;
       const title = (state.info && state.info.title) || jobPage.name;
-      const steps = el("ol", {class: "steps", "aria-label": "Download progress"},
-        ["Queue", "Download", "Process", "Ready"].map((label) => el("li", {}, [el("i", {"aria-hidden": "true"}), label])));
+      const steps = el("ol", {class: "steps", "aria-label": t("Download progress")},
+        ["Queue", "Download", "Process", "Ready"].map((label) => el("li", {}, [el("i", {"aria-hidden": "true"}), t(label)])));
       const bar = el("div", {class: "bar waiting"});
-      const track = el("div", {class: "track", role: "progressbar", "aria-label": "Download progress", "aria-valuemin": "0", "aria-valuemax": "100"}, [bar]);
+      const track = el("div", {class: "track", role: "progressbar", "aria-label": t("Download progress"), "aria-valuemin": "0", "aria-valuemax": "100"}, [bar]);
       const line = el("p", {class: "status-line", "aria-live": "polite"});
       const extra = el("div");
       show([header(title, choice.title + " · " + choice.format.toUpperCase()), el("div", {class: "body"}, [steps, track, line, extra]), footer()]);
@@ -1384,7 +1743,7 @@
         if (view.mode === "measured" || view.mode === "done") track.setAttribute("aria-valuenow", String(view.mode === "done" ? 100 : Math.floor(view.fraction * 100)));
         else track.removeAttribute("aria-valuenow");
         line.textContent = view.text;
-        if (phase === "ready") setDockLabel("✓ Saved", 1);
+        if (phase === "ready") setDockLabel(t("✓ Saved"), 1);
         else if (view.mode === "measured") setDockLabel(Math.floor(view.fraction * 100) + "%", view.fraction);
         else setDockLabel("…", null);
       };
@@ -1405,7 +1764,7 @@
         const job = await apiGet(downloadParams(choice, sourceUrl), 30000);
         if (token !== state.token) return;
         const statusPath = safeStatusPath(job.status_url);
-        if (!statusPath) throw Object.assign(new Error("NoBsDL returned an unexpected answer. Try again."), {status: 0});
+        if (!statusPath) throw Object.assign(new Error(t("NoBsDL returned an unexpected answer. Try again.")), {status: 0});
         const deadline = Date.now() + POLL_DEADLINE_MS;
         let misses = 0;
         while (token === state.token && Date.now() < deadline) {
@@ -1422,7 +1781,7 @@
           if (token !== state.token) return;
           if (status.status === "ready") {
             const fileUrl = safeFileUrl(status.direct_url);
-            if (!fileUrl) throw Object.assign(new Error("NoBsDL returned an unexpected file link."), {status: 0});
+            if (!fileUrl) throw Object.assign(new Error(t("NoBsDL returned an unexpected file link.")), {status: 0});
             setPhase("ready", null);
             state.busy = false;
             saveFile(fileUrl, extra);
@@ -1431,7 +1790,7 @@
           setPhase(status.phase || "queued", status.progress || null);
           await new Promise((r) => setTimeout(r, POLL_INTERVAL_MS));
         }
-        if (token === state.token) throw Object.assign(new Error("This is taking unusually long. Try again or open it on NoBsDL."), {status: 0});
+        if (token === state.token) throw Object.assign(new Error(t("This is taking unusually long. Try again or open it on NoBsDL.")), {status: 0});
       } catch (error) {
         clearInterval(ticker);
         if (token !== state.token) return;
@@ -1458,20 +1817,20 @@
       const saved = (Number(readValue("savedCount", 0)) || 0) + 1;
       writeValue("savedCount", saved);
       container.replaceChildren(
-        el("div", {class: "result-ok", role: "status", text: "✅ File ready. Your browser is saving it — check your downloads."}),
+        el("div", {class: "result-ok", role: "status", text: t("✅ File ready. Your browser is saving it — check your downloads.")}),
         el("div", {class: "row"}, [
-          el("button", {class: "btn btn-ghost", type: "button", text: "Download another format", onclick: () => { setDockLabel("", null); showChoices(); }}),
-          externalLink(fileUrl, "Didn’t start? Save again", "btn btn-ghost"),
+          el("button", {class: "btn btn-ghost", type: "button", text: t("Download another format"), onclick: () => { setDockLabel("", null); showChoices(); }}),
+          externalLink(fileUrl, t("Didn’t start? Save again"), "btn btn-ghost"),
         ]),
       );
       if (saved >= 3 && readValue("rateDismissed", false) !== true) {
         // Either answer ends it: following the link or "Not now".
         const dismiss = () => { writeValue("rateDismissed", true); note.remove(); };
-        const rate = externalLink(LISTING_URL + "/feedback", "Rate it ★");
+        const rate = externalLink(LISTING_URL + "/feedback", t("Rate it ★"));
         rate.addEventListener("click", dismiss);
         const note = el("div", {class: "rate"}, [
-          "Working well? A quick rating helps other people find it. ", rate, " · ",
-          el("button", {class: "linkbtn", type: "button", text: "Not now", onclick: dismiss}),
+          t("Working well? A quick rating helps other people find it. "), rate, " · ",
+          el("button", {class: "linkbtn", type: "button", text: t("Not now"), onclick: dismiss}),
         ]);
         container.append(note);
       }
@@ -1516,8 +1875,8 @@
       host.style.setProperty(prop, value, "important");
     }
     const shadow = host.attachShadow({mode: "open"});
-    const button = el("button", {class: "hv", type: "button", title: "Download this video with NoBsDL", "aria-label": "Download this video with NoBsDL"},
-      [el("span", {class: "ico", "aria-hidden": "true", text: "⬇"}), el("span", {text: "Download"})]);
+    const button = el("button", {class: "hv", type: "button", title: t("Download this video with NoBsDL"), "aria-label": t("Download this video with NoBsDL")},
+      [el("span", {class: "ico", "aria-hidden": "true", text: "⬇"}), el("span", {text: t("Download")})]);
     shadow.append(el("style", {text: INLINE_STYLE}), button);
     const cache = new WeakMap();
     let current = null;
@@ -1661,7 +2020,7 @@
     if (hoverDevice() && inlineWanted()) inline = makeInlineButton(openTarget);
     if (typeof GM_registerMenuCommand === "function") {
       try {
-        GM_registerMenuCommand("Turn the buttons on videos on/off", () => {
+        GM_registerMenuCommand(t("Turn the buttons on videos on/off"), () => {
           const on = !inlineWanted();
           writeValue("videoButtons", on);
           if (inline) { inline.destroy(); inline = null; }
@@ -1680,7 +2039,7 @@
   const api = {
     NOBSDL_ORIGIN, VIDEO_AUDIO, pageFor, realYoutubePlaylist, sourceUrlFor, targetUrl,
     normalizeChoices, downloadParams, progressView, safeFileUrl, safeStatusPath, formatSize,
-    feedPageFor, findFeedTarget, readDock, singleVideoUrl,
+    feedPageFor, findFeedTarget, readDock, singleVideoUrl, t, setLocale, pickLocale, UI_KEYS, UI_TEXT,
   };
   if (typeof module === "object" && module.exports) {
     module.exports = api;
