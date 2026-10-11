@@ -6,6 +6,12 @@ Point at a video or thumbnail and click its **⬇ Download** button (or the one
 in the corner), pick a quality, and the file goes straight to your browser's
 downloads — no new tab, no copy-pasting links, no captcha pages.
 
+**🆕 What's new**
+- **2.6** — the panel speaks your language (15 languages, from 简体中文 to Español).
+- **2.5** — Bilibili videos.
+- **2.4** — a ⬇ Download button right on the video or thumbnail you point at.
+- **2.3** — a one-time rating note after your third file (thank you!).
+
 **20 sites:** YouTube (videos, Shorts, MP3, playlists) · TikTok · Instagram Reels ·
 X / Twitter · Facebook · Reddit · SoundCloud (MP3) · Twitch clips & videos ·
 Bilibili · Dailymotion · Pinterest · Bluesky · Streamable · Imgur · 9GAG · Odysee ·
