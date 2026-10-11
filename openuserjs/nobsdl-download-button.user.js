@@ -40,7 +40,7 @@
 // @name:mr      मोफत ऑल-इन-वन व्हिडिओ डाउनलोडर – YouTube, TikTok, Instagram, X, Facebook आणि अधिक (HD MP4/MP3)
 // @name:ne      निःशुल्क अल-इन-वन भिडियो डाउनलोडर – YouTube, TikTok, Instagram, X, Facebook र थप (HD MP4/MP3)
 // @namespace    https://nobsdl.com/
-// @version      2.3.0
+// @version      2.4.0
 // @description  Download videos as MP4 and audio as MP3 without leaving the page: pick a real quality with its file size, watch live progress, and the file goes straight to your downloads. YouTube (incl. Shorts), TikTok, Instagram, X/Twitter, Facebook, Reddit, Twitch clips, Dailymotion, Pinterest, Bluesky, Streamable, Imgur, 9GAG, Odysee, Rutube, OK.ru, SoundCloud, Bandcamp and Mixcloud. In TikTok For You, X and Bluesky feeds it takes the clip on screen. By NoBsDL.
 // @description:ro  Descarcă video MP4 și audio MP3 fără să părăsești pagina. Alegi o calitate reală cu mărimea fișierului, vezi progresul live de pe server, iar fișierul ajunge direct în descărcările browserului. YouTube (inclusiv Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
 // @description:es  Descarga vídeos en MP4 y audio en MP3 sin salir de la página. Elige una calidad real con su tamaño, mira el progreso en vivo y el archivo llega directo a tus descargas. YouTube (incl. Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
@@ -113,6 +113,7 @@
 // @grant        GM.xmlHttpRequest
 // @grant        GM_getValue
 // @grant        GM_setValue
+// @grant        GM_registerMenuCommand
 // @connect      nobsdl.com
 // @antifeature  membership Most downloads are free. Some higher resolutions and files over the free size limits (500 MB video, 100 MB MP3) need a paid NoBsDL Supporter key; those choices are shown with a lock.
 // @run-at       document-idle
@@ -120,6 +121,10 @@
 // ==/UserScript==
 
 // How it works (and what it sends):
+// - With a mouse, a "Download" button appears on the video or thumbnail under
+//   the pointer; it only reads the page (the thumbnail's link, the post around
+//   the video). "Turn the buttons on videos on/off" in the userscript
+//   manager's menu hides them.
 // - Nothing is requested until you open the panel. Then the public media URL
 //   is sent to https://nobsdl.com only, to list its real formats: the page's
 //   own URL, or on a feed (TikTok For You, X, Reddit, Bluesky, 9GAG,
@@ -130,8 +135,9 @@
 // - Requests go to nobsdl.com only. When your userscript manager sends your
 //   nobsdl.com cookies with them, a Supporter session activated on nobsdl.com
 //   unlocks Supporter formats here too. The script stores no key, cookie or
-//   history; only whether you collapsed the widget, where you dragged it, how
-//   many files it has saved and whether you closed the rating note
+//   history; only whether you collapsed the widget, where you dragged it,
+//   whether buttons on videos are on, how many files it has saved and
+//   whether you closed the rating note
 //   (GM_setValue, never sent anywhere).
 // - No analytics, ads or tracking code in this script. If your userscript
 //   manager does not offer GM_xmlhttpRequest, the widget falls back to
@@ -142,6 +148,7 @@
   const NOBSDL_ORIGIN = "https://nobsdl.com";
   const LISTING_URL = "https://greasyfork.org/scripts/597631";
   const WIDGET_ID = "nobsdl-download-widget";
+  const INLINE_ID = "nobsdl-video-button";
   const VIDEO_AUDIO = Object.freeze(["mp4", "mp3"]);
   const AUDIO_ONLY = Object.freeze(["mp3"]);
   const PLAYLIST_ONLY = Object.freeze(["playlist"]);
@@ -485,6 +492,107 @@
       }
       const url = permalinkAround(m.el, platform, base);
       if (url) return {url, el: m.el};
+    }
+    return null;
+  }
+
+  // ── Buttons on videos (2.4.0) ──────────────────────────────────────────
+  // With a mouse, a round button appears on the video or thumbnail under the
+  // pointer and opens the panel for that exact clip: a thumbnail's own link,
+  // the post around a video in a feed (X, Reddit, Instagram, Facebook,
+  // Bluesky, 9GAG, TikTok), or the page itself for its main player. Only the
+  // page is read; nothing is sent until the button is clicked.
+  const INLINE_MIN_WIDTH = 120;
+  const INLINE_MIN_HEIGHT = 66;
+  const THUMB_PLATFORMS = new Set(["youtube", "tiktok", "twitch", "dailymotion", "rutube", "okru", "odysee", "streamable"]);
+  const POST_PLATFORMS = new Set(["twitter", "reddit", "instagram", "facebook", "bluesky", "9gag"]);
+
+  // YouTube's main player counts before its <video> has loaded (a cued
+  // video keeps the element off to the side).
+  const YOUTUBE_MAIN_PLAYERS = new Set(["movie_player", "shorts-player"]);
+
+  function isVideoNode(node) {
+    return node.tagName === "VIDEO" || node.tagName === "SHREDDIT-PLAYER" || node.tagName === "SHREDDIT-PLAYER-2"
+      || YOUTUBE_MAIN_PLAYERS.has(node.id);
+  }
+
+  function bigEnough(rect) {
+    return rect.width >= INLINE_MIN_WIDTH && rect.height >= INLINE_MIN_HEIGHT;
+  }
+
+  // The single video a page is about: a YouTube watch link keeps only its
+  // video id (no playlist, tracking or start-time parameters).
+  function singleVideoUrl(href) {
+    let url;
+    try { url = new URL(href); } catch (_) { return null; }
+    const matched = pageFor(url);
+    if (!matched) return null;
+    const v = url.searchParams.get("v");
+    if (matched.platform === "youtube" && url.pathname.toLowerCase() === "/watch" && validId(v)) return "https://www.youtube.com/watch?v=" + v;
+    return matched.workflow === "playlist" ? null : url.href;
+  }
+
+  // A link to one supported video that shows a picture (or preview) of it.
+  function thumbnailLink(node, base) {
+    const a = node.closest ? node.closest("a[href]") : null;
+    if (!a || !a.querySelector("img, yt-image, picture, video")) return null;
+    let url;
+    try { url = new URL(a.getAttribute("href"), base); } catch (_) { return null; }
+    url.hash = "";
+    const matched = pageFor(url);
+    const reel = matched && matched.platform === "instagram" && /^\/reels?\//i.test(url.pathname);
+    if (!matched || !(THUMB_PLATFORMS.has(matched.platform) || reel)) return null;
+    const href = singleVideoUrl(url.href);
+    return href ? {url: href, el: a} : null;
+  }
+
+  function videoTargetUrl(node, doc) {
+    const base = doc.location.href;
+    const here = pageFor(base);
+    const platform = (here || feedPageFor(base) || {}).platform;
+    let url = null;
+    if (YOUTUBE_MAIN_PLAYERS.has(node.id) || (platform === "youtube" && node.closest && node.closest("#movie_player, #shorts-player"))) {
+      return here && here.platform === "youtube" ? singleVideoUrl(base) : null;
+    }
+    if (platform === "tiktok") url = tiktokFeedUrl(node) || tiktokMobileUrl(node);
+    else if (POST_PLATFORMS.has(platform)) url = permalinkAround(node, platform, base);
+    // Otherwise only the page's main (largest visible) player is the page.
+    if (!url && here) {
+      const main = feedMedia(doc, platform)[0];
+      if (main && main.el === node) url = singleVideoUrl(base);
+    }
+    return url;
+  }
+
+  // What the button under the pointer is for: {url, rect} or null. `stack`
+  // is document.elementsFromPoint() at the pointer, topmost first: the
+  // topmost thumbnail or video that resolves to a clip wins, so a page
+  // element hidden under the player never does. A preview playing over a
+  // thumbnail resolves to nothing itself and lets the thumbnail below win.
+  function inlineTarget(stack, doc, cache) {
+    const base = doc.location.href;
+    for (const node of stack.slice(0, 40)) {
+      if (isVideoNode(node)) {
+        const rect = node.getBoundingClientRect();
+        if (!bigEnough(rect)) continue;
+        const hit = cache && cache.get(node);
+        let url;
+        if (hit && Date.now() - hit.at < 2000) url = hit.url;
+        else {
+          url = videoTargetUrl(node, doc);
+          if (cache) cache.set(node, {url, at: Date.now()});
+        }
+        if (url) return {url, rect};
+        continue;
+      }
+      const thumb = thumbnailLink(node, base);
+      if (!thumb) continue;
+      let rect = thumb.el.getBoundingClientRect();
+      if (!bigEnough(rect)) {
+        const picture = thumb.el.querySelector("img, yt-image, picture, video");
+        rect = picture ? picture.getBoundingClientRect() : rect;
+      }
+      if (bigEnough(rect)) return {url: thumb.url, rect};
     }
     return null;
   }
@@ -1376,8 +1484,98 @@
 
     shadow.addEventListener("keydown", (event) => { if (event.key === "Escape" && state.open) closePanel(); });
     renderDock();
-    host.__nobsdl = {isBusy: () => state.busy, isOpen: () => state.open, relayout};
+    host.__nobsdl = {isBusy: () => state.busy, isOpen: () => state.open, open: openPanel, relayout};
     return host;
+  }
+
+  const INLINE_STYLE = `
+    :host { all: initial; }
+    .hv { display: flex; align-items: center; justify-content: center; gap: 6px; height: 38px; min-width: 38px; padding: 0 12px 0 10px; border: 1px solid rgba(255,255,255,.4); border-radius: 19px; background: linear-gradient(135deg,#6862f6,#497fee); color: #fff; font: 800 13px/1 system-ui,-apple-system,"Segoe UI",sans-serif; cursor: pointer; box-shadow: 0 6px 18px rgba(0,0,0,.45); transition: transform .12s ease, filter .12s ease; }
+    .hv .ico { font-size: 17px; }
+    .hv:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    .hv:focus-visible { outline: 3px solid #f8b84e; outline-offset: 2px; }
+    @media (prefers-reduced-motion: reduce) { .hv { transition: none; } }
+  `;
+
+  // The floating "⬇ Download" button shown on the video or thumbnail under
+  // the mouse (see inlineTarget). One button for the whole page, placed at
+  // the top-left corner of what it is for.
+  function makeInlineButton(onPick) {
+    const host = el("div", {id: INLINE_ID});
+    for (const [prop, value] of [["position", "fixed"], ["display", "none"], ["z-index", "2147483647"], ["left", "0"], ["top", "0"]]) {
+      host.style.setProperty(prop, value, "important");
+    }
+    const shadow = host.attachShadow({mode: "open"});
+    const button = el("button", {class: "hv", type: "button", title: "Download this video with NoBsDL", "aria-label": "Download this video with NoBsDL"},
+      [el("span", {class: "ico", "aria-hidden": "true", text: "⬇"}), el("span", {text: "Download"})]);
+    shadow.append(el("style", {text: INLINE_STYLE}), button);
+    const cache = new WeakMap();
+    let current = null;
+    let hideTimer = 0;
+    let frame = 0;
+    let pointer = null;
+
+    function hide() {
+      clearTimeout(hideTimer);
+      hideTimer = 0;
+      current = null;
+      host.style.setProperty("display", "none", "important");
+    }
+
+    function check() {
+      frame = 0;
+      if (!pointer) return;
+      const stack = document.elementsFromPoint(pointer.x, pointer.y);
+      const top = stack[0];
+      if (top === host) { clearTimeout(hideTimer); hideTimer = 0; return; }
+      // Never on top of NoBsDL's own panel or button.
+      const found = top && top.id === WIDGET_ID ? null : inlineTarget(stack, document, cache);
+      if (!found) {
+        if (current && !hideTimer) hideTimer = setTimeout(hide, 350);
+        return;
+      }
+      clearTimeout(hideTimer);
+      hideTimer = 0;
+      current = found;
+      const left = Math.max(4, Math.min(found.rect.left + 8, window.innerWidth - 130));
+      const topPx = Math.max(4, Math.min(found.rect.top + 8, window.innerHeight - 46));
+      host.style.setProperty("left", Math.round(left) + "px", "important");
+      host.style.setProperty("top", Math.round(topPx) + "px", "important");
+      host.style.setProperty("display", "block", "important");
+      if (!host.isConnected && document.body) document.body.appendChild(host);
+    }
+
+    const onMove = (event) => {
+      pointer = {x: event.clientX, y: event.clientY};
+      if (!frame) frame = requestAnimationFrame(check);
+    };
+    const onScroll = () => hide();
+    const onLeave = () => { pointer = null; hide(); };
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const picked = current;
+      hide();
+      if (picked) onPick(picked.url);
+    });
+    document.addEventListener("mousemove", onMove, {capture: true, passive: true});
+    window.addEventListener("scroll", onScroll, {capture: true, passive: true});
+    document.documentElement.addEventListener("mouseleave", onLeave);
+    return {
+      host,
+      destroy() {
+        hide();
+        document.removeEventListener("mousemove", onMove, {capture: true});
+        window.removeEventListener("scroll", onScroll, {capture: true});
+        document.documentElement.removeEventListener("mouseleave", onLeave);
+        host.remove();
+      },
+    };
+  }
+
+  // Buttons on videos need a real mouse; phones keep the corner button.
+  function hoverDevice() {
+    try { return window.matchMedia("(hover: hover) and (pointer: fine)").matches; } catch (_) { return false; }
   }
 
   function boot() {
@@ -1428,6 +1626,40 @@
       if (!widget.isConnected && document.body) document.body.appendChild(widget);
     }
 
+    // Opens the panel for a clip picked with a button on a video. One job
+    // runs at a time: while one is running, its progress is shown instead.
+    function openTarget(url) {
+      const matched = pageFor(url);
+      if (!matched || matched.workflow === "playlist") return;
+      if (!gmRequestFunction()) {
+        window.open(targetUrl(matched, url, matched.outputs[0]), "_blank", "noopener,noreferrer");
+        return;
+      }
+      if (widget && widget.isConnected && widget.__nobsdl && widget.__nobsdl.isBusy()) {
+        widget.__nobsdl.open();
+        return;
+      }
+      if (widget) widget.remove();
+      widget = makeWidget(matched, url);
+      signature = "picked|" + url;
+      if (document.body) document.body.appendChild(widget);
+      widget.__nobsdl.open();
+    }
+
+    let inline = null;
+    const inlineWanted = () => readValue("videoButtons", true) !== false;
+    if (hoverDevice() && inlineWanted()) inline = makeInlineButton(openTarget);
+    if (typeof GM_registerMenuCommand === "function") {
+      try {
+        GM_registerMenuCommand("Turn the buttons on videos on/off", () => {
+          const on = !inlineWanted();
+          writeValue("videoButtons", on);
+          if (inline) { inline.destroy(); inline = null; }
+          if (on && hoverDevice()) inline = makeInlineButton(openTarget);
+        });
+      } catch (_) { /* optional */ }
+    }
+
     sync();
     window.addEventListener("popstate", sync);
     window.addEventListener("hashchange", sync);
@@ -1438,7 +1670,7 @@
   const api = {
     NOBSDL_ORIGIN, VIDEO_AUDIO, pageFor, realYoutubePlaylist, sourceUrlFor, targetUrl,
     normalizeChoices, downloadParams, progressView, safeFileUrl, safeStatusPath, formatSize,
-    feedPageFor, findFeedTarget, readDock,
+    feedPageFor, findFeedTarget, readDock, singleVideoUrl,
   };
   if (typeof module === "object" && module.exports) {
     module.exports = api;

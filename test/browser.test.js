@@ -190,6 +190,84 @@ async function main() {
     await context.close();
   }
 
+  // 1d. Buttons on videos: a YouTube thumbnail on the home page (no corner
+  // button there) and a video in an X timeline open the panel for exactly
+  // that clip; hovering alone sends nothing; avatars and photos get none.
+  {
+    const html = '<!doctype html><html><body style="margin:0">'
+      + '<a id="thumb" href="/watch?v=abcdefghijk&list=PLabcdefghijkl&pp=xyz" style="position:absolute;left:20px;top:20px;width:320px;height:180px;display:block"><img alt="" style="width:320px;height:180px;display:block;background:#333"></a>'
+      + '<a id="title" href="/watch?v=zzzzzzzzzzz" style="position:absolute;left:20px;top:220px;width:320px;height:40px;display:block">Title only</a>'
+      + '<a id="channel" href="/@someone" style="position:absolute;left:400px;top:20px;width:160px;height:160px;display:block"><img alt="" style="width:160px;height:160px;display:block"></a>'
+      + '</body></html>';
+    const {context, page, calls, errors} = await setup(browser, {api: happyApi(), html});
+    await page.goto('https://www.youtube.com/');
+    await inject(page, true);
+    const button = page.locator('#nobsdl-video-button');
+    check('no corner button on the YouTube home page', (await page.locator('#nobsdl-download-widget').count()) === 0);
+    await page.mouse.move(150, 100);
+    await button.waitFor({state: 'visible', timeout: 3000}).catch(() => {});
+    check('hovering a thumbnail shows the Download button on it', await button.isVisible());
+    const box = await button.boundingBox();
+    check('the button sits at the thumbnail\'s top-left corner', box && Math.abs(box.x - 28) <= 2 && Math.abs(box.y - 28) <= 2, box);
+    await page.mouse.move(150, 240);
+    await page.waitForTimeout(500);
+    check('a title link without a picture gets no button', !(await button.isVisible()));
+    await page.mouse.move(480, 100);
+    await page.waitForTimeout(500);
+    check('a channel avatar gets no button', !(await button.isVisible()));
+    check('hovering sends nothing', calls.length === 0, calls);
+    await page.mouse.move(150, 100);
+    await button.waitFor({state: 'visible'});
+    await button.locator('button').click();
+    await shadow(page, '.card').first().waitFor();
+    check('the panel lists formats for that bare video only', calls.length === 1 && calls[0].startsWith('/api/video-info?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3Dabcdefghijk&intent=mp4'), calls);
+    check('the picked video stays open while the page has no video of its own', await (async () => { await page.waitForTimeout(1600); return (await shadow(page, '.panel:not([hidden])').count()) === 1; })());
+    check('no page errors on the YouTube home page', errors.length === 0, errors);
+    await context.close();
+  }
+  {
+    const html = '<!doctype html><html><body style="margin:0">'
+      + '<article style="position:absolute;left:20px;top:20px;width:520px"><a href="/someone"><img alt="" style="width:40px;height:40px"></a> <a href="/someone/status/1790000000000000001">2h</a>'
+      + '<div style="width:480px;height:270px"><video muted style="width:480px;height:270px;background:#000"></video></div></article>'
+      + '<article style="position:absolute;left:20px;top:380px;width:520px"><a href="/other/status/1790000000000000002">3h</a>'
+      + '<a href="/other/status/1790000000000000002/photo/1" style="display:block;width:480px;height:200px"><img alt="" style="width:480px;height:200px;display:block"></a></article>'
+      + '</body></html>';
+    const {context, page, calls} = await setup(browser, {api: happyApi(), html});
+    await page.goto('https://x.com/home');
+    await inject(page, true);
+    const button = page.locator('#nobsdl-video-button');
+    await page.mouse.move(300, 500);
+    await page.waitForTimeout(500);
+    check('an X photo gets no button', !(await button.isVisible()));
+    await page.mouse.move(300, 150);
+    await button.waitFor({state: 'visible', timeout: 3000}).catch(() => {});
+    check('a video in an X timeline gets the button', await button.isVisible());
+    await button.locator('button').click();
+    await shadow(page, '.card').first().waitFor();
+    check('it opens the post around that video', calls.some((c) => c.startsWith('/api/video-info?url=https%3A%2F%2Fx.com%2Fsomeone%2Fstatus%2F1790000000000000001')), calls);
+    await context.close();
+  }
+
+  {
+    // Live YouTube keeps an unrelated a#thumbnail underneath the main player
+    // (seen 2026-10-11); the player on top must win, even before playback.
+    const html = '<!doctype html><html><body style="margin:0">'
+      + '<a id="thumbnail" href="/watch?v=wrongwrong1" style="position:absolute;left:20px;top:20px;width:640px;height:360px;display:block"><img alt="" style="width:640px;height:360px;display:block"></a>'
+      + '<div id="movie_player" style="position:absolute;left:20px;top:20px;width:640px;height:360px;background:#000"><video style="position:absolute;top:-500px;width:640px;height:360px"></video></div>'
+      + '</body></html>';
+    const {context, page, calls} = await setup(browser, {api: happyApi(), html});
+    await page.goto('https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=PLabcdefghijkl&t=30s');
+    await inject(page, true);
+    await page.mouse.move(300, 200);
+    const button = page.locator('#nobsdl-video-button');
+    await button.waitFor({state: 'visible', timeout: 3000}).catch(() => {});
+    check('the main YouTube player gets the button before it plays', await button.isVisible());
+    await button.locator('button').click();
+    await shadow(page, '.card').first().waitFor();
+    check('it is for the page\'s own video, without the playlist, not the thumbnail underneath', calls.some((c) => c.startsWith('/api/video-info?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DdQw4w9WgXcQ&')) && !calls.some((c) => c.includes('wrongwrong1')), calls);
+    await context.close();
+  }
+
   // 2. Stale format: backend asks to choose again -> Refresh formats, no blind retry.
   {
     const api = (route, url) => {

@@ -172,7 +172,7 @@ test("metadata grants exactly the in-page transport and talks only to nobsdl.com
   const source = readFileSync(SCRIPT, "utf8");
   const header = source.slice(0, source.indexOf("// ==/UserScript=="));
   const grants = [...header.matchAll(/^\/\/ @grant\s+(\S+)$/gm)].map((m) => m[1]).sort();
-  assert.deepEqual(grants, ["GM.xmlHttpRequest", "GM_getValue", "GM_setValue", "GM_xmlhttpRequest"]);
+  assert.deepEqual(grants, ["GM.xmlHttpRequest", "GM_getValue", "GM_registerMenuCommand", "GM_setValue", "GM_xmlhttpRequest"]);
   assert.deepEqual([...header.matchAll(/^\/\/ @connect\s+(\S+)$/gm)].map((m) => m[1]), ["nobsdl.com"]);
   assert.match(header, /^\/\/ @noframes$/m);
   assert.match(header, /^\/\/ @version\s+2\.\d+\.\d+$/m);
@@ -345,4 +345,14 @@ test("asks for a rating once, after the third saved file, and only locally", () 
   assert.match(source, /rate\.addEventListener\("click", dismiss\)/);
   // No reward is offered and nothing about it is sent anywhere.
   assert.doesNotMatch(source, /rate[^\n]{0,80}(?:unlock|reward|bonus|free download)/i);
+});
+
+test("buttons on videos open the bare video, never a playlist or tracking link", () => {
+  const {singleVideoUrl} = require(SCRIPT.pathname);
+  assert.equal(singleVideoUrl("https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=PLabcdefghijkl&index=3&pp=ygU"), "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+  assert.equal(singleVideoUrl("https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=42s"), "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+  assert.equal(singleVideoUrl("https://www.youtube.com/shorts/abcdEFGH123"), "https://www.youtube.com/shorts/abcdEFGH123");
+  assert.equal(singleVideoUrl("https://www.youtube.com/playlist?list=PLabcdefghijkl"), null);
+  assert.equal(singleVideoUrl("https://www.tiktok.com/@someone/video/7300000000000000000"), "https://www.tiktok.com/@someone/video/7300000000000000000");
+  assert.equal(singleVideoUrl("https://www.youtube.com/"), null);
 });

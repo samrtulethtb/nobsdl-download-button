@@ -2,9 +2,9 @@
 
 <img src="https://raw.githubusercontent.com/samrtulethtb/nobsdl-download-button/main/media/demo.gif" alt="Click Download, pick a real quality, watch live progress, the file is saved" width="430">
 
-Click **Download** on a supported page, pick a quality, and the file goes
-straight to your browser's downloads — no new tab, no copy-pasting links, no
-captcha pages.
+Point at a video or thumbnail and click its **⬇ Download** button (or the one
+in the corner), pick a quality, and the file goes straight to your browser's
+downloads — no new tab, no copy-pasting links, no captcha pages.
 
 **19 sites:** YouTube (videos, Shorts, MP3, playlists) · TikTok · Instagram Reels ·
 X / Twitter · Facebook · Reddit · SoundCloud (MP3) · Twitch clips & videos ·
@@ -28,6 +28,11 @@ Dailymotion, Pinterest, Bluesky and the other sites above)
 
 ### Why this one
 
+- ⬇️ **A Download button on every video.** With a mouse, the button appears on
+  the video or thumbnail you point at: YouTube's player, home, search and
+  sidebar thumbnails, videos in X, Reddit, Instagram, Facebook, Bluesky and
+  9GAG feeds, TikTok and Twitch thumbnails. It opens that exact clip. Turn it
+  off from your userscript manager's menu if you prefer only the corner button.
 - 🎯 **Real formats with real sizes.** Every choice (e.g. 720p60 · ~173 MB,
   MP3 320 kbps · ~24 MB) comes from the actual source. Nothing invented.
 - 📊 **Live progress you can trust.** Queue → Download → Process → Ready, with
@@ -39,7 +44,8 @@ Dailymotion, Pinterest, Bluesky and the other sites above)
   open each video first.
 - 📱 **Made for phones too.** A round button you can drag anywhere and a bottom
   sheet with big touch targets.
-- 🧭 **Stays out of your way.** One small button in the corner. Close the panel
+- 🧭 **Stays out of your way.** One small button in the corner, and one on
+  the video only while you point at it. Close the panel
   mid-download and it keeps going; the button shows the percentage. Minimize
   it to a dot or drag it elsewhere if you like.
 - 🏠 **No third-party download sites.** The script talks only to NoBsDL's own
@@ -79,11 +85,12 @@ panel, where your Supporter access works as usual.
 
 - Talks **only to nobsdl.com** (`@connect nobsdl.com`).
 - **Nothing is sent until you click Download.** Then only the public link of
-  that one video (the page's own, or on a feed the clip on screen) goes to
-  nobsdl.com to list formats and run the job. Clips you merely scroll past are
-  never looked up.
+  that one video (the page's own, the one whose button you clicked, or on a feed
+  the clip on screen) goes to nobsdl.com to list formats and run the job. Clips
+  you merely scroll past or point at are never looked up.
 - No analytics, ads or tracking code in the script. It stores only whether you
-  minimized the button, where you dragged it, and a count of saved files (after
+  minimized the button, where you dragged it, whether the buttons on videos are
+  on, and a count of saved files (after
   3 it asks once for a rating; "Not now" hides it for good).
 - Readable, unminified source (MIT).
 

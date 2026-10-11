@@ -21,6 +21,12 @@ progress, and the file goes straight to your browser's downloads. Powered by
 
 - **In-page downloads**: a small NoBsDL button sits in the corner of supported
   media pages. Choose a format and the file is saved without opening a new tab.
+- **A button on every video** (with a mouse): pointing at a video or a
+  thumbnail shows a ⬇ Download button on it that opens that exact clip:
+  YouTube's player and its home, search and sidebar thumbnails, videos in X,
+  Reddit, Instagram, Facebook, Bluesky and 9GAG feeds, TikTok and Twitch
+  thumbnails. "Turn the buttons on videos on/off" in the userscript
+  manager's menu hides them.
 - **Feeds too**: on TikTok's For You feed, X timelines and Bluesky the URL
   doesn't change while you scroll, so the button takes the clip on screen when
   you click it (it is briefly outlined). Nothing is looked up while you scroll.
@@ -89,17 +95,20 @@ where your Supporter access works as usual.
 ## Privacy and permissions
 
 - `@grant GM_xmlhttpRequest` (+ `GM.xmlHttpRequest`) with `@connect nobsdl.com`
-  only: requests go to nobsdl.com and nowhere else.
+  only: requests go to nobsdl.com and nowhere else. `@grant
+  GM_registerMenuCommand` adds the on/off switch for the buttons on videos.
 - **Nothing is sent until you open the panel.** Then one public media URL is
-  sent to nobsdl.com to list its formats: the page's own, or on a feed the
-  clip on screen (read from the page when you click). Choosing a format starts
+  sent to nobsdl.com to list its formats: the page's own, the one whose
+  button you clicked, or on a feed the clip on screen (read from the page
+  when you click). Choosing a format starts
   the job and polls its status. Clips you merely scroll past are never looked
   up.
 - Requests may carry your normal nobsdl.com cookies (your userscript manager
   decides), which is how an active Supporter session can be recognised. The
   script itself stores no key, cookie or history; only whether you minimized
-  the button, where you dragged it, and a count of saved files for a one-time
-  rating note (`GM_getValue`/`GM_setValue`).
+  the button, where you dragged it, whether the buttons on videos are on,
+  and a count of saved files for a one-time rating note
+  (`GM_getValue`/`GM_setValue`).
 - No analytics, ads or tracking code in the script. The DOM is built with
   text nodes only (no `innerHTML`), inside a Shadow DOM.
 - Links use `noopener`, `noreferrer` and `referrerPolicy="no-referrer"`.
