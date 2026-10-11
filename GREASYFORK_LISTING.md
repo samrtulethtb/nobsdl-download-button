@@ -83,7 +83,8 @@ panel, where your Supporter access works as usual.
   nobsdl.com to list formats and run the job. Clips you merely scroll past are
   never looked up.
 - No analytics, ads or tracking code in the script. It stores only whether you
-  minimized the button and where you dragged it.
+  minimized the button, where you dragged it, and a count of saved files (after
+  3 it asks once for a rating; "Not now" hides it for good).
 - Readable, unminified source (MIT).
 
 ### Good to know

@@ -1,40 +1,86 @@
 // ==UserScript==
-// @name         All-in-One Video Downloader – YouTube, TikTok, Instagram, X, Facebook & 14 more (MP4/MP3)
-// @name:ro      NoBsDL Video Downloader – descarcă MP4 și MP3 de pe YouTube, TikTok, Instagram, X, Facebook
-// @name:es      NoBsDL Video Downloader – descarga MP4 y MP3 de YouTube, TikTok, Instagram, X, Facebook
-// @name:pt-BR   NoBsDL Video Downloader – baixe MP4 e MP3 do YouTube, TikTok, Instagram, X, Facebook
-// @name:fr      NoBsDL Video Downloader – téléchargez en MP4 et MP3 depuis YouTube, TikTok, Instagram, X, Facebook
-// @name:de      NoBsDL Video Downloader – MP4 & MP3 von YouTube, TikTok, Instagram, X, Facebook herunterladen
-// @name:it      NoBsDL Video Downloader – scarica MP4 e MP3 da YouTube, TikTok, Instagram, X, Facebook
-// @name:ru      NoBsDL Video Downloader – скачать MP4 и MP3 с YouTube, TikTok, Instagram, X, Facebook
-// @name:uk      NoBsDL Video Downloader – завантажити MP4 і MP3 з YouTube, TikTok, Instagram, X, Facebook
-// @name:pl      NoBsDL Video Downloader – pobieraj MP4 i MP3 z YouTube, TikTok, Instagram, X, Facebook
-// @name:tr      NoBsDL Video Downloader – YouTube, TikTok, Instagram, X, Facebook'tan MP4 ve MP3 indir
-// @name:id      NoBsDL Video Downloader – unduh MP4 dan MP3 dari YouTube, TikTok, Instagram, X, Facebook
-// @name:vi      NoBsDL Video Downloader – tải MP4 và MP3 từ YouTube, TikTok, Instagram, X, Facebook
-// @name:ar      NoBsDL Video Downloader – تنزيل MP4 وMP3 من YouTube وTikTok وInstagram وX وFacebook
-// @name:ja      NoBsDL Video Downloader – YouTube・TikTok・Instagram・X・Facebook から MP4/MP3 をダウンロード
-// @name:ko      NoBsDL Video Downloader – YouTube, TikTok, Instagram, X, Facebook에서 MP4·MP3 다운로드
-// @name:zh-CN   NoBsDL 视频下载器 – 从 YouTube、TikTok、Instagram、X、Facebook 下载 MP4 和 MP3
+// @name         Free All-in-One Video Downloader – YouTube, TikTok, Instagram, X, Facebook & 14 more (HD MP4/MP3)
+// @name:ro      Descărcător video all-in-one gratuit – YouTube, TikTok, Instagram, X, Facebook etc. (MP4/MP3 HD)
+// @name:es      Descargador de vídeos todo en uno gratis – YouTube, TikTok, Instagram, X, Facebook… (MP4/MP3 HD)
+// @name:pt-BR   Baixador de vídeos tudo em um grátis – YouTube, TikTok, Instagram, X, Facebook e mais (MP4/MP3 HD)
+// @name:pt      Descarregador de vídeos tudo-em-um grátis – YouTube, TikTok, Instagram, X, Facebook (MP4/MP3 HD)
+// @name:fr      Téléchargeur vidéo tout-en-un gratuit – YouTube, TikTok, Instagram, X, Facebook et plus (MP4/MP3 HD)
+// @name:fr-CA   Téléchargeur vidéo tout-en-un gratuit – YouTube, TikTok, Instagram, X, Facebook et plus (MP4/MP3 HD)
+// @name:de      Kostenloser All-in-One Video-Downloader – YouTube, TikTok, Instagram, X, Facebook … (HD-MP4/MP3)
+// @name:it      Downloader video tutto-in-uno gratis – YouTube, TikTok, Instagram, X, Facebook e altri (MP4/MP3 HD)
+// @name:nl      Gratis alles-in-één videodownloader – YouTube, TikTok, Instagram, X, Facebook en meer (HD MP4/MP3)
+// @name:ru      Бесплатный загрузчик видео всё-в-одном – YouTube, TikTok, Instagram, X, Facebook и др. (MP4/MP3 HD)
+// @name:uk      Безкоштовний завантажувач відео все-в-одному – YouTube, TikTok, Instagram, X, Facebook (MP4/MP3 HD)
+// @name:be      Бясплатны загрузчык відэа ўсё-ў-адным – YouTube, TikTok, Instagram, X, Facebook і інш. (HD MP4/MP3)
+// @name:pl      Darmowy downloader wideo wszystko w jednym – YouTube, TikTok, Instagram, X, Facebook (MP4/MP3 HD)
+// @name:cs      Stahovač videí vše v jednom zdarma – YouTube, TikTok, Instagram, X, Facebook a další (HD MP4/MP3)
+// @name:sk      Sťahovač videí všetko v jednom zadarmo – YouTube, TikTok, Instagram, X, Facebook… (HD MP4/MP3)
+// @name:hu      Ingyenes all-in-one videóletöltő – YouTube, TikTok, Instagram, X, Facebook és még több (HD MP4/MP3)
+// @name:bg      Безплатен видео даунлоудър всичко в едно – YouTube, TikTok, Instagram, X, Facebook… (HD MP4/MP3)
+// @name:hr      Besplatni sve-u-jednom preuzimač videa – YouTube, TikTok, Instagram, X, Facebook… (HD MP4/MP3)
+// @name:sr      Бесплатни све-у-једном преузимач видеа – YouTube, TikTok, Instagram, X, Facebook… (HD MP4/MP3)
+// @name:el      Δωρεάν λήψη βίντεο όλα-σε-ένα – YouTube, TikTok, Instagram, X, Facebook και άλλα (HD MP4/MP3)
+// @name:tr      Ücretsiz hepsi bir arada video indirici – YouTube, TikTok, Instagram, X, Facebook… (HD MP4/MP3)
+// @name:id      Pengunduh video all-in-one gratis – YouTube, TikTok, Instagram, X, Facebook & lainnya (MP4/MP3 HD)
+// @name:vi      Trình tải video tất cả trong một miễn phí – YouTube, TikTok, Instagram, X, Facebook… (MP4/MP3 HD)
+// @name:fil     Libreng all-in-one video downloader – YouTube, TikTok, Instagram, X, Facebook at iba pa (HD MP4/MP3)
+// @name:th      ดาวน์โหลดวิดีโอครบในตัวฟรี – YouTube, TikTok, Instagram, X, Facebook และอื่นๆ (HD MP4/MP3)
+// @name:ar      أداة تنزيل فيديو شاملة مجانية – YouTube وTikTok وInstagram وX وFacebook والمزيد (MP4/MP3 بجودة HD)
+// @name:he      מוריד וידאו הכול-באחד בחינם – YouTube, TikTok, Instagram, X, Facebook ועוד (HD MP4/MP3)
+// @name:ja      無料オールインワン動画ダウンローダー – YouTube・TikTok・Instagram・X・Facebook ほか(HD MP4/MP3)
+// @name:ko      무료 올인원 동영상 다운로더 – YouTube, TikTok, Instagram, X, Facebook 외 (HD MP4/MP3)
+// @name:zh-CN   免费全能视频下载器 – YouTube、TikTok、Instagram、X、Facebook 等(高清 MP4/MP3)
+// @name:zh-TW   免費全能影片下載器 – YouTube、TikTok、Instagram、X、Facebook 等(高畫質 MP4/MP3)
+// @name:sv      Gratis allt-i-ett-videonedladdare – YouTube, TikTok, Instagram, X, Facebook med flera (HD MP4/MP3)
+// @name:da      Gratis alt-i-én videodownloader – YouTube, TikTok, Instagram, X, Facebook og flere (HD MP4/MP3)
+// @name:fi      Ilmainen kaikki yhdessä -videolataaja – YouTube, TikTok, Instagram, X, Facebook ym. (HD MP4/MP3)
+// @name:nb      Gratis alt-i-ett videonedlaster – YouTube, TikTok, Instagram, X, Facebook og flere (HD MP4/MP3)
+// @name:ka      უფასო ყველაფერი-ერთში ვიდეო ჩამომტვირთავი – YouTube, TikTok, Instagram, X, Facebook (HD MP4/MP3)
+// @name:eo      Senpaga ĉio-en-unu videoelŝutilo – YouTube, TikTok, Instagram, X, Facebook kaj pli (HD MP4/MP3)
+// @name:mr      मोफत ऑल-इन-वन व्हिडिओ डाउनलोडर – YouTube, TikTok, Instagram, X, Facebook आणि अधिक (HD MP4/MP3)
+// @name:ne      निःशुल्क अल-इन-वन भिडियो डाउनलोडर – YouTube, TikTok, Instagram, X, Facebook र थप (HD MP4/MP3)
 // @namespace    https://nobsdl.com/
-// @version      2.2.1
+// @version      2.3.0
 // @description  Download videos as MP4 and audio as MP3 without leaving the page: pick a real quality with its file size, watch live progress, and the file goes straight to your downloads. YouTube (incl. Shorts), TikTok, Instagram, X/Twitter, Facebook, Reddit, Twitch clips, Dailymotion, Pinterest, Bluesky, Streamable, Imgur, 9GAG, Odysee, Rutube, OK.ru, SoundCloud, Bandcamp and Mixcloud. In TikTok For You, X and Bluesky feeds it takes the clip on screen. By NoBsDL.
 // @description:ro  Descarcă video MP4 și audio MP3 fără să părăsești pagina. Alegi o calitate reală cu mărimea fișierului, vezi progresul live de pe server, iar fișierul ajunge direct în descărcările browserului. YouTube (inclusiv Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
 // @description:es  Descarga vídeos en MP4 y audio en MP3 sin salir de la página. Elige una calidad real con su tamaño, mira el progreso en vivo y el archivo llega directo a tus descargas. YouTube (incl. Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
 // @description:pt-BR  Baixe vídeos em MP4 e áudio em MP3 sem sair da página. Escolha uma qualidade real com o tamanho do arquivo, acompanhe o progresso ao vivo e o arquivo vai direto para seus downloads. YouTube (incl. Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
+// @description:pt  Descarregue vídeo em MP4 e áudio em MP3 sem sair da página. Escolha uma qualidade real com o tamanho do ficheiro, acompanhe o progresso em direto e o ficheiro vai diretamente para as suas transferências. YouTube (incl. Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
 // @description:fr  Téléchargez des vidéos en MP4 et l'audio en MP3 sans quitter la page. Choisissez une vraie qualité avec sa taille, suivez la progression en direct, le fichier arrive dans vos téléchargements. YouTube (Shorts inclus), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
+// @description:fr-CA  Téléchargez des vidéos en MP4 et l'audio en MP3 sans quitter la page. Choisissez une vraie qualité avec sa taille, suivez la progression en direct, le fichier arrive dans vos téléchargements. YouTube (Shorts inclus), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
 // @description:de  Videos als MP4 und Audio als MP3 herunterladen, ohne die Seite zu verlassen. Echte Qualität mit Dateigröße wählen, Live-Fortschritt sehen, die Datei landet direkt in den Downloads. YouTube (inkl. Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
 // @description:it  Scarica video in MP4 e audio in MP3 senza lasciare la pagina. Scegli una qualità reale con la dimensione del file, segui l'avanzamento dal vivo e il file finisce nei tuoi download. YouTube (Shorts inclusi), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
+// @description:nl  Download video als MP4 en audio als MP3 zonder de pagina te verlaten. Kies een echte kwaliteit met bestandsgrootte, volg de voortgang live en het bestand gaat direct naar je downloads. YouTube (incl. Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
 // @description:ru  Скачивайте видео в MP4 и аудио в MP3, не уходя со страницы. Выберите реальное качество с размером файла, следите за прогрессом, файл сохранится в загрузки браузера. YouTube (вкл. Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
 // @description:uk  Завантажуйте відео в MP4 і аудіо в MP3, не залишаючи сторінку. Обирайте реальну якість із розміром файлу, стежте за прогресом, файл збережеться в завантаження. YouTube (з Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
+// @description:be  Спампоўвайце відэа ў MP4 і аўдыя ў MP3, не пакідаючы старонку. Выбірайце сапраўдную якасць з памерам файла, сачыце за прагрэсам у рэальным часе, і файл захаваецца ў спампоўкі. YouTube (з Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
 // @description:pl  Pobieraj wideo w MP4 i dźwięk w MP3 bez opuszczania strony. Wybierz prawdziwą jakość z rozmiarem pliku, obserwuj postęp na żywo, plik trafi prosto do pobranych. YouTube (z Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
+// @description:cs  Stahujte video jako MP4 a zvuk jako MP3 bez opuštění stránky. Vyberte skutečnou kvalitu s velikostí souboru, sledujte průběh živě a soubor se uloží rovnou do stažených. YouTube (vč. Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
+// @description:sk  Sťahujte video ako MP4 a zvuk ako MP3 bez opustenia stránky. Vyberte skutočnú kvalitu s veľkosťou súboru, sledujte priebeh naživo a súbor sa uloží priamo do stiahnutých. YouTube (vrát. Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
+// @description:hu  Töltsd le a videót MP4-ként és a hangot MP3-ként az oldal elhagyása nélkül. Válassz valódi minőséget a fájlmérettel, kövesd élőben a folyamatot, a fájl egyenesen a letöltésekhez kerül. YouTube (Shorts is), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
+// @description:bg  Изтегляйте видео като MP4 и аудио като MP3, без да напускате страницата. Изберете реално качество с размера на файла, следете напредъка на живо и файлът отива направо в изтеглянията. YouTube (вкл. Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
+// @description:hr  Preuzmite video kao MP4 i zvuk kao MP3 bez napuštanja stranice. Odaberite stvarnu kvalitetu s veličinom datoteke, pratite napredak uživo, a datoteka ide ravno u preuzimanja. YouTube (uklj. Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
+// @description:sr  Преузмите видео као MP4 и звук као MP3 без напуштања странице. Изаберите стварни квалитет са величином фајла, пратите напредак уживо, а фајл иде право у преузимања. YouTube (укључујући Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
+// @description:el  Κατεβάστε βίντεο σε MP4 και ήχο σε MP3 χωρίς να φύγετε από τη σελίδα. Διαλέξτε πραγματική ποιότητα με το μέγεθος αρχείου, δείτε την πρόοδο ζωντανά και το αρχείο πηγαίνει κατευθείαν στις λήψεις. YouTube (και Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
 // @description:tr  Sayfadan ayrılmadan videoları MP4, sesi MP3 olarak indirin. Dosya boyutuyla gerçek bir kalite seçin, canlı ilerlemeyi izleyin; dosya doğrudan indirilenlere gelir. YouTube (Shorts dahil), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
 // @description:id  Unduh video MP4 dan audio MP3 tanpa meninggalkan halaman. Pilih kualitas asli lengkap dengan ukuran file, lihat progres langsung, dan file masuk ke unduhan browser. YouTube (termasuk Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
 // @description:vi  Tải video MP4 và âm thanh MP3 ngay trên trang. Chọn chất lượng thật kèm dung lượng tệp, xem tiến trình trực tiếp, tệp được lưu thẳng vào mục tải xuống. YouTube (gồm Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
+// @description:fil  Mag-download ng video bilang MP4 at audio bilang MP3 nang hindi umaalis sa page. Pumili ng totoong kalidad kasama ang laki ng file, panoorin ang progreso nang live, at diretso sa iyong mga download ang file. YouTube (kasama ang Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
+// @description:th  ดาวน์โหลดวิดีโอเป็น MP4 และเสียงเป็น MP3 โดยไม่ต้องออกจากหน้า เลือกคุณภาพจริงพร้อมขนาดไฟล์ ดูความคืบหน้าแบบสด แล้วไฟล์จะถูกบันทึกลงในโฟลเดอร์ดาวน์โหลดทันที รองรับ YouTube (รวม Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud
 // @description:ar  نزّل الفيديو بصيغة MP4 والصوت بصيغة MP3 دون مغادرة الصفحة. اختر جودة حقيقية مع حجم الملف وتابع التقدم مباشرة، ويُحفظ الملف في تنزيلات المتصفح. YouTube وShorts وTikTok وInstagram وX وFacebook وReddit وSoundCloud.
+// @description:he  הורידו וידאו כ-MP4 ואודיו כ-MP3 בלי לעזוב את הדף. בחרו איכות אמיתית עם גודל הקובץ, עקבו אחרי ההתקדמות בזמן אמת, והקובץ נשמר ישירות בהורדות. YouTube (כולל Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
 // @description:ja  ページを離れずに動画を MP4、音声を MP3 で保存。実際の画質とファイルサイズを選び、サーバーの進行状況をリアルタイムで確認。ファイルはブラウザのダウンロードへ。YouTube(ショート含む)・TikTok・Instagram・X・Facebook・Reddit・SoundCloud。
 // @description:ko  페이지를 떠나지 않고 동영상은 MP4, 오디오는 MP3로 저장하세요. 실제 화질과 파일 크기를 고르고 실시간 진행률을 확인하면 파일이 브라우저 다운로드로 저장됩니다. YouTube(쇼츠 포함), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
 // @description:zh-CN  无需离开页面即可下载 MP4 视频和 MP3 音频。选择真实画质并查看文件大小，实时查看服务器进度，文件直接保存到浏览器下载。支持 YouTube(含 Shorts)、TikTok、Instagram、X、Facebook、Reddit、SoundCloud。
+// @description:zh-TW  無需離開頁面即可下載 MP4 影片和 MP3 音訊。選擇真實畫質並查看檔案大小，即時查看伺服器進度，檔案直接存到瀏覽器下載。支援 YouTube（含 Shorts）、TikTok、Instagram、X、Facebook、Reddit、SoundCloud。
+// @description:sv  Ladda ner video som MP4 och ljud som MP3 utan att lämna sidan. Välj en verklig kvalitet med filstorlek, följ förloppet live och filen hamnar direkt i dina nedladdningar. YouTube (inkl. Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
+// @description:da  Download video som MP4 og lyd som MP3 uden at forlade siden. Vælg en ægte kvalitet med filstørrelse, følg fremskridtet live, og filen lander direkte i dine overførsler. YouTube (inkl. Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
+// @description:fi  Lataa video MP4- ja ääni MP3-muodossa poistumatta sivulta. Valitse todellinen laatu tiedostokoon kanssa, seuraa edistymistä reaaliajassa, ja tiedosto tallentuu suoraan latauksiin. YouTube (myös Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
+// @description:nb  Last ned video som MP4 og lyd som MP3 uten å forlate siden. Velg en ekte kvalitet med filstørrelse, følg fremdriften live, og filen havner rett i nedlastingene dine. YouTube (inkl. Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
+// @description:ka  ჩამოტვირთეთ ვიდეო MP4-ად და აუდიო MP3-ად გვერდის დატოვების გარეშე. აირჩიეთ რეალური ხარისხი ფაილის ზომით, ადევნეთ თვალი პროგრესს რეალურ დროში და ფაილი პირდაპირ ჩამოტვირთვებში მოხვდება. YouTube (Shorts-ის ჩათვლით), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
+// @description:eo  Elŝutu videon kiel MP4 kaj sonon kiel MP3 sen forlasi la paĝon. Elektu veran kvaliton kun dosiergrandeco, sekvu la progreson vive, kaj la dosiero iras rekte al viaj elŝutaĵoj. YouTube (inkl. Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
+// @description:mr  पेज न सोडता व्हिडिओ MP4 आणि ऑडिओ MP3 म्हणून डाउनलोड करा. फाइल आकारासह खरी क्वालिटी निवडा, प्रगती थेट पाहा, आणि फाइल थेट तुमच्या डाउनलोड्समध्ये जाते. YouTube (Shorts सह), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
+// @description:ne  पेज नछोडी भिडियो MP4 र अडियो MP3 मा डाउनलोड गर्नुहोस्। फाइल साइजसहित वास्तविक गुणस्तर छान्नुहोस्, प्रगति प्रत्यक्ष हेर्नुहोस्, र फाइल सिधै तपाईंको डाउनलोडमा जान्छ। YouTube (Shorts सहित), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
 // @author       NoBsDL
 // @icon         https://nobsdl.com/static/images/icon-192x192.png
 // @homepageURL  https://nobsdl.com/
@@ -84,8 +130,9 @@
 // - Requests go to nobsdl.com only. When your userscript manager sends your
 //   nobsdl.com cookies with them, a Supporter session activated on nobsdl.com
 //   unlocks Supporter formats here too. The script stores no key, cookie or
-//   history; only whether you collapsed the widget and where you dragged it
-//   (GM_setValue).
+//   history; only whether you collapsed the widget, where you dragged it, how
+//   many files it has saved and whether you closed the rating note
+//   (GM_setValue, never sent anywhere).
 // - No analytics, ads or tracking code in this script. If your userscript
 //   manager does not offer GM_xmlhttpRequest, the widget falls back to
 //   opening the matching NoBsDL page in a new tab.
@@ -93,6 +140,7 @@
   "use strict";
 
   const NOBSDL_ORIGIN = "https://nobsdl.com";
+  const LISTING_URL = "https://greasyfork.org/scripts/597631";
   const WIDGET_ID = "nobsdl-download-widget";
   const VIDEO_AUDIO = Object.freeze(["mp4", "mp3"]);
   const AUDIO_ONLY = Object.freeze(["mp3"]);
@@ -690,13 +738,23 @@
     return /^\/api\/free-download\/status\/[A-Za-z0-9_-]{8,100}$/.test(path) ? path : null;
   }
 
-  // ── Persistence (collapsed state and button position only) ─────────────
+  // ── Persistence (collapsed state, button position, rating note) ────────
   function readCollapsed() {
     try { return typeof GM_getValue === "function" ? GM_getValue("collapsed", false) === true : false; } catch (_) { return false; }
   }
 
   function writeCollapsed(value) {
     try { if (typeof GM_setValue === "function") GM_setValue("collapsed", !!value); } catch (_) { /* optional */ }
+  }
+
+  // How many files the script saved, and whether the rating note was
+  // closed: after 3 saves it asks once for a rating on Greasy Fork.
+  function readValue(key, fallback) {
+    try { return typeof GM_getValue === "function" ? GM_getValue(key, fallback) : fallback; } catch (_) { return fallback; }
+  }
+
+  function writeValue(key, value) {
+    try { if (typeof GM_setValue === "function") GM_setValue(key, value); } catch (_) { /* optional */ }
   }
 
   // Where the user dragged the button: a side and a distance from the
@@ -799,6 +857,9 @@
     .row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
     .row .btn { flex: 1 1 auto; min-height: 40px; }
     .error { padding: 10px 12px; border: 1px solid rgba(248,113,113,.35); border-radius: 12px; background: rgba(127,29,29,.25); color: #fecaca; font-size: 12.5px; }
+    .rate { margin-top: 10px; padding: 9px 11px; border-radius: 12px; background: rgba(99,102,241,.14); font-size: 12px; color: #c7d2fe; }
+    .rate a { color: #67e8f9; font-weight: 800; }
+    .rate .linkbtn { padding: 0; border: 0; background: none; color: #94a3b8; font: inherit; text-decoration: underline; cursor: pointer; }
     .result-ok { padding: 10px 12px; border: 1px solid rgba(74,222,128,.32); border-radius: 12px; background: rgba(20,83,45,.25); color: #bbf7d0; font-size: 12.5px; }
     .spinner { width: 26px; height: 26px; margin: 10px auto; border: 3px solid rgba(148,163,184,.25); border-top-color: #7771ff; border-radius: 50%; animation: spin .8s linear infinite; }
     .center { text-align: center; color: #94a3b8; font-size: 12px; }
@@ -1276,6 +1337,8 @@
       document.documentElement.append(anchor);
       anchor.click();
       anchor.remove();
+      const saved = (Number(readValue("savedCount", 0)) || 0) + 1;
+      writeValue("savedCount", saved);
       container.replaceChildren(
         el("div", {class: "result-ok", role: "status", text: "✅ File ready. Your browser is saving it — check your downloads."}),
         el("div", {class: "row"}, [
@@ -1283,6 +1346,17 @@
           externalLink(fileUrl, "Didn’t start? Save again", "btn btn-ghost"),
         ]),
       );
+      if (saved >= 3 && readValue("rateDismissed", false) !== true) {
+        // Either answer ends it: following the link or "Not now".
+        const dismiss = () => { writeValue("rateDismissed", true); note.remove(); };
+        const rate = externalLink(LISTING_URL + "/feedback", "Rate it ★");
+        rate.addEventListener("click", dismiss);
+        const note = el("div", {class: "rate"}, [
+          "Working well? A quick rating helps other people find it. ", rate, " · ",
+          el("button", {class: "linkbtn", type: "button", text: "Not now", onclick: dismiss}),
+        ]);
+        container.append(note);
+      }
     }
 
     // Called by boot on resize: switch between phone and desktop layouts

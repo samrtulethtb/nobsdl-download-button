@@ -193,7 +193,9 @@ test("metadata fits Greasy Fork's field limits in every locale", () => {
   const source = readFileSync(SCRIPT, "utf8");
   const header = source.slice(0, source.indexOf("// ==/UserScript=="));
   const fields = [...header.matchAll(/^\/\/ @(name|description)(:\S+)?\s+(.*)$/gm)];
-  assert.ok(fields.length >= 34, "expected localized names and descriptions");
+  // Greasy Fork lists a script for a language when it has a name in it:
+  // English plus every interface language except ug and ckb.
+  assert.equal(fields.length, 80, "expected 40 names and 40 descriptions");
   for (const [, key, locale = "", value] of fields) {
     const limit = key === "name" ? 100 : 500;
     assert.ok([...value].length <= limit, `@${key}${locale} is ${[...value].length} chars`);
@@ -206,7 +208,7 @@ test("listing copy makes no unverified or forbidden claims", () => {
   assert.doesNotMatch(source, /\bno ads\b|ad-free|without ads/i);
   assert.doesNotMatch(source, /no watermark|watermark-free|without watermark/i);
   assert.doesNotMatch(source, /free 4K|4K free|unlimited/i);
-  for (const locale of ["ro", "es", "pt-BR", "fr", "de", "ru", "tr", "id", "ja", "zh-CN"]) {
+  for (const locale of ["ro", "es", "pt-BR", "fr", "de", "ru", "tr", "id", "ja", "zh-CN", "zh-TW", "nl", "cs", "th", "he", "pt"]) {
     assert.match(source, new RegExp(`^// @name:${locale}\\s+\\S`, "m"), locale);
     assert.match(source, new RegExp(`^// @description:${locale}\\s+\\S`, "m"), locale);
   }
@@ -331,4 +333,16 @@ test("site counts in the name and the listing match the platforms the script rea
   assert.equal(named[1].split(", ").length + Number(named[2]), platforms.size, name);
   const listing = readFileSync(new URL("GREASYFORK_LISTING.md", SCRIPT), "utf8");
   assert.equal(Number(listing.match(/\*\*(\d+) sites:\*\*/)[1]), platforms.size);
+});
+
+test("asks for a rating once, after the third saved file, and only locally", () => {
+  const source = readFileSync(SCRIPT, "utf8");
+  assert.match(source, /const LISTING_URL = "https:\/\/greasyfork\.org\/scripts\/597631";/);
+  assert.match(source, /writeValue\("savedCount", saved\)/);
+  assert.match(source, /saved >= 3 && readValue\("rateDismissed", false\) !== true/);
+  assert.match(source, /const dismiss = \(\) => \{ writeValue\("rateDismissed", true\); note\.remove\(\); \};/);
+  assert.match(source, /externalLink\(LISTING_URL \+ "\/feedback", "Rate it ★"\)/);
+  assert.match(source, /rate\.addEventListener\("click", dismiss\)/);
+  // No reward is offered and nothing about it is sent anywhere.
+  assert.doesNotMatch(source, /rate[^\n]{0,80}(?:unlock|reward|bonus|free download)/i);
 });

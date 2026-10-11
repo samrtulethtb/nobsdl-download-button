@@ -144,8 +144,49 @@ async function main() {
     check('closing the panel did not cancel the download; dock shows it saved', true);
     await shadow(page, '.dock .btn-primary').click();
     check('reopening keeps the result view', (await shadow(page, '.result-ok').count()) === 1);
+    check('no rating note after the first saved file', (await shadow(page, '.rate').count()) === 0 && await page.evaluate(() => window.__gmStore.savedCount === 1));
     check('finished bar is full and plain (no result-box styling)', await shadow(page, '.bar').evaluate((n) => n.className === 'bar done' && getComputedStyle(n).paddingTop === '0px'));
     check('no page errors', errors.length === 0, errors);
+    await context.close();
+  }
+
+  // 1b. The third saved file asks once for a Greasy Fork rating; "Not now" sticks.
+  {
+    const {context, page} = await setup(browser, {api: happyApi([{status: 'ready', direct_url: '/api/free-download/file/fixturejob1'}])});
+    await page.goto('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+    await page.addScriptTag({content: GM_POLYFILL + 'window.__gmStore.savedCount = 2;'});
+    await page.addScriptTag({content: SCRIPT});
+    await page.waitForTimeout(150);
+    await shadow(page, '.dock .btn-primary').click();
+    await shadow(page, '.card').first().waitFor();
+    const downloadPromise = page.waitForEvent('download');
+    await shadow(page, '.card:not(.locked)').first().click();
+    await downloadPromise;
+    await shadow(page, '.rate').waitFor();
+    check('the third saved file shows one rating note', (await shadow(page, '.rate').count()) === 1);
+    check('the note links to the Greasy Fork feedback page in a new tab', await shadow(page, '.rate a').evaluate((a) => a.href === 'https://greasyfork.org/scripts/597631/feedback' && a.target === '_blank'));
+    await shadow(page, '.rate .linkbtn').click();
+    check('"Not now" removes the note and remembers it', (await shadow(page, '.rate').count()) === 0 && await page.evaluate(() => window.__gmStore.rateDismissed === true && window.__gmStore.savedCount === 3));
+    await context.close();
+  }
+
+  // 1c. Following the rating link also ends the note for good.
+  {
+    const {context, page} = await setup(browser, {api: happyApi([{status: 'ready', direct_url: '/api/free-download/file/fixturejob1'}])});
+    await page.goto('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+    await page.addScriptTag({content: GM_POLYFILL + 'window.__gmStore.savedCount = 5;'});
+    await page.addScriptTag({content: SCRIPT});
+    await page.waitForTimeout(150);
+    await shadow(page, '.dock .btn-primary').click();
+    await shadow(page, '.card').first().waitFor();
+    const downloadPromise = page.waitForEvent('download');
+    await shadow(page, '.card:not(.locked)').first().click();
+    await downloadPromise;
+    await shadow(page, '.rate a').waitFor();
+    const popupPromise = context.waitForEvent('page');
+    await shadow(page, '.rate a').click();
+    await (await popupPromise).close();
+    check('"Rate it" opens the listing and the note never comes back', (await shadow(page, '.rate').count()) === 0 && await page.evaluate(() => window.__gmStore.rateDismissed === true));
     await context.close();
   }
 
