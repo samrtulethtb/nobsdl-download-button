@@ -110,4 +110,9 @@ panel, where your Supporter access works as usual.
 - Private, login-only, paywalled or DRM content is not supported.
 - Download only media you are allowed to save.
 
+**Also from NoBsDL:** the
+[Reddit userscript](https://greasyfork.org/scripts/601622) saves Reddit images
+in full size, whole galleries as one ZIP, GIFs and the comments of a post (JSON,
+CSV or Markdown).
+
 Problems or ideas? [nobsdl.com/contact](https://nobsdl.com/contact)
