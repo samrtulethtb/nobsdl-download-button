@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Free All-in-One Video Downloader – YouTube, TikTok, Instagram, X, Facebook & 15 more (HD MP4/MP3)
+// @name         All-in-One Video Downloader – YouTube, TikTok, Instagram, X, Facebook & 14 more (MP4/MP3)
 // @name:ro      Descărcător video all-in-one gratuit – YouTube, TikTok, Instagram, X, Facebook etc. (MP4/MP3 HD)
 // @name:es      Descargador de vídeos todo en uno gratis – YouTube, TikTok, Instagram, X, Facebook… (MP4/MP3 HD)
 // @name:pt-BR   Baixador de vídeos tudo em um grátis – YouTube, TikTok, Instagram, X, Facebook e mais (MP4/MP3 HD)
