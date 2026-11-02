@@ -95,7 +95,10 @@ declared as `@antifeature payment` (on OpenUserJS, which has no `payment`
 category, as `@antifeature membership`). A Supporter session activated on
 nobsdl.com in the same browser is used when your userscript manager sends
 nobsdl.com cookies with its requests; otherwise use **Open on NoBsDL** in the panel,
-where your Supporter access works as usual.
+where your Supporter access works as usual. After you open the Supporter page
+from the panel, coming back to the tab lists the same link's formats again (for
+up to 2 hours), so a pass bought there shows at once; **Already paid? Refresh**
+does the same by hand.
 
 ## Privacy and permissions
 

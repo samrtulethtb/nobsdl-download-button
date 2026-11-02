@@ -150,6 +150,69 @@ async function main() {
     await context.close();
   }
 
+  // 1a. 2.6.1: a pass bought after a 🔒 click unlocks the panel when the
+  // user comes back to the tab, without a page reload.
+  {
+    let supporter = false;
+    const api = (route, url) => {
+      if (url.pathname === '/api/video-info') return json(route, Object.assign({}, VIDEO_INFO, {is_supporter: supporter}));
+      return route.fulfill({contentType: 'text/html', body: '<h1>NoBsDL page</h1>'});
+    };
+    const {context, page, calls, errors} = await setup(browser, {api});
+    await page.goto('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+    await inject(page, true);
+    const infoCalls = () => calls.filter((c) => c.startsWith('/api/video-info')).length;
+    const returnToTab = () => page.evaluate(() => window.dispatchEvent(new Event('focus')));
+
+    await shadow(page, '.dock .btn-primary').click();
+    await shadow(page, '.card').first().waitFor();
+    await returnToTab();
+    await page.waitForTimeout(200);
+    check('coming back to the tab without a 🔒 click sends nothing', infoCalls() === 1, calls);
+    check('the lock note offers "Already paid? Refresh"', (await shadow(page, '.body .row .btn-ghost').textContent()) === 'Already paid? Refresh');
+
+    const popupPromise = context.waitForEvent('page');
+    await shadow(page, '.card.locked').click();
+    const popup = await popupPromise;
+    await popup.close();
+    supporter = true;                       // the pass is bought in that tab
+    await page.bringToFront();
+    await returnToTab();
+    await page.waitForFunction(() => {
+      const r = document.getElementById('nobsdl-download-widget').shadowRoot;
+      return r.querySelectorAll('.card').length === 4 && !r.querySelector('.card.locked');
+    });
+    check('back on the tab after paying: formats listed again, nothing locked', infoCalls() === 2, calls);
+    check('the panel says Supporter is active', (await shadow(page, '.note').textContent()) === '✓ Supporter active on this browser.');
+    await returnToTab();
+    await page.waitForTimeout(200);
+    check('once Supporter is seen, coming back again sends nothing', infoCalls() === 2, calls);
+    await context.close();
+    check('no page errors in the Supporter re-check flow', errors.length === 0, errors);
+  }
+
+  // 1a2. "Already paid? Refresh" lists the formats again by hand.
+  {
+    let supporter = false;
+    const api = (route, url) => {
+      if (url.pathname === '/api/video-info') return json(route, Object.assign({}, VIDEO_INFO, {is_supporter: supporter}));
+      return route.fulfill({contentType: 'text/html', body: '<h1>NoBsDL page</h1>'});
+    };
+    const {context, page, calls} = await setup(browser, {api});
+    await page.goto('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+    await inject(page, true);
+    await shadow(page, '.dock .btn-primary').click();
+    await shadow(page, '.card.locked').waitFor();
+    supporter = true;
+    await shadow(page, '.body .row .btn-ghost').click();
+    await page.waitForFunction(() => {
+      const r = document.getElementById('nobsdl-download-widget').shadowRoot;
+      return r.querySelectorAll('.card').length === 4 && !r.querySelector('.card.locked');
+    });
+    check('"Already paid? Refresh" re-lists and unlocks', calls.filter((c) => c.startsWith('/api/video-info')).length === 2, calls);
+    await context.close();
+  }
+
   // 1b. The third saved file asks once for a Greasy Fork rating; "Not now" sticks.
   {
     const {context, page} = await setup(browser, {api: happyApi([{status: 'ready', direct_url: '/api/free-download/file/fixturejob1'}])});

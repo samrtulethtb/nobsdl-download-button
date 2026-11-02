@@ -7,6 +7,7 @@ in the corner), pick a quality, and the file goes straight to your browser's
 downloads — no new tab, no copy-pasting links, no captcha pages.
 
 **🆕 What's new**
+- **2.6.1** — bought a Supporter pass from the panel? Come back to the tab and the locked qualities unlock, no reload needed.
 - **2.6** — the panel speaks your language (15 languages, from 简体中文 to Español).
 - **2.5** — Bilibili videos.
 - **2.4** — a ⬇ Download button right on the video or thumbnail you point at.
@@ -89,7 +90,9 @@ size limits (500 MB video, 100 MB MP3) need a paid
 with a 🔒 and never started for a free session. A Supporter session activated
 on nobsdl.com in the same browser is used when your userscript manager sends
 nobsdl.com cookies with its requests; otherwise use **Open on NoBsDL** in the
-panel, where your Supporter access works as usual.
+panel, where your Supporter access works as usual. After you open the Supporter
+page from the panel, coming back to the tab lists the formats again, so a pass
+bought there shows at once (or tap **Already paid? Refresh**).
 
 ### Privacy
 

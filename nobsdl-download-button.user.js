@@ -40,7 +40,7 @@
 // @name:mr      मोफत ऑल-इन-वन व्हिडिओ डाउनलोडर – YouTube, TikTok, Instagram, X, Facebook आणि अधिक (HD MP4/MP3)
 // @name:ne      निःशुल्क अल-इन-वन भिडियो डाउनलोडर – YouTube, TikTok, Instagram, X, Facebook र थप (HD MP4/MP3)
 // @namespace    https://nobsdl.com/
-// @version      2.6.0
+// @version      2.6.1
 // @description  Download videos as MP4 and audio as MP3 without leaving the page: pick a real quality with its file size, watch live progress, and the file goes straight to your downloads. YouTube (incl. Shorts), TikTok, Instagram, X/Twitter, Facebook, Reddit, Twitch clips, Dailymotion, Pinterest, Bluesky, Streamable, Imgur, 9GAG, Odysee, Rutube, OK.ru, Bilibili, SoundCloud, Bandcamp and Mixcloud. In TikTok For You, X and Bluesky feeds it takes the clip on screen. By NoBsDL.
 // @description:ro  Descarcă video MP4 și audio MP3 fără să părăsești pagina. Alegi o calitate reală cu mărimea fișierului, vezi progresul live de pe server, iar fișierul ajunge direct în descărcările browserului. YouTube (inclusiv Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
 // @description:es  Descarga vídeos en MP4 y audio en MP3 sin salir de la página. Elige una calidad real con su tamaño, mira el progreso en vivo y el archivo llega directo a tus descargas. YouTube (incl. Shorts), TikTok, Instagram, X, Facebook, Reddit, SoundCloud.
@@ -135,7 +135,10 @@
 //   status and finally hands the finished file to your browser's downloads.
 // - Requests go to nobsdl.com only. When your userscript manager sends your
 //   nobsdl.com cookies with them, a Supporter session activated on nobsdl.com
-//   unlocks Supporter formats here too. The script stores no key, cookie or
+//   unlocks Supporter formats here too. After you open the Supporter page
+//   from the panel, coming back to this tab lists the same link's formats
+//   again (for up to 2 hours), so a pass bought there shows at once; "Already
+//   paid? Refresh" does the same by hand. The script stores no key, cookie or
 //   history; only whether you collapsed the widget, where you dragged it,
 //   whether buttons on videos are on, how many files it has saved and
 //   whether you closed the rating note
@@ -155,6 +158,11 @@
   const PLAYLIST_ONLY = Object.freeze(["playlist"]);
   const POLL_INTERVAL_MS = 1000;
   const POLL_DEADLINE_MS = 20 * 60 * 1000;
+  // After a 🔒 click opens /supporter, coming back to the tab re-lists the
+  // formats (a pass bought there unlocks them). Only for this long, and at
+  // most once per SUPPORTER_RECHECK_GAP_MS.
+  const SUPPORTER_RECHECK_MS = 2 * 60 * 60 * 1000;
+  const SUPPORTER_RECHECK_GAP_MS = 10 * 1000;
 
   // ── Interface language (2.6.0) ─────────────────────────────────────────
   // The panel follows the browser's language when it is one of these;
@@ -179,7 +187,7 @@
     "Can’t reach NoBsDL. Check your connection.", "NoBsDL took too long to answer. Try again.",
     "NoBsDL couldn’t process this link.", "NoBsDL isn’t available in your country.",
     "NoBsDL returned an unexpected answer. Try again.", "NoBsDL returned an unexpected file link.", "{0} feed",
-    "Turn the buttons on videos on/off", "Download progress",
+    "Turn the buttons on videos on/off", "Download progress", "Already paid? Refresh",
   ];
   const UI_TEXT = {
     "zh-CN": [
@@ -200,7 +208,7 @@
       "无法连接 NoBsDL。请检查网络连接。", "NoBsDL 响应超时。请重试。",
       "NoBsDL 无法处理此链接。", "NoBsDL 在你所在的国家/地区不可用。",
       "NoBsDL 返回了意外的响应。请重试。", "NoBsDL 返回了意外的文件链接。", "{0} 信息流",
-      "开启/关闭视频上的按钮", "下载进度",
+      "开启/关闭视频上的按钮", "下载进度", "已付款？刷新",
     ],
     "zh-TW": [
       "等待空閒的下載位置", "正在連線至 {0}", "正在 NoBsDL 上下載", "正在合併影片和音訊",
@@ -220,7 +228,7 @@
       "無法連線至 NoBsDL。請檢查網路連線。", "NoBsDL 回應逾時。請重試。",
       "NoBsDL 無法處理此連結。", "NoBsDL 在你所在的國家/地區無法使用。",
       "NoBsDL 傳回了非預期的回應。請重試。", "NoBsDL 傳回了非預期的檔案連結。", "{0} 動態",
-      "開啟/關閉影片上的按鈕", "下載進度",
+      "開啟/關閉影片上的按鈕", "下載進度", "已付款？重新整理",
     ],
     ru: [
       "Ожидание свободного слота", "Подключение к {0}", "Загрузка на NoBsDL", "Объединение видео и звука",
@@ -240,7 +248,7 @@
       "Нет связи с NoBsDL. Проверьте подключение.", "NoBsDL слишком долго не отвечает. Попробуйте снова.",
       "NoBsDL не удалось обработать эту ссылку.", "NoBsDL недоступен в вашей стране.",
       "NoBsDL вернул неожиданный ответ. Попробуйте снова.", "NoBsDL вернул неожиданную ссылку на файл.", "Лента {0}",
-      "Включить/выключить кнопки на видео", "Ход загрузки",
+      "Включить/выключить кнопки на видео", "Ход загрузки", "Уже оплатили? Обновить",
     ],
     uk: [
       "Очікування вільного слота", "Підключення до {0}", "Завантаження на NoBsDL", "Об’єднання відео та звуку",
@@ -260,7 +268,7 @@
       "Немає зв’язку з NoBsDL. Перевірте підключення.", "NoBsDL занадто довго не відповідає. Спробуйте ще раз.",
       "NoBsDL не вдалося обробити це посилання.", "NoBsDL недоступний у вашій країні.",
       "NoBsDL повернув неочікувану відповідь. Спробуйте ще раз.", "NoBsDL повернув неочікуване посилання на файл.", "Стрічка {0}",
-      "Увімкнути/вимкнути кнопки на відео", "Хід завантаження",
+      "Увімкнути/вимкнути кнопки на відео", "Хід завантаження", "Уже оплатили? Оновити",
     ],
     es: [
       "Esperando un hueco libre de descarga", "Conectando con {0}", "Descargando en NoBsDL", "Uniendo vídeo y audio",
@@ -280,7 +288,7 @@
       "No se puede conectar con NoBsDL. Revisa tu conexión.", "NoBsDL tardó demasiado en responder. Inténtalo de nuevo.",
       "NoBsDL no pudo procesar este enlace.", "NoBsDL no está disponible en tu país.",
       "NoBsDL devolvió una respuesta inesperada. Inténtalo de nuevo.", "NoBsDL devolvió un enlace de archivo inesperado.", "Feed de {0}",
-      "Activar/desactivar los botones en los vídeos", "Progreso de la descarga",
+      "Activar/desactivar los botones en los vídeos", "Progreso de la descarga", "¿Ya pagaste? Actualizar",
     ],
     pt: [
       "Aguardando uma vaga de download", "Conectando a {0}", "Baixando no NoBsDL", "Juntando vídeo e áudio",
@@ -300,7 +308,7 @@
       "Não foi possível conectar ao NoBsDL. Verifique sua conexão.", "O NoBsDL demorou demais para responder. Tente de novo.",
       "O NoBsDL não conseguiu processar este link.", "O NoBsDL não está disponível no seu país.",
       "O NoBsDL retornou uma resposta inesperada. Tente de novo.", "O NoBsDL retornou um link de arquivo inesperado.", "Feed do {0}",
-      "Ativar/desativar os botões nos vídeos", "Progresso do download",
+      "Ativar/desativar os botões nos vídeos", "Progresso do download", "Já pagou? Atualizar",
     ],
     fr: [
       "En attente d’un créneau de téléchargement", "Connexion à {0}", "Téléchargement sur NoBsDL", "Fusion de la vidéo et de l’audio",
@@ -320,7 +328,7 @@
       "Impossible de joindre NoBsDL. Vérifiez votre connexion.", "NoBsDL a mis trop de temps à répondre. Réessayez.",
       "NoBsDL n’a pas pu traiter ce lien.", "NoBsDL n’est pas disponible dans votre pays.",
       "NoBsDL a renvoyé une réponse inattendue. Réessayez.", "NoBsDL a renvoyé un lien de fichier inattendu.", "Fil {0}",
-      "Activer/désactiver les boutons sur les vidéos", "Progression du téléchargement",
+      "Activer/désactiver les boutons sur les vidéos", "Progression du téléchargement", "Déjà payé ? Actualiser",
     ],
     de: [
       "Warte auf einen freien Download-Platz", "Verbinde mit {0}", "Lädt auf NoBsDL herunter", "Video und Audio werden zusammengefügt",
@@ -340,7 +348,7 @@
       "NoBsDL ist nicht erreichbar. Prüfe deine Verbindung.", "NoBsDL hat zu lange gebraucht. Versuche es erneut.",
       "NoBsDL konnte diesen Link nicht verarbeiten.", "NoBsDL ist in deinem Land nicht verfügbar.",
       "NoBsDL hat eine unerwartete Antwort geliefert. Versuche es erneut.", "NoBsDL hat einen unerwarteten Dateilink geliefert.", "{0}-Feed",
-      "Buttons auf Videos ein/aus", "Download-Fortschritt",
+      "Buttons auf Videos ein/aus", "Download-Fortschritt", "Schon bezahlt? Aktualisieren",
     ],
     it: [
       "In attesa di uno slot di download libero", "Connessione a {0}", "Download su NoBsDL", "Unione di video e audio",
@@ -360,7 +368,7 @@
       "Impossibile raggiungere NoBsDL. Controlla la connessione.", "NoBsDL ha impiegato troppo a rispondere. Riprova.",
       "NoBsDL non è riuscito a elaborare questo link.", "NoBsDL non è disponibile nel tuo paese.",
       "NoBsDL ha restituito una risposta inattesa. Riprova.", "NoBsDL ha restituito un link al file inatteso.", "Feed di {0}",
-      "Attiva/disattiva i pulsanti sui video", "Avanzamento del download",
+      "Attiva/disattiva i pulsanti sui video", "Avanzamento del download", "Hai già pagato? Aggiorna",
     ],
     pl: [
       "Czekam na wolne miejsce pobierania", "Łączenie z {0}", "Pobieranie na NoBsDL", "Łączenie obrazu i dźwięku",
@@ -380,7 +388,7 @@
       "Brak połączenia z NoBsDL. Sprawdź połączenie.", "NoBsDL odpowiadał zbyt długo. Spróbuj ponownie.",
       "NoBsDL nie mógł przetworzyć tego linku.", "NoBsDL nie jest dostępny w Twoim kraju.",
       "NoBsDL zwrócił nieoczekiwaną odpowiedź. Spróbuj ponownie.", "NoBsDL zwrócił nieoczekiwany link do pliku.", "Kanał {0}",
-      "Włącz/wyłącz przyciski na filmach", "Postęp pobierania",
+      "Włącz/wyłącz przyciski na filmach", "Postęp pobierania", "Już zapłacone? Odśwież",
     ],
     tr: [
       "Boş bir indirme yeri bekleniyor", "{0} sitesine bağlanılıyor", "NoBsDL'de indiriliyor", "Video ve ses birleştiriliyor",
@@ -400,7 +408,7 @@
       "NoBsDL'ye ulaşılamıyor. Bağlantınızı kontrol edin.", "NoBsDL çok geç yanıt verdi. Tekrar deneyin.",
       "NoBsDL bu bağlantıyı işleyemedi.", "NoBsDL ülkenizde kullanılamıyor.",
       "NoBsDL beklenmeyen bir yanıt verdi. Tekrar deneyin.", "NoBsDL beklenmeyen bir dosya bağlantısı verdi.", "{0} akışı",
-      "Videolardaki düğmeleri aç/kapat", "İndirme ilerlemesi",
+      "Videolardaki düğmeleri aç/kapat", "İndirme ilerlemesi", "Ödeme yaptınız mı? Yenile",
     ],
     id: [
       "Menunggu slot unduhan kosong", "Menghubungkan ke {0}", "Mengunduh di NoBsDL", "Menggabungkan video dan audio",
@@ -420,7 +428,7 @@
       "Tidak dapat terhubung ke NoBsDL. Periksa koneksi Anda.", "NoBsDL terlalu lama merespons. Coba lagi.",
       "NoBsDL tidak dapat memproses tautan ini.", "NoBsDL tidak tersedia di negara Anda.",
       "NoBsDL memberikan respons yang tidak terduga. Coba lagi.", "NoBsDL memberikan tautan file yang tidak terduga.", "Feed {0}",
-      "Aktifkan/nonaktifkan tombol pada video", "Progres unduhan",
+      "Aktifkan/nonaktifkan tombol pada video", "Progres unduhan", "Sudah bayar? Muat ulang",
     ],
     vi: [
       "Đang chờ lượt tải trống", "Đang kết nối tới {0}", "Đang tải trên NoBsDL", "Đang ghép video và âm thanh",
@@ -440,7 +448,7 @@
       "Không kết nối được NoBsDL. Hãy kiểm tra kết nối.", "NoBsDL phản hồi quá lâu. Hãy thử lại.",
       "NoBsDL không xử lý được liên kết này.", "NoBsDL không khả dụng ở quốc gia của bạn.",
       "NoBsDL trả về phản hồi không mong đợi. Hãy thử lại.", "NoBsDL trả về liên kết tệp không mong đợi.", "Bảng tin {0}",
-      "Bật/tắt nút trên video", "Tiến trình tải",
+      "Bật/tắt nút trên video", "Tiến trình tải", "Đã thanh toán? Làm mới",
     ],
     ja: [
       "空きスロットを待っています", "{0} に接続中", "NoBsDL でダウンロード中", "映像と音声を結合中",
@@ -460,7 +468,7 @@
       "NoBsDL に接続できません。接続を確認してください。", "NoBsDL の応答に時間がかかりすぎました。もう一度お試しください。",
       "NoBsDL はこのリンクを処理できませんでした。", "NoBsDL はお住まいの国では利用できません。",
       "NoBsDL から予期しない応答がありました。もう一度お試しください。", "NoBsDL から予期しないファイルリンクが返されました。", "{0} のフィード",
-      "動画上のボタンをオン/オフ", "ダウンロードの進行状況",
+      "動画上のボタンをオン/オフ", "ダウンロードの進行状況", "支払い済みですか？更新",
     ],
     ko: [
       "빈 다운로드 슬롯을 기다리는 중", "{0}에 연결 중", "NoBsDL에서 다운로드 중", "영상과 오디오 합치는 중",
@@ -480,7 +488,7 @@
       "NoBsDL에 연결할 수 없습니다. 연결을 확인하세요.", "NoBsDL 응답이 너무 오래 걸렸습니다. 다시 시도하세요.",
       "NoBsDL이 이 링크를 처리하지 못했습니다.", "NoBsDL은 현재 국가에서 사용할 수 없습니다.",
       "NoBsDL이 예상치 못한 응답을 보냈습니다. 다시 시도하세요.", "NoBsDL이 예상치 못한 파일 링크를 보냈습니다.", "{0} 피드",
-      "동영상 위 버튼 켜기/끄기", "다운로드 진행률",
+      "동영상 위 버튼 켜기/끄기", "다운로드 진행률", "이미 결제하셨나요? 새로고침",
     ],
   };
 
@@ -1395,6 +1403,7 @@
     const state = {
       busy: false, keepView: false, open: false, collapsed: readCollapsed(), token: 0, info: null, choices: null,
       dockLabel: "", progress: null, primaryButton: null, dragged: false, tapAt: 0, flashTimer: 0,
+      supporterCheckSince: 0, supporterCheckAt: 0,
       // What the panel works on: the page itself, or on a feed the clip
       // picked when the panel opens (or a pasted link).
       target: matchedPage.feed ? null : {url: sourceUrlFor(currentUrl, matchedPage), page: matchedPage},
@@ -1654,10 +1663,43 @@
       state.keepView = true;
       const actions = el("div", {class: "row"});
       if (retry) actions.append(el("button", {class: "btn btn-primary", type: "button", text: error && error.refreshFormats ? t("Refresh formats") : t("Try again"), onclick: retry}));
-      if (error && error.supporterCta) actions.append(externalLink(NOBSDL_ORIGIN + "/supporter", t("Supporter options"), "btn btn-ghost"));
+      if (error && error.supporterCta) actions.append(supporterLink(t("Supporter options"), "btn btn-ghost"));
       show([header(state.info ? state.info.title || targetPage().name : targetPage().name),
         el("div", {class: "body"}, [el("div", {class: "error", role: "alert", text: (error && error.message) || t("Something went wrong.")}), actions]),
         footer()]);
+    }
+
+    // The Supporter page opens in a new tab; remember it so that coming
+    // back here re-lists the formats (see onReturn).
+    function markSupporterCheck() {
+      state.supporterCheckSince = Date.now();
+    }
+
+    function openSupporter() {
+      markSupporterCheck();
+      window.open(NOBSDL_ORIGIN + "/supporter", "_blank", "noopener,noreferrer");
+    }
+
+    function supporterLink(text, className) {
+      const anchor = externalLink(NOBSDL_ORIGIN + "/supporter", text, className);
+      anchor.addEventListener("click", markSupporterCheck);
+      return anchor;
+    }
+
+    // Back on this tab after opening /supporter: the old list may still
+    // show 🔒 for a pass bought meanwhile. Open panel: list again now.
+    // Closed panel: forget the list, so the next open lists afresh.
+    function onReturn() {
+      if (!state.supporterCheckSince || state.busy) return;
+      const now = Date.now();
+      if (now - state.supporterCheckSince > SUPPORTER_RECHECK_MS) { state.supporterCheckSince = 0; return; }
+      if (now - state.supporterCheckAt < SUPPORTER_RECHECK_GAP_MS) return;
+      state.choices = null;
+      state.info = null;
+      state.keepView = false;
+      if (!state.open || !state.target) return;
+      state.supporterCheckAt = now;
+      loadFormats();
     }
 
     async function loadFormats() {
@@ -1671,6 +1713,7 @@
         if (token !== state.token) return;
         state.info = data;
         state.choices = normalizeChoices(data);
+        if (data.is_supporter) state.supporterCheckSince = 0;
         showChoices();
       } catch (error) {
         if (token !== state.token) return;
@@ -1684,9 +1727,7 @@
       const label = choice.title + " " + choice.format.toUpperCase() + (choice.sizeMb ? ", " + formatSize(choice.sizeMb) : "") + (choice.locked ? ", needs NoBsDL Supporter" : "");
       return el("button", {
         class: "card" + (choice.locked ? " locked" : ""), type: "button", "aria-label": label,
-        onclick: () => (choice.locked
-          ? window.open(NOBSDL_ORIGIN + "/supporter", "_blank", "noopener,noreferrer")
-          : startJob(choice)),
+        onclick: () => (choice.locked ? openSupporter() : startJob(choice)),
       }, [el("span", {class: "top"}, [el("span", {class: "q", text: choice.title}), badge ? el("span", {class: "badge", text: badge}) : null]), el("span", {class: "s", text: sub})]);
     }
 
@@ -1702,7 +1743,8 @@
         .map(([heading, list]) => el("div", {class: "section"}, [el("h4", {text: heading}), el("div", {class: "grid"}, list.map(choiceCard))]));
       const body = el("div", {class: "body"}, sections.length ? sections : [el("p", {class: "center", text: t("No downloadable format was found for this link.")})]);
       if (choices.some((c) => c.locked)) {
-        body.append(el("p", {class: "note"}, [t("🔒 Locked qualities need a paid "), externalLink(NOBSDL_ORIGIN + "/supporter", t("NoBsDL Supporter key")), t(". Everything else is free.")]));
+        body.append(el("p", {class: "note"}, [t("🔒 Locked qualities need a paid "), supporterLink(t("NoBsDL Supporter key")), t(". Everything else is free.")]),
+          el("div", {class: "row"}, [el("button", {class: "btn btn-ghost", type: "button", text: t("Already paid? Refresh"), onclick: () => { state.choices = null; loadFormats(); }})]));
       } else if (info.is_supporter) {
         body.append(el("p", {class: "note", text: t("✓ Supporter active on this browser.")}));
       }
@@ -1713,6 +1755,7 @@
     }
 
     async function startJob(choice) {
+      state.supporterCheckSince = 0;
       const token = ++state.token;
       state.busy = true;
       state.keepView = true;
@@ -1853,7 +1896,7 @@
 
     shadow.addEventListener("keydown", (event) => { if (event.key === "Escape" && state.open) closePanel(); });
     renderDock();
-    host.__nobsdl = {isBusy: () => state.busy, isOpen: () => state.open, open: openPanel, relayout};
+    host.__nobsdl = {isBusy: () => state.busy, isOpen: () => state.open, open: openPanel, relayout, onReturn};
     return host;
   }
 
@@ -2033,6 +2076,9 @@
     window.addEventListener("popstate", sync);
     window.addEventListener("hashchange", sync);
     window.addEventListener("resize", () => { if (widget && widget.__nobsdl) widget.__nobsdl.relayout(); });
+    const onReturn = () => { if (widget && widget.__nobsdl) widget.__nobsdl.onReturn(); };
+    document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") onReturn(); });
+    window.addEventListener("focus", onReturn);
     setInterval(sync, 750);
   }
 
