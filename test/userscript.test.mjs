@@ -194,7 +194,8 @@ test("metadata grants exactly the in-page transport and talks only to nobsdl.com
 
 test("metadata fits Greasy Fork's field limits in every locale", () => {
   // Greasy Fork rejects a sync when @name > 100 or @description > 500 chars
-  // (seen live on 2.0.0). Count code points and stay under in UTF-8 bytes too.
+  // (seen live on 2.0.0). It counts characters (Ruby String#length in
+  // Script::MAX_LENGTHS), so code points are what matter, emoji included.
   const source = readFileSync(SCRIPT, "utf8");
   const header = source.slice(0, source.indexOf("// ==/UserScript=="));
   const fields = [...header.matchAll(/^\/\/ @(name|description)(:\S+)?\s+(.*)$/gm)];
@@ -204,7 +205,6 @@ test("metadata fits Greasy Fork's field limits in every locale", () => {
   for (const [, key, locale = "", value] of fields) {
     const limit = key === "name" ? 100 : 500;
     assert.ok([...value].length <= limit, `@${key}${locale} is ${[...value].length} chars`);
-    if (key === "name" && !locale) assert.ok(Buffer.byteLength(value) <= limit, "main @name must also fit in bytes");
   }
 });
 
