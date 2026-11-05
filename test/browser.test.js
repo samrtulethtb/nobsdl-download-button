@@ -229,7 +229,7 @@ async function main() {
     check('the third saved file shows one rating note', (await shadow(page, '.rate').count()) === 1);
     check('the note links to the Greasy Fork feedback page in a new tab', await shadow(page, '.rate a').evaluate((a) => a.href === 'https://greasyfork.org/scripts/597631/feedback' && a.target === '_blank'));
     await shadow(page, '.rate .linkbtn').click();
-    check('"Not now" removes the note and remembers it', (await shadow(page, '.rate').count()) === 0 && await page.evaluate(() => window.__gmStore.rateDismissed === true && window.__gmStore.savedCount === 3));
+    check('"Not now" removes the note and remembers it', (await shadow(page, '.rate').count()) === 0 && await page.evaluate(() => window.__gmStore.rateState === 'later' && window.__gmStore.savedCount === 3));
     await context.close();
   }
 
@@ -249,8 +249,52 @@ async function main() {
     const popupPromise = context.waitForEvent('page');
     await shadow(page, '.rate a').click();
     await (await popupPromise).close();
-    check('"Rate it" opens the listing and the note never comes back', (await shadow(page, '.rate').count()) === 0 && await page.evaluate(() => window.__gmStore.rateDismissed === true));
+    check('"Rate it" opens the listing and the note never comes back', (await shadow(page, '.rate').count()) === 0 && await page.evaluate(() => window.__gmStore.rateState === 'done'));
     await context.close();
+  }
+
+  // 1c2. After "Not now" the note comes back once, after the 15th file;
+  // a pre-2.7 answer (rateDismissed) counts as "Not now"; "done" never asks.
+  async function rateNoteAfterSave(store) {
+    const {context, page} = await setup(browser, {api: happyApi([{status: 'ready', direct_url: '/api/free-download/file/fixturejob1'}])});
+    await page.goto('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+    await page.addScriptTag({content: GM_POLYFILL + 'Object.assign(window.__gmStore, ' + JSON.stringify(store) + ');'});
+    await page.addScriptTag({content: SCRIPT});
+    await page.waitForTimeout(150);
+    await shadow(page, '.dock .btn-primary').click();
+    await shadow(page, '.card').first().waitFor();
+    const downloadPromise = page.waitForEvent('download');
+    await shadow(page, '.card:not(.locked)').first().click();
+    await downloadPromise;
+    await shadow(page, '.result-ok').waitFor();
+    return {context, page, count: await shadow(page, '.rate').count()};
+  }
+  {
+    const r = await rateNoteAfterSave({savedCount: 13, rateState: 'later'});
+    check('after "Not now" the 14th file shows no note', r.count === 0);
+    await r.context.close();
+  }
+  {
+    const r = await rateNoteAfterSave({savedCount: 14, rateState: 'later'});
+    check('after "Not now" the 15th file asks once more', r.count === 1);
+    await shadow(r.page, '.rate .linkbtn').click();
+    check('the second "Not now" ends it for good', (await shadow(r.page, '.rate').count()) === 0 && await r.page.evaluate(() => window.__gmStore.rateState === 'done'));
+    await r.context.close();
+  }
+  {
+    const r = await rateNoteAfterSave({savedCount: 3, rateDismissed: true});
+    check('a pre-2.7 answer is not asked again on the 4th file', r.count === 0);
+    await r.context.close();
+  }
+  {
+    const r = await rateNoteAfterSave({savedCount: 20, rateDismissed: true});
+    check('a pre-2.7 answer gets the one second ask after 15 files', r.count === 1);
+    await r.context.close();
+  }
+  {
+    const r = await rateNoteAfterSave({savedCount: 40, rateState: 'done'});
+    check('"done" never shows the note again', r.count === 0);
+    await r.context.close();
   }
 
   // 1d. Buttons on videos: a YouTube thumbnail on the home page (no corner

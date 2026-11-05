@@ -7,11 +7,12 @@ in the corner), pick a quality, and the file goes straight to your browser's
 downloads — no new tab, no copy-pasting links, no captcha pages.
 
 **🆕 What's new**
+- **2.7** — if you chose "Not now" on the rating note, it asks once more after your 15th file, then never again.
 - **2.6.1** — bought a Supporter pass from the panel? Come back to the tab and the locked qualities unlock, no reload needed.
 - **2.6** — the panel speaks your language (15 languages, from 简体中文 to Español).
 - **2.5** — Bilibili videos.
 - **2.4** — a ⬇ Download button right on the video or thumbnail you point at.
-- **2.3** — a one-time rating note after your third file (thank you!).
+- **2.3** — a rating note after your third file (thank you!).
 
 **20 sites:** YouTube (videos, Shorts, MP3, playlists) · TikTok · Instagram Reels ·
 X / Twitter · Facebook · Reddit · SoundCloud (MP3) · Twitch clips & videos ·
@@ -35,6 +36,13 @@ Bilibili, Dailymotion, Pinterest, Bluesky and the other sites above)
 
 ### Why this one
 
+- 🏠 **Its own download service, not someone else's converter site.** Many
+  downloader scripts just open a third-party converter site. This one talks only to NoBsDL's own service (`@connect nobsdl.com`,
+  the same service behind nobsdl.com): it lists the formats, downloads,
+  merges and converts to MP3 there, and the file lands in your browser's
+  downloads while you stay on the page. **No popups. No forced redirects. No
+  fake download buttons.** The source is readable and unminified, so you can
+  check.
 - ⬇️ **A Download button on every video.** With a mouse, the button appears on
   the video or thumbnail you point at: YouTube's player, home, search and
   sidebar thumbnails, videos in X, Reddit, Instagram, Facebook, Bluesky and
@@ -58,8 +66,6 @@ Bilibili, Dailymotion, Pinterest, Bluesky and the other sites above)
   the video only while you point at it. Close the panel
   mid-download and it keeps going; the button shows the percentage. Minimize
   it to a dot or drag it elsewhere if you like.
-- 🏠 **No third-party download sites.** The script talks only to NoBsDL's own
-  service — **No popups. No forced redirects. No fake download buttons.**
 
 <img src="https://raw.githubusercontent.com/samrtulethtb/nobsdl-download-button/main/media/youtube-formats.jpg" alt="Format panel on a YouTube video: real qualities with sizes, 4K marked Supporter" width="720">
 
@@ -103,8 +109,8 @@ bought there shows at once (or tap **Already paid? Refresh**).
   you merely scroll past or point at are never looked up.
 - No analytics, ads or tracking code in the script. It stores only whether you
   minimized the button, where you dragged it, whether the buttons on videos are
-  on, and a count of saved files (after
-  3 it asks once for a rating; "Not now" hides it for good).
+  on, and a count of saved files (after 3 it asks for a rating; after "Not
+  now", once more after 15, then never again).
 - Readable, unminified source (MIT).
 
 ### Good to know

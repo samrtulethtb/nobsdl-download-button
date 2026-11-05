@@ -341,14 +341,16 @@ test("site counts in the name and the listing match the platforms the script rea
   assert.equal(Number(listing.match(/\*\*(\d+) sites:\*\*/)[1]), platforms.size);
 });
 
-test("asks for a rating once, after the third saved file, and only locally", () => {
+test("asks for a rating after the 3rd saved file, once more after the 15th after \"Not now\", and only locally", () => {
   const source = readFileSync(SCRIPT, "utf8");
   assert.match(source, /const LISTING_URL = "https:\/\/greasyfork\.org\/scripts\/597631";/);
   assert.match(source, /writeValue\("savedCount", saved\)/);
-  assert.match(source, /saved >= 3 && readValue\("rateDismissed", false\) !== true/);
-  assert.match(source, /const dismiss = \(\) => \{ writeValue\("rateDismissed", true\); note\.remove\(\); \};/);
+  // Before 2.7 either answer was stored as rateDismissed = true: that counts as "Not now".
+  assert.match(source, /const rateState = readValue\("rateState", readValue\("rateDismissed", false\) === true \? "later" : "new"\);/);
+  assert.match(source, /\(rateState === "new" && saved >= 3\) \|\| \(rateState === "later" && saved >= 15\)/);
   assert.match(source, /externalLink\(LISTING_URL \+ "\/feedback", t\("Rate it ★"\)\)/);
-  assert.match(source, /rate\.addEventListener\("click", dismiss\)/);
+  assert.match(source, /rate\.addEventListener\("click", \(\) => answer\("done"\)\)/);
+  assert.match(source, /onclick: \(\) => answer\(rateState === "new" \? "later" : "done"\)/);
   // No reward is offered and nothing about it is sent anywhere.
   assert.doesNotMatch(source, /rate[^\n]{0,80}(?:unlock|reward|bonus|free download)/i);
 });

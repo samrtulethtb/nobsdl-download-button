@@ -115,7 +115,8 @@ does the same by hand.
   decides), which is how an active Supporter session can be recognised. The
   script itself stores no key, cookie or history; only whether you minimized
   the button, where you dragged it, whether the buttons on videos are on,
-  and a count of saved files for a one-time rating note
+  and a count of saved files for the rating note (after 3 files, and once
+  more after 15 if you chose "Not now")
   (`GM_getValue`/`GM_setValue`).
 - No analytics, ads or tracking code in the script. The DOM is built with
   text nodes only (no `innerHTML`), inside a Shadow DOM.
